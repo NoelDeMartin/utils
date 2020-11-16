@@ -1,0 +1,29 @@
+{
+  "name": "@noeldemartin/utils",
+  "version": "0.0.1",
+  "description": "My JavaScript utilities",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint src",
+    "test": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noeldemartin/utils.git"
+  },
+  "author": "Noel De Martin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noeldemartin/utils/issues"
+  },
+  "homepage": "https://github.com/noeldemartin/utils#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.8.0",
+    "@typescript-eslint/parser": "^4.8.0",
+    "eslint": "^7.13.0",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.0.5"
+  }
+}
