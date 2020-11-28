@@ -1,4 +1,4 @@
-class Str {
+export class StringHelpers {
 
     public contains(needle: string, haystack: string): boolean {
         return haystack.indexOf(needle) !== -1;
@@ -6,4 +6,4 @@ class Str {
 
 }
 
-export default new Str();
+export default new StringHelpers();
