@@ -20,6 +20,13 @@ module.exports = {
         'dist',
     ],
     rules: {
+        '@typescript-eslint/no-explicit-any': [
+            'warn',
+            {
+                ignoreRestArgs: true,
+            },
+        ],
+        '@typescript-eslint/no-inferrable-types': 'off',
         'comma-dangle': [
             'error',
             'always-multiline',
@@ -31,6 +38,10 @@ module.exports = {
         'linebreak-style': [
             'error',
             'unix',
+        ],
+        'max-len': [
+            'error',
+            120,
         ],
         'quotes': [
             'error',

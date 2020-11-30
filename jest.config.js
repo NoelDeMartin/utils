@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 module.exports = {
     testRegex: '\\.test\\.ts$',
     transform: {
@@ -7,7 +8,7 @@ module.exports = {
         '<rootDir>/src/**/*',
     ],
     coveragePathIgnorePatterns: [
-        '<rootDir>/src/index\.ts',
+        '<rootDir>/src/main.ts',
     ],
     moduleFileExtensions: [
         'js',

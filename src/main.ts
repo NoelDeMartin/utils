@@ -1,1 +1,2 @@
-export { default as Str, StringHelpers } from './Str';
+export * from './fluent/index';
+export * from './helpers/index';
