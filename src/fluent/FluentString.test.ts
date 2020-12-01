@@ -3,7 +3,7 @@ import FluentString from './FluentString';
 describe('FluentString', () => {
 
     it('finds text', () => {
-        const fluentString = FluentString.create<unknown>('foobar');
+        const fluentString = FluentString.create('foobar');
 
         expect(fluentString.contains('foo')).toBe(true);
         expect(fluentString.contains('bar')).toBe(true);
@@ -42,7 +42,7 @@ describe('FluentString', () => {
         }
 
         // Act
-        const fluentString = SuperFluentString.create<SuperFluentString>('foobar').concat('');
+        const fluentString = SuperFluentString.create('foobar').concat('');
 
         // Assert
         expect(fluentString).toBeInstanceOf(SuperFluentString);

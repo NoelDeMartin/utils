@@ -1,28 +1,41 @@
-import * as stringHelpers from '../helpers/string_helpers';
+import { stringContains, stringReverse, stringUncapitalize } from '../helpers/string_helpers';
 
-import FluentObject, { FluentProxy } from './FluentObject';
+import FluentObject, {
+    addHelperMethodsToPrototype,
+    addPrimitiveMethodsToPrototype,
+    FluentInstance,
+} from './FluentObject';
 
-export type FluentStringProxy<T> = FluentProxy<T, string, keyof string, typeof stringHelpers, 'string'>;
+export const fluentStringHelpers = {
+    contains: stringContains,
+    reverse: stringReverse,
+    uncapitalize: stringUncapitalize,
+};
 
-export default class FluentString extends FluentObject<string> {
+export type FluentStringInstance<FluentClass> =
+    FluentInstance<FluentClass, string, keyof string, typeof fluentStringHelpers>;
 
-    // TODO infer static this
-    public static create<T>(value: string = ''): FluentStringProxy<T> {
-        return new this(value) as unknown as FluentStringProxy<T>;
+class FluentString extends FluentObject<string> {
+
+    public static create<T>(this: T, value: string = ''): FluentStringInstance<ClassInstance<T>> {
+        const { prototype } = this as unknown as {
+            prototype: { create(value: string): FluentStringInstance<ClassInstance<T>> };
+        };
+
+        return prototype.create(value);
     }
 
-    constructor(value: string = '') {
-        super(value, 'string', stringHelpers);
-
-        return this.createProxy() as unknown as this;
+    public isPrimitive(value: unknown): value is string {
+        return typeof value === 'string';
     }
 
     public toString(): string {
         return this.value;
     }
 
-    protected isPrimitive(value: unknown): value is string {
-        return typeof value === 'string';
-    }
-
 }
+
+addHelperMethodsToPrototype(FluentString, fluentStringHelpers);
+addPrimitiveMethodsToPrototype(FluentString, String);
+
+export default FluentString;
