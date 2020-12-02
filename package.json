@@ -7,9 +7,14 @@
   "browser": "dist/noeldemartin-utils.umd.js",
   "types": "dist/noeldemartin-utils.d.ts",
   "scripts": {
-    "build": "rm tmp -rf && rm dist -rf && rollup -c && api-extractor run --verbose && rm tmp -rf",
+    "build": "rm dist -rf && npm run build:bundles && npm run build:declarations",
+    "build:bundles": "rollup -c",
+    "build:declarations": "node scripts/build-declarations.js",
     "lint": "eslint src",
     "test": "jest --verbose"
+  },
+  "engines": {
+    "node": ">=12.x"
   },
   "repository": {
     "type": "git",

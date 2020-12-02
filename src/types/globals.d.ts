@@ -1,4 +1,2 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare type Closure<P extends any[] = any[], R = unknown> = (...args: P) => R;
-
+declare type Closure<Return = unknown> = (...args: any[]) => Return;
 declare type ClassInstance<Class> = Class extends { new(...args: any[]): infer T } ? T : never;

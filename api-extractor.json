@@ -1,9 +1,9 @@
 {
     "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
-    "mainEntryPointFilePath": "<projectFolder>/tmp/declarations/main.d.ts",
+    "mainEntryPointFilePath": "<projectFolder>/tmp/main.d.ts",
     "dtsRollup": {
         "enabled": true,
-        "untrimmedFilePath": "<projectFolder>/dist/noeldemartin-utils.d.ts"
+        "untrimmedFilePath": "<projectFolder>/tmp/noeldemartin-utils.d.ts"
     },
     "docModel": { "enabled": false },
     "apiReport": { "enabled": false },

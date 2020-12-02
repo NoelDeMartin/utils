@@ -18,6 +18,7 @@ module.exports = {
     ],
     ignorePatterns: [
         'dist',
+        'scripts',
     ],
     rules: {
         '@typescript-eslint/no-explicit-any': [

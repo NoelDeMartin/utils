@@ -25,12 +25,12 @@ class FluentString extends FluentObject<string> {
         return prototype.create(value);
     }
 
-    public isPrimitive(value: unknown): value is string {
-        return typeof value === 'string';
-    }
-
     public toString(): string {
         return this.value;
+    }
+
+    protected isPrimitive(value: unknown): value is string {
+        return typeof value === 'string';
     }
 
 }
