@@ -1,18 +1,27 @@
-import { stringContains, stringReverse, stringUncapitalize } from './string_helpers';
+import { stringReverse, stringToCamelCase, stringToSlug, stringToStudlyCase } from './string_helpers';
 
 describe('String helpers', () => {
 
-    it('contains', () => {
-        expect(stringContains('Hello World!', 'World')).toBe(true);
-        expect(stringContains('Hello World!', 'Foobar')).toBe(false);
-    });
-
-    it('reverse', () => {
+    it('reverses string characters', () => {
         expect(stringReverse('foobar')).toEqual('raboof');
     });
 
-    it('uncapitalize', () => {
-        expect(stringUncapitalize('FooBar')).toEqual('fooBar');
+    it('converts strings to camelCase', () => {
+        expect(stringToCamelCase('foo_bar')).toEqual('fooBar');
+        expect(stringToCamelCase('Foo Bar')).toEqual('fooBar');
+        expect(stringToCamelCase('fooBar')).toEqual('fooBar');
+    });
+
+    it('converts strings to slug', () => {
+        expect(stringToSlug('Sin perdón')).toEqual('sin-perdon');
+        expect(stringToSlug('Mañana')).toEqual('manana');
+        expect(stringToSlug('It\'s always sunny in philadelphia')).toEqual('its-always-sunny-in-philadelphia');
+    });
+
+    it('converts strings to StudlyCase', () => {
+        expect(stringToStudlyCase('foo_bar')).toEqual('FooBar');
+        expect(stringToStudlyCase('Foo Bar')).toEqual('FooBar');
+        expect(stringToStudlyCase('fooBar')).toEqual('FooBar');
     });
 
 });

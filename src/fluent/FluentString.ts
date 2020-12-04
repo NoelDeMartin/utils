@@ -1,4 +1,4 @@
-import { stringContains, stringReverse, stringUncapitalize } from '../helpers/string_helpers';
+import { stringReverse, stringToSlug, stringToCamelCase, stringToStudlyCase } from '../helpers/string_helpers';
 
 import FluentObject, {
     addHelperMethodsToPrototype,
@@ -7,9 +7,10 @@ import FluentObject, {
 } from './FluentObject';
 
 export const fluentStringHelpers = {
-    contains: stringContains,
     reverse: stringReverse,
-    uncapitalize: stringUncapitalize,
+    toCamelCase: stringToCamelCase,
+    toSlug: stringToSlug,
+    toStudlyCase: stringToStudlyCase,
 };
 
 export type FluentStringInstance<FluentClass> =

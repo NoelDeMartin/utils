@@ -19,7 +19,7 @@ async function main() {
 async function usingTmp(callback) {
     clearTmp();
     await callback();
-    // clearTmp();
+    clearTmp();
 }
 
 function clearTmp() {
@@ -66,9 +66,9 @@ async function appendProjectDeclarations() {
     const projectDeclarationFilePaths = fs.readdirSync(projectPath('src/types'));
 
     fs.writeFileSync(declarationsFilePath, [
-        declarationsFile,
         ...projectDeclarationFilePaths.map(path => fs.readFileSync(projectPath(`src/types/${path}`))),
-    ].join('\n'));
+        declarationsFile,
+    ].join(''));
 }
 
 async function publishDeclarations() {
