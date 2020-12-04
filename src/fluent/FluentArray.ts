@@ -3,10 +3,11 @@ import FluentObject, {
     addPrimitiveMethodsToPrototype,
     FluentInstance,
 } from './FluentObject';
-import { arrayContains } from '../helpers/array_helpers';
+import { arrayContains, arrayFirst } from '../helpers/array_helpers';
 
 export const fluentArrayHelpers = {
     contains: arrayContains,
+    first: arrayFirst,
 };
 
 export type FluentArrayInstance<FluentClass, Item> =

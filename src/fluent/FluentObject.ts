@@ -80,6 +80,10 @@ export function addPrimitiveMethodsToPrototype(
 
 export default abstract class FluentObject<Primitive> {
 
+    public static isPrimitive(value: unknown): boolean {
+        return this.prototype.isPrimitive(value);
+    }
+
     constructor(protected value: Primitive) {}
 
     protected abstract isPrimitive(value: unknown): value is Primitive;
