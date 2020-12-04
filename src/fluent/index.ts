@@ -1,3 +1,11 @@
+import FluentString, { FluentStringInstance } from './FluentString';
+
+export function str(value: string = ''): FluentStringInstance<FluentString> {
+    return FluentString.create(value);
+}
+
+export { tap, Tapped } from './tap';
+
 export {
     default as FluentString,
     FluentStringInstance,
