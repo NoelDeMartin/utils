@@ -5,9 +5,9 @@ import { browser, module, main } from './package.json';
 export default {
     input: 'src/main.ts',
     output: [
-        { file: module, format: 'esm' },
-        { file: main, format: 'cjs' },
-        { file: browser, format: 'umd', name: 'NDMUtils' },
+        { file: module, format: 'esm', sourcemap: true },
+        { file: main, format: 'cjs', sourcemap: true },
+        { file: browser, format: 'umd', name: 'NDMUtils', sourcemap: true },
     ],
     plugins:  [
         typescript(),
