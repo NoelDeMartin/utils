@@ -1,0 +1,10 @@
+.eslintrc.js
+.vscode
+*.test.ts
+*.tgz
+api-extractor.json
+jest.config.js
+rollup.config.js
+scripts
+src/testing
+tsconfig.json

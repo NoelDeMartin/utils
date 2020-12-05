@@ -7,7 +7,7 @@ export default {
     output: [
         { file: module, format: 'esm', sourcemap: true },
         { file: main, format: 'cjs', sourcemap: true },
-        { file: browser, format: 'umd', name: 'NDMUtils', sourcemap: true },
+        { file: browser, format: 'umd', sourcemap: true, name: 'NDMUtils' },
     ],
     plugins:  [
         typescript(),
