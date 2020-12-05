@@ -5,13 +5,18 @@ import FluentObject, {
 } from './FluentObject';
 import { arrayContains, arrayFirst } from '../helpers/array_helpers';
 
-export const fluentArrayHelpers = {
+const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     contains: arrayContains,
     first: arrayFirst,
 };
 
+export type FluentArrayHelpers<T> = {
+    contains(items: T[], item: T): boolean;
+    first(items: T[], filter: (item: T) => boolean): T | null;
+}
+
 export type FluentArrayInstance<FluentClass, Item> =
-    FluentInstance<FluentClass, Array<Item>, keyof Array<Item>, typeof fluentArrayHelpers>;
+    FluentInstance<FluentClass, Array<Item>, keyof Array<Item>, FluentArrayHelpers<Item>>;
 
 class FluentArray<Item> extends FluentObject<Array<Item>> {
 

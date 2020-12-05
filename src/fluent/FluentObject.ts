@@ -13,7 +13,7 @@ export type FluentPrimitiveMethods<
         : Primitive[K];
 };
 
-export type FluentHelpers<
+export type FluentHelperMethods<
     FluentClass,
     Primitive extends Record<PrimitiveKey, unknown>,
     PrimitiveKey extends string | number | symbol,
@@ -31,7 +31,7 @@ export type FluentInstance<
     PrimitiveKey extends string | number | symbol,
     Helpers extends Record<string, Helper<Primitive>>,
 > = FluentClass &
-    FluentHelpers<FluentClass, Primitive, PrimitiveKey, Helpers> &
+    FluentHelperMethods<FluentClass, Primitive, PrimitiveKey, Helpers> &
     FluentPrimitiveMethods<FluentClass, Primitive, PrimitiveKey, Helpers>;
 
 export function addHelperMethodsToPrototype(

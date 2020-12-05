@@ -1,7 +1,7 @@
 import { Equal, Expect } from '../testing/index';
 import FluentString, { FluentStringInstance } from './FluentString';
 
-// TODO this should be only declared with types
+// TODO rewrite type assertions just with type declarations
 class SuperFluentString extends FluentString {
 
     public toUpperCase(): this {
