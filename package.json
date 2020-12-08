@@ -26,13 +26,12 @@
   "bugs": {
     "url": "https://github.com/noeldemartin/utils/issues"
   },
-  "homepage": "https://github.com/noeldemartin/utils#readme",
+  "homepage": "https://github.com/noeldemartin/utils",
   "dependencies": {},
   "devDependencies": {
     "@microsoft/api-extractor": "^7.12.0",
+    "@noeldemartin/eslint-config-typescript": "0.0.0-next.9c0df7008114a145b09bfe36ca6ecf593249cd34",
     "@rollup/plugin-typescript": "^6.1.0",
-    "@typescript-eslint/eslint-plugin": "^4.8.0",
-    "@typescript-eslint/parser": "^4.8.0",
     "eslint": "^7.13.0",
     "jest": "^26.6.3",
     "rollup": "^2.33.3",
