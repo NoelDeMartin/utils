@@ -60,8 +60,8 @@ async function rollupGeneratedDeclarations() {
 async function appendProjectDeclarations() {
     console.log('Appending project declarations...');
 
-    const apiExtractorConfig = require(projectPath('api-extractor.json'));
-    const declarationsFilePath = projectPath(apiExtractorConfig.dtsRollup.untrimmedFilePath.replace('<projectFolder>/', ''));
+    const { dtsRollup } = require(projectPath('api-extractor.json'));
+    const declarationsFilePath = projectPath(dtsRollup.untrimmedFilePath.replace('<projectFolder>/', ''));
     const declarationsFile = fs.readFileSync(declarationsFilePath);
     const projectDeclarationFilePaths = fs.readdirSync(projectPath('src/types'));
 

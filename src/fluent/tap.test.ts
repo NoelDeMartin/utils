@@ -3,7 +3,7 @@ import { tap } from './tap';
 describe('tap', () => {
 
     it('taps using callbacks', () => {
-        expect(tap({foo: 'foo'}, o => o.foo += 'bar').foo).toBe('foobar');
+        expect(tap({ foo: 'foo' }, o => o.foo += 'bar').foo).toBe('foobar');
     });
 
     it('taps using proxy', () => {
