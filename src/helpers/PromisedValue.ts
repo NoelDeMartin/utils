@@ -15,7 +15,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     }
 
     public get value(): T | null {
-        return this._value ?? null;
+        return this._value || null;
     }
 
     public isResolved(): this is { value: T } {
