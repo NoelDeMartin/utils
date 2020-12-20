@@ -1,8 +1,8 @@
 import { Equal, Expect } from '../testing/index';
-import FluentString, { FluentStringInstance } from './FluentString';
+import FluentStringDefinition, { FluentString, FluentStringInstance } from './FluentString';
 
 // TODO rewrite type assertions just with type declarations
-class SuperFluentString extends FluentString {
+class SuperFluentString extends FluentStringDefinition {
 
     public toUpperCase(): this {
         // TODO this should be able to call super.toUpperCase()
@@ -16,14 +16,13 @@ class SuperFluentString extends FluentString {
 
 }
 
-const fluentString = FluentString.create();
+const fluentString = FluentStringDefinition.create();
 const superFluentString = SuperFluentString.create();
 
-type FSI<T> = FluentStringInstance<T>;
 type TypeAssertions =
-    Expect<Equal<typeof fluentString.toUpperCase, () => FSI<FluentString>>> |
-    Expect<Equal<typeof fluentString.toSlug, (v?: string) => FSI<FluentString>>> |
-    Expect<Equal<typeof superFluentString.powerUp, () => FSI<SuperFluentString>>> |
+    Expect<Equal<typeof fluentString.toUpperCase, () => FluentString>> |
+    Expect<Equal<typeof fluentString.toSlug, (v?: string) => FluentString>> |
+    Expect<Equal<typeof superFluentString.powerUp, () => FluentStringInstance<SuperFluentString>>> |
     true;
 
 describe('FluentString', () => {
@@ -31,7 +30,7 @@ describe('FluentString', () => {
     it('has correct types', () => expect(true as TypeAssertions).toBe(true));
 
     it('delegates to helper methods', () => {
-        const fluentString = FluentString.create('foo bar');
+        const fluentString = FluentStringDefinition.create('foo bar');
 
         expect(fluentString.toCamelCase().toString()).toBe('fooBar');
         expect(fluentString.toStudlyCase().toString()).toBe('FooBar');
@@ -39,19 +38,19 @@ describe('FluentString', () => {
     });
 
     it('delegates to primitive methods', () => {
-        const fluentString = FluentString.create('foobar');
+        const fluentString = FluentStringDefinition.create('foobar');
 
-        expect(fluentString.toUpperCase()).toBeInstanceOf(FluentString);
-        expect(fluentString.toCamelCase()).toBeInstanceOf(FluentString);
+        expect(fluentString.toUpperCase()).toBeInstanceOf(FluentStringDefinition);
+        expect(fluentString.toCamelCase()).toBeInstanceOf(FluentStringDefinition);
         expect(fluentString.toUpperCase().toString()).toBe('FOOBAR');
         expect(fluentString.indexOf('bar')).toBe(3);
         expect(fluentString.length).toBe(6);
     });
 
     it('reproduces in method chains', () => {
-        const fluentString = FluentString.create('foobar');
+        const fluentString = FluentStringDefinition.create('foobar');
 
-        expect(fluentString.toUpperCase().toLowerCase()).toBeInstanceOf(FluentString);
+        expect(fluentString.toUpperCase().toLowerCase()).toBeInstanceOf(FluentStringDefinition);
         expect(fluentString.toUpperCase().toLowerCase().toString()).toBe('foobar');
         expect(fluentString.toUpperCase().reverse().startsWith('RAB')).toBe(true);
     });

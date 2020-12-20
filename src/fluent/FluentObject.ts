@@ -78,7 +78,7 @@ export function addPrimitiveMethodsToPrototype(
     }
 }
 
-export default abstract class FluentObject<Primitive> {
+export default abstract class FluentObjectDefinition<Primitive> {
 
     public static isPrimitive(value: unknown): boolean {
         return this.prototype.isPrimitive(value);

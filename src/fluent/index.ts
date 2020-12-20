@@ -22,7 +22,7 @@ export function fluent(value: unknown): unknown {
 export { tap, Tapped } from './tap';
 
 export {
-    default as FluentObject,
+    default as FluentObjectDefinition,
     FluentHelperMethods,
     FluentInstance,
     FluentPrimitiveMethods,
@@ -31,13 +31,15 @@ export {
 } from './FluentObject';
 
 export {
-    default as FluentArray,
+    default as FluentArrayDefinition,
+    FluentArray,
     FluentArrayHelpers,
     FluentArrayInstance,
 } from './FluentArray';
 
 export {
-    default as FluentString,
+    default as FluentStringDefinition,
+    FluentString,
     FluentStringInstance,
     fluentStringHelpers,
 } from './FluentString';

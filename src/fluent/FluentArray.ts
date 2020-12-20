@@ -1,28 +1,32 @@
-import FluentObject, {
+import FluentObjectDefinition, {
     addHelperMethodsToPrototype,
     addPrimitiveMethodsToPrototype,
     FluentInstance,
 } from './FluentObject';
-import { arrayContains, arrayFirst } from '../helpers/array_helpers';
+import { arrayContains, arrayFirst, arrayRemove } from '../helpers/array_helpers';
 
 const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     contains: arrayContains,
     first: arrayFirst,
+    remove: arrayRemove,
 };
 
 export type FluentArrayHelpers<T> = {
     contains(items: T[], item: T): boolean;
     first(items: T[], filter: (item: T) => boolean): T | null;
+    remove(items: T[], item: T): boolean;
 }
 
 export type FluentArrayInstance<FluentClass, Item> =
     FluentInstance<FluentClass, Array<Item>, keyof Array<Item>, FluentArrayHelpers<Item>>;
 
-class FluentArray<Item> extends FluentObject<Array<Item>> {
+export type FluentArray<T> = FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
-    public static create<T>(value: Array<T> = []): FluentArrayInstance<FluentArray<T>, T> {
+class FluentArrayDefinition<Item> extends FluentObjectDefinition<Array<Item>> {
+
+    public static create<T>(value: Array<T> = []): FluentArrayInstance<FluentArrayDefinition<T>, T> {
         const { prototype } = this as unknown as {
-            prototype: { create(value: T[]): FluentArrayInstance<FluentArray<T>, T> };
+            prototype: { create(value: T[]): FluentArrayInstance<FluentArrayDefinition<T>, T> };
         };
 
         return prototype.create(value);
@@ -44,7 +48,7 @@ class FluentArray<Item> extends FluentObject<Array<Item>> {
 
 }
 
-addHelperMethodsToPrototype(FluentArray, fluentArrayHelpers);
-addPrimitiveMethodsToPrototype(FluentArray, Array);
+addHelperMethodsToPrototype(FluentArrayDefinition, fluentArrayHelpers);
+addPrimitiveMethodsToPrototype(FluentArrayDefinition, Array);
 
-export default FluentArray;
+export default FluentArrayDefinition;

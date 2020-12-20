@@ -1,6 +1,6 @@
 import { stringReverse, stringToSlug, stringToCamelCase, stringToStudlyCase } from '../helpers/string_helpers';
 
-import FluentObject, {
+import FluentObjectDefinition, {
     addHelperMethodsToPrototype,
     addPrimitiveMethodsToPrototype,
     FluentInstance,
@@ -16,7 +16,9 @@ export const fluentStringHelpers = {
 export type FluentStringInstance<FluentClass> =
     FluentInstance<FluentClass, string, keyof string, typeof fluentStringHelpers>;
 
-class FluentString extends FluentObject<string> {
+export type FluentString = FluentStringInstance<FluentStringDefinition>;
+
+class FluentStringDefinition extends FluentObjectDefinition<string> {
 
     public static create<T>(this: T, value: string = ''): FluentStringInstance<ClassInstance<T>> {
         const { prototype } = this as unknown as {
@@ -36,7 +38,7 @@ class FluentString extends FluentObject<string> {
 
 }
 
-addHelperMethodsToPrototype(FluentString, fluentStringHelpers);
-addPrimitiveMethodsToPrototype(FluentString, String);
+addHelperMethodsToPrototype(FluentStringDefinition, fluentStringHelpers);
+addPrimitiveMethodsToPrototype(FluentStringDefinition, String);
 
-export default FluentString;
+export default FluentStringDefinition;
