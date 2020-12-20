@@ -1,4 +1,4 @@
-import { Equal, Expect } from 'src/testing/index';
+import { Equal, Expect } from '../testing/index';
 import FluentArrayDefinition, { FluentArray } from './FluentArray';
 import FluentStringDefinition, { FluentString } from './FluentString';
 import { arr, fluent, str } from './index';
