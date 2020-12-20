@@ -12,3 +12,14 @@ export function arrayFirst<T>(items: Array<T>, filter: (item: T) => boolean): T 
 
     return null;
 }
+
+export function arrayRemove<T>(items: Array<T>, item: T): boolean {
+    const index = items.indexOf(item);
+
+    if (index === -1)
+        return false;
+
+    items.splice(index, 1);
+
+    return true;
+}
