@@ -18,13 +18,13 @@ export type FluentArrayHelpers<T> = {
 }
 
 export type FluentArrayInstance<FluentClass, Item> =
-    FluentInstance<FluentClass, Array<Item>, keyof Array<Item>, FluentArrayHelpers<Item>>;
+    FluentInstance<FluentClass, Item[], keyof Item[], FluentArrayHelpers<Item>>;
 
 export type FluentArray<T> = FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
-class FluentArrayDefinition<Item> extends FluentObjectDefinition<Array<Item>> {
+class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
 
-    public static create<T>(value: Array<T> = []): FluentArrayInstance<FluentArrayDefinition<T>, T> {
+    public static create<T>(value: T[] = []): FluentArrayInstance<FluentArrayDefinition<T>, T> {
         const { prototype } = this as unknown as {
             prototype: { create(value: T[]): FluentArrayInstance<FluentArrayDefinition<T>, T> };
         };
