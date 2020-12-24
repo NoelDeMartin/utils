@@ -1,6 +1,15 @@
-import { arrayContains, arrayFirst, arrayRemove } from './array_helpers';
+import { Equal, Expect } from '../testing/index';
+import { arrayContains, arrayFilter, arrayFirst, arrayRemove } from './array_helpers';
+
+const filteredItems = arrayFilter(['foo', null, 'bar', undefined]);
+
+type TypeAssertions =
+    Expect<Equal<typeof filteredItems, string[]>> |
+    true;
 
 describe('Array helpers', () => {
+
+    it('has correct types', () => expect(true as TypeAssertions).toBe(true));
 
     it('contains', () => {
         expect(arrayContains(['foo', 'bar'], 'foo')).toBe(true);

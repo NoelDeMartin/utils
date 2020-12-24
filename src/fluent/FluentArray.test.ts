@@ -67,5 +67,6 @@ describe('FluentArray', () => {
 
     it.todo('can use index syntax');
     it.todo('can iterate over items');
+    it.todo('overrides primitive methods (use arrayFilter helper instead of primitive)');
 
 });
