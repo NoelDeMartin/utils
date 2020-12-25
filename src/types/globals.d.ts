@@ -1,5 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare type ClosureArgs = any[];
-declare type Closure<Args = ClosureArgs, Result = unknown> = (...args: Args) => Result;
-declare type ClassInstance<Class> = Class extends { new(...args: any[]): infer T } ? T : never;
-declare type Falsy = null | undefined | false | 0;
+import Main from './main';
+
+declare global {
+    declare type ClosureArgs = Main.ClosureArgs;
+    declare type Closure<Args extends ClosureArgs = ClosureArgs, Result = unknown> = Main.Closure<Args, Result>;
+    declare type ClassInstance<Class> = Main.ClassInstance<Class>;
+    declare type Falsy = Main.Falsy;
+}

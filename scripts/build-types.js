@@ -64,11 +64,14 @@ async function appendProjectDeclarations() {
     const declarationsFilePath = projectPath(dtsRollup.untrimmedFilePath.replace('<projectFolder>/', ''));
     const declarationsFile = fs.readFileSync(declarationsFilePath);
     const projectDeclarationFilePaths = fs.readdirSync(projectPath('src/types'));
-
-    fs.writeFileSync(declarationsFilePath, [
-        ...projectDeclarationFilePaths.map(path => fs.readFileSync(projectPath(`src/types/${path}`))),
+    const projectDeclarations = [
+        ...projectDeclarationFilePaths
+            .filter(path => path !== 'globals.d.ts')
+            .map(path => fs.readFileSync(projectPath(`src/types/${path}`))),
         declarationsFile,
-    ].join(''));
+    ];
+
+    fs.writeFileSync(declarationsFilePath, projectDeclarations.join(''));
 }
 
 async function publishDeclarations() {
