@@ -28,12 +28,17 @@ export function isValidDateString(value: string): boolean {
     return !isNaN(date.getTime());
 }
 
-export function after(time: { seconds?: number; ms?: number } = {}): Promise<void> {
+export function after(
+    time: Partial<{
+        ms: number;
+        milliseconds: number;
+        s: number;
+        seconds: number;
+    }> = {},
+): Promise<void> {
     const getTimeInMilliseconds = () => {
-        if (time.seconds)
-            return time.seconds * 1000;
-
-        return time.ms || 0;
+        return (time.milliseconds || time.ms || 0)
+            + (time.seconds || 0) * 1000;
     };
 
     return new Promise(resolve => setTimeout(resolve, getTimeInMilliseconds()));
