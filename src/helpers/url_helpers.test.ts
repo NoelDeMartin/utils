@@ -1,4 +1,4 @@
-import { urlClean, urlParentDirectory, urlParse, urlResolve, urlResolveDirectory } from './url_helpers';
+import { urlClean, urlParentDirectory, urlParse, urlResolve, urlResolveDirectory, urlRoot } from './url_helpers';
 
 describe('Url helper', () => {
 
@@ -30,6 +30,12 @@ describe('Url helper', () => {
     it('resolves parent directory for directories', () => {
         expect(urlParentDirectory('http://example.com/foo/bar/'))
             .toEqual('http://example.com/foo/');
+    });
+
+    it('gets url roots', () => {
+        expect(urlRoot('https://example.com:8000/foo')).toEqual('https://example.com:8000');
+        expect(urlRoot('https://example.com/foo')).toEqual('https://example.com');
+        expect(urlRoot('https://example.com')).toEqual('https://example.com');
     });
 
     it('parses standard urls', () => {

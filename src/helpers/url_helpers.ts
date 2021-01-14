@@ -14,7 +14,7 @@ export function urlResolve(...parts: string[]): string {
         const fragment = parts.shift() as string;
 
         if (fragment.startsWith('/')) {
-            url = urlBase(url) + fragment;
+            url = urlRoot(url) + fragment;
         } else if (fragment.startsWith('http://') || fragment.startsWith('https://')) {
             url = fragment;
         } else if (url.endsWith('/')) {
@@ -33,7 +33,7 @@ export function urlResolveDirectory(...parts: string[]): string {
     return url.endsWith('/') ? url : (url + '/');
 }
 
-export function urlBase(url: string): string {
+export function urlRoot(url: string): string {
     const protocolIndex = url.indexOf('://');
     const pathIndex = url.substr(protocolIndex + 3).indexOf('/');
 
