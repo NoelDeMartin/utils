@@ -11,7 +11,7 @@
     "build:js": "rollup -c",
     "build:types": "node scripts/build-types.js",
     "lint": "eslint src",
-    "publish-dev": "scripts/publish-dev.sh",
+    "publish-next": "scripts/publish-next.sh",
     "test": "jest --verbose"
   },
   "engines": {
