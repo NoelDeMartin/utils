@@ -14,7 +14,7 @@ The best way to check these out is by looking at the test files within the [src/
 
 ## Fluent API
 
-I strive to make readable code, and I wasn't happy with combining my own helpers with built-in methods. There is nothing in the fluent API that's not implemented in some helper, this is all about readability.
+I strive to write readable code, and I wasn't happy with combining my own helpers with built-in methods. There is nothing in the fluent API that's not implemented in some helper, this is all about readability.
 
 For example, this is the kind of code I'd write often:
 
