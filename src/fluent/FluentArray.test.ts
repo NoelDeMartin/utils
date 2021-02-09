@@ -7,8 +7,8 @@ const fluentNumbersArray = FluentArrayDefinition.create([42]);
 type TypeAssertions =
     Expect<Equal<typeof fluentStringsArray.slice, (s?: number, e?: number) => FluentArray<string>>> |
     Expect<Equal<typeof fluentNumbersArray.slice, (s?: number, e?: number) => FluentArray<number>>> |
-    Expect<Equal<typeof fluentStringsArray.contains, (i: string) => boolean>> |
-    Expect<Equal<typeof fluentNumbersArray.contains, (i: number) => boolean>> |
+    Expect<Equal<typeof fluentStringsArray.remove, (i: string) => boolean>> |
+    Expect<Equal<typeof fluentNumbersArray.remove, (i: number) => boolean>> |
     true;
 
 describe('FluentArray', () => {
@@ -18,9 +18,9 @@ describe('FluentArray', () => {
     it('delegates to helper methods', () => {
         const fluentArray = FluentArrayDefinition.create(['foo', 'bar']);
 
-        expect(fluentArray.contains('foo')).toBe(true);
-        expect(fluentArray.contains('bar')).toBe(true);
-        expect(fluentArray.contains('baz')).toBe(false);
+        expect(fluentArray.withoutIndexes([1]).toArray()).toEqual(['foo']);
+        expect(fluentArray.withoutIndexes([0]).toArray()).toEqual(['bar']);
+        expect(fluentArray.withoutIndexes([]).toArray()).toEqual(['foo', 'bar']);
     });
 
     it('delegates to primitive methods', () => {
@@ -35,7 +35,7 @@ describe('FluentArray', () => {
 
         expect(fluentArray.concat(['baz']).concat(['qux'])).toBeInstanceOf(FluentArrayDefinition);
         expect(fluentArray.concat(['baz']).concat(['qux']).toArray()).toEqual(['foo', 'bar', 'baz', 'qux']);
-        expect(fluentArray.concat(['baz']).contains('baz')).toBe(true);
+        expect(fluentArray.concat(['baz']).remove('baz')).toBe(true);
     });
 
     it('infers item types', () => {

@@ -3,19 +3,21 @@ import FluentObjectDefinition, {
     addPrimitiveMethodsToPrototype,
     FluentInstance,
 } from './FluentObject';
-import { arrayContains, arrayFirst, arrayRemove } from '../helpers/array_helpers';
+import { arrayFirst, arrayRemove, arrayUnique, arrayWithoutIndexes } from '../helpers/array_helpers';
 
 const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
-    contains: arrayContains,
     first: arrayFirst,
     remove: arrayRemove,
+    unique: arrayUnique,
+    withoutIndexes: arrayWithoutIndexes,
 };
 
 export type FluentArrayHelpers<T> = {
-    contains(items: T[], item: T): boolean;
     first(items: T[], filter: (item: T) => boolean): T | null;
     remove(items: T[], item: T): boolean;
-}
+    unique(items: T[]): T[];
+    withoutIndexes(items: T[], indexes: number[]): T[];
+};
 
 export type FluentArrayInstance<FluentClass, Item> =
     FluentInstance<FluentClass, Item[], keyof Item[], FluentArrayHelpers<Item>>;

@@ -1,7 +1,3 @@
-export function arrayContains<T>(items: T[], item: T): boolean {
-    return items.indexOf(item) !== -1;
-}
-
 export function arrayFilter<T>(items: T[]): Exclude<T, Falsy>[];
 export function arrayFilter<T>(items: T[], filter: (item: T) => boolean): T[];
 export function arrayFilter<T>(items: T[], filter?: (item: T) => boolean): T[] {
@@ -30,4 +26,17 @@ export function arrayRemove<T>(items: T[], item: T): boolean {
     items.splice(index, 1);
 
     return true;
+}
+
+export function arrayUnique<T>(items: T[]): T[] {
+    const set = new Set(items);
+
+    return [...set];
+}
+
+export function arrayWithoutIndexes<T>(items: T[], indexes: number[]): T[] {
+    return items
+        .map((value, index) => ([value, index] as [T, number]))
+        .filter(([_, index]) => !indexes.includes(index))
+        .map(([value]) => value);
 }
