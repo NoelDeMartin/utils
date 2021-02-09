@@ -34,7 +34,9 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
         return prototype.create(value);
     }
 
-    // TODO implement [Symbol.iterator]
+    *[Symbol.iterator](): Iterator<Item> {
+        yield* this.value;
+    }
 
     public get(index: number): Item {
         return this.value[index];

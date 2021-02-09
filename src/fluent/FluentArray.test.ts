@@ -65,8 +65,17 @@ describe('FluentArray', () => {
         expect(superFluentArray.sortAlphabetically().toArray()).toEqual(['bar', 'foo']);
     });
 
+    it('can iterate over items', () => {
+        let counter = 0;
+        const items = ['foo', 'bar', 'baz'];
+        const fluentArray = FluentArrayDefinition.create(items);
+
+        for (const item of fluentArray) {
+            expect(item).toEqual(items[counter++]);
+        }
+    });
+
     it.todo('can use index syntax');
-    it.todo('can iterate over items');
     it.todo('overrides primitive methods (use arrayFilter helper instead of primitive)');
 
 });
