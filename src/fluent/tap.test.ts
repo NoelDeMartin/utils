@@ -9,9 +9,11 @@ describe('tap', () => {
     it('taps using proxy', () => {
         // Arrange
         class Computer {
+
             public getTheMeaningOfLife(): number {
                 return 42;
             }
+
         }
 
         const computer = new Computer();

@@ -8,7 +8,7 @@ export type Tapped<Target extends object> = {
     [prop in keyof Target]: Target[prop] extends (...params: infer Params) => unknown
         ? (...params: Params) => Tapped<Target>
         : Target[prop];
-}
+};
 
 function proxyTap<Target extends object>(target: Target): Tapped<Target> {
     const proxy = new Proxy(target, {

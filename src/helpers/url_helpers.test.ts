@@ -65,7 +65,7 @@ describe('Url helper', () => {
         });
     });
 
-    it ('cleans parts', () => {
+    it('cleans parts', () => {
         expect(
             urlClean(
                 'http://example.com/path/?query=search#myhash',
