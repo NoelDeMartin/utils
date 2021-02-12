@@ -6,7 +6,7 @@ const typescript = require('@rollup/plugin-typescript');
 const projectPath = path => resolve(__dirname, '../', path);
 
 async function main() {
-    await usingTmp(async() => {
+    await usingTmp(async () => {
         await generateDeclarations();
         await rollupGeneratedDeclarations();
         await appendProjectDeclarations();

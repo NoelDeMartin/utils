@@ -19,27 +19,14 @@ export function fluent(value: unknown): unknown {
     return fluentClass ? (fluentClass as { create(v: unknown): unknown }).create(value) : null;
 }
 
-export { tap, Tapped } from './tap';
+export { tap } from './tap';
+export type { Tapped } from './tap';
 
-export {
-    default as FluentObjectDefinition,
-    FluentHelperMethods,
-    FluentInstance,
-    FluentPrimitiveMethods,
-    Helper,
-    HelperParams,
-} from './FluentObject';
+export { default as FluentObjectDefinition } from './FluentObject';
+export type { FluentHelperMethods, FluentInstance, FluentPrimitiveMethods, Helper, HelperParams } from './FluentObject';
 
-export {
-    default as FluentArrayDefinition,
-    FluentArray,
-    FluentArrayHelpers,
-    FluentArrayInstance,
-} from './FluentArray';
+export { default as FluentArrayDefinition } from './FluentArray';
+export type { FluentArray, FluentArrayHelpers, FluentArrayInstance } from './FluentArray';
 
-export {
-    default as FluentStringDefinition,
-    FluentString,
-    FluentStringInstance,
-    fluentStringHelpers,
-} from './FluentString';
+export { default as FluentStringDefinition, fluentStringHelpers } from './FluentString';
+export type { FluentString, FluentStringInstance } from './FluentString';

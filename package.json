@@ -27,11 +27,22 @@
     "url": "https://github.com/noeldemartin/utils/issues"
   },
   "homepage": "https://github.com/noeldemartin/utils",
-  "dependencies": {},
+  "dependencies": {
+    "@babel/runtime": "^7.12.13",
+    "core-js": "^3.8.3"
+  },
   "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-env": "^7.12.16",
+    "@babel/preset-typescript": "^7.12.16",
     "@microsoft/api-extractor": "^7.12.0",
     "@noeldemartin/eslint-config-typescript": "0.0.0-next.a94cbe17a1b4946fcbac2d1f69714752ed8a0e40",
-    "@rollup/plugin-typescript": "^6.1.0",
+    "@rollup/plugin-babel": "^5.2.3",
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-node-resolve": "^11.1.1",
+    "@rollup/plugin-typescript": "^8.1.1",
     "eslint": "^7.13.0",
     "jest": "^26.6.3",
     "rollup": "^2.33.3",
