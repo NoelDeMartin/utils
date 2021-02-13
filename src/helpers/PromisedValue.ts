@@ -10,7 +10,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
         });
     }
 
-    private promise: Promise<T>;
+    private promise!: Promise<T>;
     private _value?: T;
     private _resolve!: (result: T) => void;
     private _reject!: (error?: Error) => void;
@@ -18,10 +18,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     [Symbol.toStringTag]: string;
 
     constructor() {
-        this.promise = new Promise((resolve, reject) => {
-            this._resolve = resolve;
-            this._reject = reject;
-        });
+        this.initPromise();
     }
 
     public get value(): T | null {
@@ -50,12 +47,22 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     }
 
     public resolve(value: T): void {
+        if (this.isResolved())
+            this.initPromise();
+
         this._value = value;
         this._resolve(value);
     }
 
     public reject(reason?: Error): void {
         this._reject(reason);
+    }
+
+    private initPromise(): void {
+        this.promise = new Promise((resolve, reject) => {
+            this._resolve = resolve;
+            this._reject = reject;
+        });
     }
 
 }

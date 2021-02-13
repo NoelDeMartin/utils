@@ -10,8 +10,10 @@ describe('tap', () => {
         // Arrange
         class Computer {
 
+            theMeaningOfLife = 42;
+
             public getTheMeaningOfLife(): number {
-                return 42;
+                return this.theMeaningOfLife;
             }
 
         }
@@ -22,6 +24,7 @@ describe('tap', () => {
         const tappedComputer = tap(computer);
 
         // Assert
+        expect(tappedComputer.theMeaningOfLife).toBe(42);
         expect(tappedComputer.getTheMeaningOfLife()).toBe(tappedComputer);
     });
 

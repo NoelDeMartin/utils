@@ -12,7 +12,8 @@
     "build:types": "node scripts/build-types.js",
     "lint": "eslint src",
     "publish-next": "scripts/publish-next.sh",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "test:coverage": "jest --coverage"
   },
   "engines": {
     "node": ">=12.x"

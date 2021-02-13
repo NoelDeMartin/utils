@@ -10,17 +10,21 @@ describe('PromisedValue', () => {
         promisedString.resolve('foo');
         expect(promisedString.isResolved()).toBe(true);
         expect(promisedString.value).toBe('foo');
-        expect(promisedString).resolves.toBe('foo');
+
+        const resolvedValue = await promisedString;
+        expect(resolvedValue).toBe('foo');
     });
 
-    it('can update values', () => {
+    it('can update values', async () => {
         const promisedString = new PromisedValue<string>();
         promisedString.resolve('foo');
         promisedString.resolve('bar');
 
         expect(promisedString.isResolved()).toBe(true);
         expect(promisedString.value).toBe('bar');
-        expect(promisedString).resolves.toBe('bar');
+
+        const resolvedValue = await promisedString;
+        expect(resolvedValue).toBe('bar');
     });
 
 });
