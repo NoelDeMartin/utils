@@ -89,9 +89,9 @@ export function urlClean(url: string, includedParts: { [part in keyof UrlParts]?
 
     return [
         parts.protocol ? `${parts.protocol}://` : '',
-        parts.domain || '',
+        parts.domain ?? '',
         parts.port ? `:${parts.port}` : '',
-        parts.path || '',
+        parts.path ?? '',
         parts.query ? `?${parts.query}` : '',
         parts.fragment ? `#${parts.fragment}` : '',
     ].join('');

@@ -3,7 +3,7 @@ export class StorageSingleton {
     private static _instance: StorageSingleton;
 
     public static get instance(): StorageSingleton {
-        return this._instance = this._instance || new StorageSingleton();
+        return this._instance = this._instance ?? new StorageSingleton();
     }
 
     private constructor() {
