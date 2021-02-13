@@ -1,4 +1,5 @@
-import { Equal, Expect } from '../testing/index';
+import { Equal, Expect } from '@testing/index';
+
 import FluentStringDefinition, { FluentString, FluentStringInstance } from './FluentString';
 
 // TODO rewrite type assertions just with type declarations

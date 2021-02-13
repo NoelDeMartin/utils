@@ -1,4 +1,5 @@
-import { Equal, Expect } from '../testing/index';
+import { Equal, Expect } from '@testing/index';
+
 import { arrayFilter, arrayFirst, arrayRemove, arrayUnique, arrayWithoutIndexes } from './array_helpers';
 
 const filteredItems = arrayFilter(['foo', null, 'bar', undefined]);

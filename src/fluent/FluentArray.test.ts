@@ -1,4 +1,5 @@
-import { Equal, Expect } from '../testing/index';
+import { Equal, Expect } from '@testing/index';
+
 import FluentArrayDefinition, { FluentArray, FluentArrayInstance } from './FluentArray';
 
 const fluentStringsArray = FluentArrayDefinition.create(['foo']);

@@ -1,9 +1,10 @@
+import { arrayFirst, arrayRemove, arrayUnique, arrayWithoutIndexes } from '@helpers/array_helpers';
+
 import FluentObjectDefinition, {
     addHelperMethodsToPrototype,
     addPrimitiveMethodsToPrototype,
     FluentInstance,
 } from './FluentObject';
-import { arrayFirst, arrayRemove, arrayUnique, arrayWithoutIndexes } from '../helpers/array_helpers';
 
 const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     first: arrayFirst,
