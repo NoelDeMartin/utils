@@ -1,12 +1,8 @@
 import { babel } from '@rollup/plugin-babel';
-import { resolve as resolvePath } from 'path';
 import { terser } from 'rollup-plugin-terser';
-import alias from '@rollup/plugin-alias';
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
+import typescript from '@rollup/plugin-typescript';
 
 import { browser, module, main } from './package.json';
-import { compilerOptions } from './tsconfig.json';
 
 function build(output, bundleDependencies = false) {
     const extensions = ['.ts'];
@@ -22,14 +18,7 @@ function build(output, bundleDependencies = false) {
             /^@babel\/runtime\//,
         ],
         plugins: [
-            alias({
-                entries: Object.entries(compilerOptions.paths).map(([alias, paths]) => ({
-                    find: alias.slice(0, -2),
-                    replacement: resolvePath(__dirname, './src/', paths[0]).slice(0, -2),
-                })),
-            }),
-            resolve({ extensions }),
-            commonjs(),
+            typescript(),
             babel({
                 extensions,
                 babelHelpers: bundleDependencies ? 'bundled' : 'runtime',
