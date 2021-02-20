@@ -19,19 +19,20 @@ I strive to write readable code, and I wasn't happy with combining my own helper
 For example, this is the kind of code I'd write often:
 
 ```js
-    const items = ['my', 'array', 'of', 'items'];
+const items = ['my', 'array', 'of', 'cool', 'array', 'items'];
 
-    return arrayContains(items.filter(item => item.startsWith('a')), 'array');
+return arrayUnique(items.filter(item => item.startsWith('a')));
 ```
 
-Where `arrayContains` is a custom helper (which you can find in this package), and `Array.filter` is a native method. My only option was to combine method chaining with nesting function calls. And the end result wasn't too readable.
+Where `arrayUnique` is a custom helper (which you can find in this package), and `Array.filter` is a native method. My only option was to combine method chaining with nesting function calls. And the end result wasn't too readable.
 
 Now, with the fluent API I created in this package, I can write it like this:
 
 ```js
-return fluent(['my', 'array', 'of', 'items']) // or, to be explicit, arr([...])
+return fluent(['my', 'array', 'of', 'cool', 'array', 'items']) // or, to be explicit, arr([...])
     .filter(item => item.startsWith('a'))
-    .contains('array'); // returns true
+    .unique()
+    .toArray(); // returns ['array']
 ```
 
 Like this, I'm able to combine native methods with custom helpers using method chaining.
