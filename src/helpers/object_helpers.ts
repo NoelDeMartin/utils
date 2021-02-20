@@ -20,6 +20,10 @@ export function isObject(obj: unknown): obj is Obj {
     return typeof obj === 'object' && obj !== null;
 }
 
+export function isNullable(value: unknown): value is undefined | null {
+    return typeof value === 'undefined' || value === null;
+}
+
 export function objectDeepClone<T extends Obj>(object: T): T {
     object = { ...object };
 
