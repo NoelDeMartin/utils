@@ -16,6 +16,8 @@ export function deepEquals(a: unknown, b: unknown): boolean {
     return !Object.keys(a).some(key => !deepEquals(a[key], b[key]));
 }
 
+export const isArray = Array.isArray;
+
 export function isEmpty(value: unknown): boolean {
     if (value === null || value === undefined)
         return true;
