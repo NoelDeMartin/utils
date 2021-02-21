@@ -4,7 +4,7 @@ import typescript from '@rollup/plugin-typescript';
 
 import { browser, module, main } from './package.json';
 
-function build(output, includePolyfills = false) {
+function build(output, includePolyfills = false, bundlePolyfills = false) {
     const extensions = ['.ts'];
     const plugins = [];
 
@@ -13,9 +13,10 @@ function build(output, includePolyfills = false) {
     if (includePolyfills)
         plugins.push(babel({
             extensions,
-            babelHelpers: 'bundled',
+            babelHelpers: bundlePolyfills ? 'bundled' : 'runtime',
             plugins: [
                 '@babel/plugin-proposal-class-properties',
+                ...(bundlePolyfills ? [] : ['@babel/plugin-transform-runtime']),
             ],
             presets: [
                 '@babel/preset-typescript',
@@ -38,12 +39,16 @@ function build(output, includePolyfills = false) {
             sourcemap: true,
             ...output,
         },
+        external: bundlePolyfills ? [] : [
+            /^core-js\//,
+            /^@babel\/runtime\//,
+        ],
         plugins,
     };
 }
 
 export default [
     build({ file: module, format: 'esm' }),
-    build({ file: main, format: 'cjs' }),
-    build({ file: browser, format: 'umd', name: 'NoelDeMartin_Utils' }, true),
+    build({ file: main, format: 'cjs' }, true),
+    build({ file: browser, format: 'umd', name: 'NoelDeMartin_Utils' }, true, true),
 ];
