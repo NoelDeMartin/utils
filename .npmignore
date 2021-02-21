@@ -3,6 +3,7 @@
 *.test.ts
 *.tgz
 api-extractor.json
+coverage
 jest.config.js
 rollup.config.js
 scripts

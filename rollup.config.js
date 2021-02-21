@@ -4,8 +4,33 @@ import typescript from '@rollup/plugin-typescript';
 
 import { browser, module, main } from './package.json';
 
-function build(output, bundleDependencies = false) {
+function build(output, includePolyfills = false) {
     const extensions = ['.ts'];
+    const plugins = [];
+
+    plugins.push(typescript());
+
+    if (includePolyfills)
+        plugins.push(babel({
+            extensions,
+            babelHelpers: 'bundled',
+            plugins: [
+                '@babel/plugin-proposal-class-properties',
+            ],
+            presets: [
+                '@babel/preset-typescript',
+                [
+                    '@babel/preset-env',
+                    {
+                        targets: '> 0.5%, last 2 versions, Firefox ESR, not dead',
+                        corejs: { version: '3.8', proposals: true },
+                        useBuiltIns: 'usage',
+                    },
+                ],
+            ],
+        }));
+
+    plugins.push(terser());
 
     return {
         input: 'src/main.ts',
@@ -13,33 +38,7 @@ function build(output, bundleDependencies = false) {
             sourcemap: true,
             ...output,
         },
-        external: bundleDependencies ? [] : [
-            /^core-js\//,
-            /^@babel\/runtime\//,
-        ],
-        plugins: [
-            typescript(),
-            babel({
-                extensions,
-                babelHelpers: bundleDependencies ? 'bundled' : 'runtime',
-                plugins: [
-                    '@babel/plugin-proposal-class-properties',
-                    ...(bundleDependencies ? [] : ['@babel/plugin-transform-runtime']),
-                ],
-                presets: [
-                    '@babel/preset-typescript',
-                    [
-                        '@babel/preset-env',
-                        {
-                            targets: '> 0.5%, last 2 versions, Firefox ESR, not dead',
-                            corejs: { version: '3.8', proposals: true },
-                            useBuiltIns: 'usage',
-                        },
-                    ],
-                ],
-            }),
-            terser(),
-        ],
+        plugins,
     };
 }
 
