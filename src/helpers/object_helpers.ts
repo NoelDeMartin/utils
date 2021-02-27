@@ -1,4 +1,5 @@
 export type Obj = Record<string, unknown>;
+export type ObjectEntry<T extends Obj, K extends keyof T> = [K, T[K]];
 
 export function deepEquals(a: unknown, b: unknown): boolean {
     if (a === b)
@@ -16,7 +17,7 @@ export function deepEquals(a: unknown, b: unknown): boolean {
     return !Object.keys(a).some(key => !deepEquals(a[key], b[key]));
 }
 
-export const isArray = Array.isArray;
+export const isArray = Array.isArray.bind(Array);
 
 export function isEmpty(value: unknown): boolean {
     if (value === null || value === undefined)
@@ -52,6 +53,8 @@ export function objectDeepClone<T extends Obj>(object: T): T {
     return object;
 }
 
+export const objectEntries = Object.entries.bind(Object) as <T extends Obj>(obj: T) => ObjectEntry<T, keyof T>[];
+
 export function objectHasOwnProperty(object: Obj, property: string): boolean {
     return Object.prototype.hasOwnProperty.call(object, property);
 }
@@ -62,4 +65,8 @@ export function objectPropertyIsObject<T extends string>(object: Obj, property: 
     return objectHasOwnProperty(object, property)
         && isObject(value = object[property])
         && value.constructor === Object;
+}
+
+export function toString(value: unknown): string {
+    return String(value);
 }
