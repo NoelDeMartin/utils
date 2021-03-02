@@ -1,8 +1,10 @@
-import { Equal, Expect } from '@testing/index';
+import type { Equal, Expect } from '@testing/index';
 
-import FluentArrayDefinition, { FluentArray } from './FluentArray';
-import FluentStringDefinition, { FluentString } from './FluentString';
 import { arr, fluent, str } from './index';
+import FluentArrayDefinition from './FluentArray';
+import FluentStringDefinition from './FluentString';
+import type { FluentArray } from './FluentArray';
+import type { FluentString } from './FluentString';
 
 const fluentStringArray = arr(['foo', 'bar']);
 const fluentNumbersArray = arr([42]);

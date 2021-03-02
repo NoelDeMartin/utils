@@ -1,10 +1,10 @@
-import { stringReverse, stringToSlug, stringToCamelCase, stringToStudlyCase } from '@helpers/string_helpers';
+import { stringReverse, stringToCamelCase, stringToSlug, stringToStudlyCase } from '@helpers/string_helpers';
 
 import FluentObjectDefinition, {
     addHelperMethodsToPrototype,
     addPrimitiveMethodsToPrototype,
-    FluentInstance,
 } from './FluentObject';
+import type { FluentInstance } from './FluentObject';
 
 export const fluentStringHelpers = {
     reverse: stringReverse,

@@ -1,4 +1,4 @@
-import { Equal, Expect } from '@testing/index';
+import type { Equal, Expect } from '@testing/index';
 
 import { arrayFilter, arrayFirst, arrayRemove, arrayUnique, arrayWithoutIndexes } from './array_helpers';
 

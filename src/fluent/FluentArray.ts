@@ -3,8 +3,8 @@ import { arrayFirst, arrayRemove, arrayUnique, arrayWithoutIndexes } from '@help
 import FluentObjectDefinition, {
     addHelperMethodsToPrototype,
     addPrimitiveMethodsToPrototype,
-    FluentInstance,
 } from './FluentObject';
+import type { FluentInstance } from './FluentObject';
 
 const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     first: arrayFirst,

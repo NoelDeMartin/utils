@@ -1,4 +1,4 @@
-import Main from './main';
+import type Main from './main';
 
 declare global {
     declare type ClosureArgs = Main.ClosureArgs;

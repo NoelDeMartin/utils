@@ -1,5 +1,7 @@
-import FluentArray, { FluentArrayInstance } from './FluentArray';
-import FluentString, { FluentStringInstance } from './FluentString';
+import FluentArray from './FluentArray';
+import FluentString from './FluentString';
+import type { FluentArrayInstance } from './FluentArray';
+import type { FluentStringInstance } from './FluentString';
 
 const fluentClasses = [FluentArray, FluentString];
 

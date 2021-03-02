@@ -1,6 +1,7 @@
-import { Equal, Expect } from '@testing/index';
+import type { Equal, Expect } from '@testing/index';
 
-import FluentStringDefinition, { FluentString, FluentStringInstance } from './FluentString';
+import FluentStringDefinition from './FluentString';
+import type { FluentString, FluentStringInstance } from './FluentString';
 
 // TODO rewrite type assertions just with type declarations
 class SuperFluentString extends FluentStringDefinition {
