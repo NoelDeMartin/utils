@@ -17,6 +17,7 @@ export function stringToSlug(text: string, separator: string = '-'): string {
     text = text
         .trim()
         .normalize('NFD')
+        .replace(/_|-/g, ' ')
         .replace(/[\u0300-\u036f]/g, '')
         .replace(/[^\d\w\s]/g, '')
         .toLowerCase()
