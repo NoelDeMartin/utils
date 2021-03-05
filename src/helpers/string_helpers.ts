@@ -2,21 +2,15 @@ export function stringReverse(text: string): string {
     return text.split('').reverse().join('');
 }
 
+export function stringSplitWords(text: string): string[] {
+    return text.split(/_|-|\s|(?=[A-Z])/);
+}
+
 export function stringToCamelCase(text: string): string {
-    return text
-        .split(/_|\s|(?=[A-Z])/)
-        .map(
-            (word, index) => {
-                if (word.length === 0)
-                    return word;
+    const words = stringSplitWords(text);
 
-                if (index === 0)
-                    return word.toLowerCase();
-
-                return word.substr(0, 1).toUpperCase() + word.substr(1).toLowerCase();
-            },
-        )
-        .join('');
+    return words[0].toLowerCase()
+        + words.slice(1).map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase()).join('');
 }
 
 export function stringToSlug(text: string, separator: string = '-'): string {
@@ -35,13 +29,7 @@ export function stringToSlug(text: string, separator: string = '-'): string {
 }
 
 export function stringToStudlyCase(text: string): string {
-    return text
-        .split(/_|\s/)
-        .map(
-            word =>
-                word.length > 0
-                    ? word.substr(0, 1).toUpperCase() + word.substr(1)
-                    : word,
-        )
-        .join('');
+    const words = stringSplitWords(text);
+
+    return words.map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase()).join('');
 }

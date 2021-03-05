@@ -20,6 +20,7 @@ describe('String helpers', () => {
 
     it('converts strings to StudlyCase', () => {
         expect(stringToStudlyCase('foo_bar')).toEqual('FooBar');
+        expect(stringToStudlyCase('foo-bar')).toEqual('FooBar');
         expect(stringToStudlyCase('Foo Bar')).toEqual('FooBar');
         expect(stringToStudlyCase('fooBar')).toEqual('FooBar');
     });
