@@ -1,16 +1,9 @@
-import type { Equal, Expect } from '@testing/index';
+import { tt } from '@testing/index';
+import type { Equals, Expect } from '@testing/index';
 
 import { arrayFilter, arrayFirst, arrayRemove, arrayUnique, arrayWithoutIndexes } from './array_helpers';
 
-const filteredItems = arrayFilter(['foo', null, 'bar', undefined]);
-
-type TypeAssertions =
-    Expect<Equal<typeof filteredItems, string[]>> |
-    true;
-
 describe('Array helpers', () => {
-
-    it('has correct types', () => expect(true as TypeAssertions).toBe(true));
 
     it('finds item matching filter', () => {
         expect(arrayFirst([0, 10, 42], n => n > 10)).toBe(42);
@@ -39,5 +32,13 @@ describe('Array helpers', () => {
         expect(arrayWithoutIndexes(items, [0, 2])).toEqual(['bar']);
         expect(items).toEqual(['foo', 'bar', 'baz']);
     });
+
+});
+
+const filteredItems = arrayFilter(['foo', null, 'bar', undefined]);
+
+describe('Array helpers types', () => {
+
+    it('has correct types', tt<Expect<Equals<typeof filteredItems, string[]>>>());
 
 });

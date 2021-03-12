@@ -1,21 +1,10 @@
-import type { Equal, Expect } from '@testing/index';
+import { tt } from '@testing/index';
+import type { Equals, Expect } from '@testing/index';
 
 import FluentArrayDefinition from './FluentArray';
 import type { FluentArray, FluentArrayInstance } from './FluentArray';
 
-const fluentStringsArray = FluentArrayDefinition.create(['foo']);
-const fluentNumbersArray = FluentArrayDefinition.create([42]);
-
-type TypeAssertions =
-    Expect<Equal<typeof fluentStringsArray.slice, (s?: number, e?: number) => FluentArray<string>>> |
-    Expect<Equal<typeof fluentNumbersArray.slice, (s?: number, e?: number) => FluentArray<number>>> |
-    Expect<Equal<typeof fluentStringsArray.remove, (i: string) => boolean>> |
-    Expect<Equal<typeof fluentNumbersArray.remove, (i: number) => boolean>> |
-    true;
-
 describe('FluentArray', () => {
-
-    it('has correct types', () => expect(true as TypeAssertions).toBe(true));
 
     it('delegates to helper methods', () => {
         const fluentArray = FluentArrayDefinition.create(['foo', 'bar']);
@@ -79,5 +68,20 @@ describe('FluentArray', () => {
 
     it.todo('can use index syntax');
     it.todo('overrides primitive methods (use arrayFilter helper instead of primitive)');
+
+});
+
+const fluentStringsArray = FluentArrayDefinition.create(['foo']);
+const fluentNumbersArray = FluentArrayDefinition.create([42]);
+
+describe('FluentArray types', () => {
+
+    it('has correct types', tt<
+        Expect<Equals<typeof fluentStringsArray.slice, (s?: number, e?: number) => FluentArray<string>>> |
+        Expect<Equals<typeof fluentNumbersArray.slice, (s?: number, e?: number) => FluentArray<number>>> |
+        Expect<Equals<typeof fluentStringsArray.remove, (i: string) => boolean>> |
+        Expect<Equals<typeof fluentNumbersArray.remove, (i: number) => boolean>> |
+        true
+    >());
 
 });
