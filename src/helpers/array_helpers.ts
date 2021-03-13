@@ -17,6 +17,10 @@ export function arrayFirst<T>(items: T[], filter: (item: T) => boolean): T | nul
     return null;
 }
 
+export function arrayIsEmpty(items: unknown[]): boolean {
+    return items.length === 0;
+}
+
 export function arrayRemove<T>(items: T[], item: T): boolean {
     const index = items.indexOf(item);
 

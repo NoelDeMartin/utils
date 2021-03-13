@@ -1,4 +1,4 @@
-import { arrayFirst, arrayRemove, arrayUnique, arrayWithoutIndexes } from '@helpers/array_helpers';
+import { arrayFirst, arrayIsEmpty, arrayRemove, arrayUnique, arrayWithoutIndexes } from '@helpers/array_helpers';
 
 import FluentObjectDefinition, {
     addHelperMethodsToPrototype,
@@ -8,6 +8,7 @@ import type { FluentInstance } from './FluentObject';
 
 const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     first: arrayFirst,
+    isEmpty: arrayIsEmpty,
     remove: arrayRemove,
     unique: arrayUnique,
     withoutIndexes: arrayWithoutIndexes,
@@ -15,6 +16,7 @@ const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
 
 export type FluentArrayHelpers<T> = {
     first(items: T[], filter: (item: T) => boolean): T | null;
+    isEmpty(items: T[]): boolean;
     remove(items: T[], item: T): boolean;
     unique(items: T[]): T[];
     withoutIndexes(items: T[], indexes: number[]): T[];
