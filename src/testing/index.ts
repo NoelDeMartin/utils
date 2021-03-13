@@ -1,12 +1,14 @@
+// Inspired by https://github.com/type-challenges/type-challenges/blob/master/utils/index.d.ts
 export type Assert<T> = T extends undefined ? never : T;
 export type Expect<T extends true> = T;
 export type Extends<X, Y> = Y extends X ? true : false;
 export type Equals<X, Y> =
     (<T>() => T extends X ? 1 : 2) extends
     (<T>() => T extends Y ? 1 : 2) ? true : false;
+
 export type ReturnType<T extends (...args: any[]) => unknown> = T extends (...args: any[]) => infer R ? R : never;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-unused-vars
-export function tt<T>(): () => unknown { // tt = "test types"
+export function tt<T>(): () => unknown {
     return () => expect(true).toBe(true);
 }
