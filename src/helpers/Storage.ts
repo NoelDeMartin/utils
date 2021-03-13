@@ -1,3 +1,5 @@
+const DEFAULT_INSTANCE = {};
+
 export class StorageSingleton {
 
     private static _instance: StorageSingleton;
@@ -10,9 +12,9 @@ export class StorageSingleton {
         // Hide instantiation
     }
 
-    public set(key: string, value: unknown): void {
+    public set<T=unknown>(key: string, value: T): void {
         if (typeof value === 'undefined')
-            value = '__undefined__';
+            value = '__undefined__' as unknown as T;
 
         localStorage.setItem(key, JSON.stringify(value));
     }
@@ -29,6 +31,15 @@ export class StorageSingleton {
             return undefined as unknown as T;
 
         return JSON.parse(value);
+    }
+
+    public require<T>(key: string): T {
+        const value = this.get(key, DEFAULT_INSTANCE);
+
+        if (value === DEFAULT_INSTANCE)
+            throw new Error(`Failed getting required key from local storage: '${key}'`);
+
+        return value as T;
     }
 
     public has(key: string): boolean {
