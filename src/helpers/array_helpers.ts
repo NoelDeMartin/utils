@@ -1,3 +1,5 @@
+import type { Falsy } from '@/types/index';
+
 export function arrayFilter<T>(items: T[]): Exclude<T, Falsy>[];
 export function arrayFilter<T>(items: T[], filter: (item: T) => boolean): T[];
 export function arrayFilter<T>(items: T[], filter?: (item: T) => boolean): T[] {

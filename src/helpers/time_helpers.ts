@@ -1,3 +1,5 @@
+import type { ClosureArgs } from '@/types/index';
+
 export interface DebouncedFunction<Args extends ClosureArgs> {
     (...args: Args): void;
     cancel(): void;

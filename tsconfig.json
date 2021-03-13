@@ -7,9 +7,7 @@
         "skipLibCheck": true,
         "baseUrl": "./src",
         "paths": {
-            "@fluent/*": ["./fluent/*"],
-            "@helpers/*": ["./helpers/*"],
-            "@testing/*": ["./testing/*"]
+            "@/*": ["./*"]
         }
     },
     "include": [

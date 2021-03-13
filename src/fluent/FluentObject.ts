@@ -1,3 +1,5 @@
+import type { Closure } from '@/types/index';
+
 export type Helper<Primitive=unknown> = (value: Primitive, ...args: any[]) => unknown;
 export type HelperParams<Primitive, Helper> =
     Helper extends (value: Primitive, ...args: infer P) => unknown ? P : never;

@@ -1,4 +1,4 @@
-import { arrayFirst, arrayIsEmpty, arrayRemove, arrayUnique, arrayWithoutIndexes } from '@helpers/array_helpers';
+import { arrayFirst, arrayIsEmpty, arrayRemove, arrayUnique, arrayWithoutIndexes } from '@/helpers/array_helpers';
 
 import FluentObjectDefinition, {
     addHelperMethodsToPrototype,

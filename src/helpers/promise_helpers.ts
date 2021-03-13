@@ -1,3 +1,5 @@
+import type { Closure, ClosureArgs } from '@/types/index';
+
 export function silenced<Args extends ClosureArgs, Result>(
     operation: Closure<Args, Promise<Result>>,
 ): Closure<Args, Promise<Result | null>>;

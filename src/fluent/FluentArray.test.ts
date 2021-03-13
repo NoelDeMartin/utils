@@ -1,5 +1,5 @@
-import { tt } from '@testing/index';
-import type { Equals, Expect } from '@testing/index';
+import { tt } from '@/testing/index';
+import type { Equals, Expect } from '@/testing/index';
 
 import FluentArrayDefinition from './FluentArray';
 import type { FluentArray, FluentArrayInstance } from './FluentArray';

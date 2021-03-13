@@ -1,4 +1,4 @@
-import { tap } from '@fluent/index';
+import { tap } from '@/fluent/index';
 
 export default class PromisedValue<T = unknown> implements Promise<T> {
 

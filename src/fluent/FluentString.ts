@@ -1,4 +1,5 @@
-import { stringReverse, stringToCamelCase, stringToSlug, stringToStudlyCase } from '@helpers/string_helpers';
+import { stringReverse, stringToCamelCase, stringToSlug, stringToStudlyCase } from '@/helpers/string_helpers';
+import type { ClassInstance } from '@/types/index';
 
 import FluentObjectDefinition, {
     addHelperMethodsToPrototype,
