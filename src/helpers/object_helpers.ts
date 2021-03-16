@@ -1,5 +1,38 @@
+import type { Equals } from '@/testing/index';
+
 export type Obj = Record<string, unknown>;
 export type ObjectEntry<T extends Obj, K extends keyof T> = [K, T[K]];
+
+export type ValueWithoutEmpty<T> = T extends null | undefined ? never : T;
+export type ReplaceEmpty<T> = { [K in keyof T]: ValueWithoutEmpty<T[K]> };
+export type GetRequiredKeysWithoutEmpty<T, U extends Record<keyof T, unknown> = ReplaceEmpty<T>> = {
+    [K in keyof T]:
+        Record<string, never> extends Pick<T, K>
+            ? never
+            : (
+                U[K] extends never
+                    ? never
+                    : (Equals<T[K], U[K]> extends true ? K : never)
+            )
+}[keyof T];
+export type GetOptionalKeysWithoutEmpty<T, U extends Record<keyof T, unknown> = ReplaceEmpty<T>> = {
+    [K in keyof T]:
+        Record<string, never> extends Pick<T, K>
+            ? K
+            : (
+                U[K] extends never
+                ? never
+                : (Equals<T[K], U[K]> extends true ? never : K)
+            )
+}[keyof T];
+
+// Given an existing bug in TypeScript, it's not possible to define optional keys using type generics without having
+// them defined as `| undefined` as well. Until that is fixed, this may cause some problems for keys that can have
+// empty values but not always do.
+// See https://github.com/microsoft/TypeScript/issues/13195
+export type ObjectWithoutEmpty<T> =
+    { [K in GetRequiredKeysWithoutEmpty<T>]: ValueWithoutEmpty<T[K]> } &
+    { [K in GetOptionalKeysWithoutEmpty<T>]?: ValueWithoutEmpty<T[K]> };
 
 export function deepEquals(a: unknown, b: unknown): boolean {
     if (a === b)
@@ -65,6 +98,19 @@ export function objectPropertyIsObject<T extends string>(object: Obj, property: 
     return objectHasOwnProperty(object, property)
         && isObject(value = object[property])
         && value.constructor === Object;
+}
+
+export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithoutEmpty<T> {
+    const cleanObject = {} as Record<string, unknown>;
+
+    for (const [key, value] of Object.entries(obj)) {
+        if (value === null || value === undefined)
+            continue;
+
+        cleanObject[key] = value;
+    }
+
+    return cleanObject as ObjectWithoutEmpty<T>;
 }
 
 export function toString(value: unknown): string {

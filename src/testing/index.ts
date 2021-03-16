@@ -6,8 +6,6 @@ export type Equals<X, Y> =
     (<T>() => T extends X ? 1 : 2) extends
     (<T>() => T extends Y ? 1 : 2) ? true : false;
 
-export type ReturnType<T extends (...args: any[]) => unknown> = T extends (...args: any[]) => infer R ? R : never;
-
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-unused-vars
 export function tt<T>(): () => unknown {
     return () => expect(true).toBe(true);
