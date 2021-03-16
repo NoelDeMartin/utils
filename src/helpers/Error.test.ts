@@ -13,7 +13,7 @@ describe('SoukaiError', () => {
         expect(error).toBeInstanceOf(Error);
         expect(error).toBeInstanceOf(CustomError);
 
-        const customError = error as CustomError;
+        const customError = error as Error;
         expect(customError.name).toEqual('Error');
         expect(customError.message).toEqual('foobar');
         expect(customError.stack).not.toBeNull();

@@ -1,6 +1,8 @@
 import { runtimeGlobal } from '@/helpers/runtime_helpers';
 
-export default class Error extends runtimeGlobal().Error {
+const BaseError = runtimeGlobal().Error;
+
+class Error extends BaseError {
 
     constructor(message?: string) {
         super(message);
@@ -11,3 +13,5 @@ export default class Error extends runtimeGlobal().Error {
     }
 
 }
+
+export default Error as typeof BaseError;
