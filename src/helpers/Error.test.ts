@@ -6,7 +6,7 @@ describe('SoukaiError', () => {
 
     it('behaves like an error', () => {
         // Act
-        const error = catchError(() => fail('foobar', CustomError));
+        const error = catchError(() => fail(CustomError, 'foobar'));
 
         // Assert
         expect(error).not.toBeNull();
@@ -22,7 +22,7 @@ describe('SoukaiError', () => {
 
     it('can be subclassed', () => {
         // Act
-        const error = catchError(() => fail('foobar', StubError));
+        const error = catchError(() => fail(StubError, 'foobar'));
 
         // Assert
         expect(error).not.toBeNull();
