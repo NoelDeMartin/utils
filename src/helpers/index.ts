@@ -2,6 +2,7 @@ export { default as Error } from './Error';
 export { default as PromisedValue } from './PromisedValue';
 export { default as Storage, StorageSingleton } from './Storage';
 export * from './array_helpers';
+export * from './caching_helpers';
 export * from './error_helpers';
 export * from './identity_helpers';
 export * from './object_helpers';
