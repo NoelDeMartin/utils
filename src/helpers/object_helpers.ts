@@ -100,6 +100,16 @@ export function objectPropertyIsObject<T extends string>(object: Obj, property: 
         && value.constructor === Object;
 }
 
+export function objectWithout<T extends Obj, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
+    const newObject: T = { ...obj };
+
+    for (const key of keys) {
+        delete newObject[key];
+    }
+
+    return newObject;
+}
+
 export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithoutEmpty<T> {
     const cleanObject = {} as Record<string, unknown>;
 
