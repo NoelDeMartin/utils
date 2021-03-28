@@ -1,6 +1,6 @@
 {
   "name": "@noeldemartin/utils",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "My JavaScript utilities",
   "main": "dist/noeldemartin-utils.cjs.js",
   "module": "dist/noeldemartin-utils.esm.js",
