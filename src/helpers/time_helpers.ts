@@ -5,6 +5,26 @@ export interface DebouncedFunction<Args extends ClosureArgs> {
     cancel(): void;
 }
 
+export function after(
+    time: Partial<{
+        ms: number;
+        milliseconds: number;
+        s: number;
+        seconds: number;
+    }> = {},
+): Promise<void> {
+    const getTimeInMilliseconds = () => {
+        return (time.milliseconds || time.ms || 0)
+            + (time.seconds || 0) * 1000;
+    };
+
+    return new Promise(resolve => setTimeout(resolve, getTimeInMilliseconds()));
+}
+
+export function afterAnimationFrame(): Promise<void> {
+    return new Promise(resolve => requestAnimationFrame(() => resolve()));
+}
+
 export function debounce<Args extends ClosureArgs>(
     callback: (...args: Args) => unknown,
     delay: number,
@@ -30,22 +50,13 @@ export function isValidDateString(value: string): boolean {
     return !isNaN(date.getTime());
 }
 
-export function after(
-    time: Partial<{
-        ms: number;
-        milliseconds: number;
-        s: number;
-        seconds: number;
-    }> = {},
-): Promise<void> {
-    const getTimeInMilliseconds = () => {
-        return (time.milliseconds || time.ms || 0)
-            + (time.seconds || 0) * 1000;
-    };
-
-    return new Promise(resolve => setTimeout(resolve, getTimeInMilliseconds()));
-}
-
-export function afterAnimationFrame(): Promise<void> {
-    return new Promise(resolve => requestAnimationFrame(() => resolve()));
+export function seconds(time?: Date | number, round: boolean = false): number {
+    if (typeof time === 'undefined') {
+        return seconds(Date.now(), round);
+    } else if (typeof time === 'number') {
+        time = time / 1000;
+        return round ? Math.round(time) : time;
+    } else {
+        return seconds(time.getTime(), round);
+    }
 }
