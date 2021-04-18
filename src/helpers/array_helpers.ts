@@ -34,6 +34,14 @@ export function arrayRemove<T>(items: T[], item: T): boolean {
     return true;
 }
 
+export function arraySorted<T>(items: T[], compare?: (a: T, b: T) => number): T[] {
+    const sorted = items.slice(0);
+
+    sorted.sort(compare);
+
+    return sorted;
+}
+
 export function arrayUnique<T>(items: T[]): T[] {
     const set = new Set(items);
 
