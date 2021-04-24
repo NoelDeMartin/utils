@@ -27,7 +27,7 @@ export type FluentArrayHelpers<T> = {
     isEmpty(items: T[]): boolean;
     remove(items: T[], item: T): boolean;
     sorted(items: T[]): T[];
-    unique(items: T[]): T[];
+    unique(items: T[], extractKey?: (item: T) => string): T[];
     withoutIndexes(items: T[], indexes: number[]): T[];
 };
 

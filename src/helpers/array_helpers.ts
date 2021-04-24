@@ -1,5 +1,9 @@
 import type { Falsy } from '@/types/index';
 
+import ObjectsMap from './ObjectsMap';
+import type { Obj } from './object_helpers';
+import type { ObjectKeyExtractor } from './ObjectsMap';
+
 export function arrayFilter<T>(items: T[]): Exclude<T, Falsy>[];
 export function arrayFilter<T>(items: T[], filter: (item: T) => boolean): T[];
 export function arrayFilter<T>(items: T[], filter?: (item: T) => boolean): T[] {
@@ -42,10 +46,10 @@ export function arraySorted<T>(items: T[], compare?: (a: T, b: T) => number): T[
     return sorted;
 }
 
-export function arrayUnique<T>(items: T[]): T[] {
-    const set = new Set(items);
-
-    return [...set];
+export function arrayUnique<T>(items: T[], extractKey?: ObjectKeyExtractor<T>): T[] {
+    return (extractKey && typeof items[0] === 'object')
+        ? ObjectsMap.createFromArray(items as Obj[], extractKey as ObjectKeyExtractor<Obj>).getItems() as T[]
+        : [...new Set(items)];
 }
 
 export function arrayWithoutIndexes<T>(items: T[], indexes: number[]): T[] {
