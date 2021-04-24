@@ -1,3 +1,5 @@
+import { ObjectsMap } from '@/helpers/index';
+
 import FluentArray from './FluentArray';
 import FluentString from './FluentString';
 import type { FluentArrayInstance } from './FluentArray';
@@ -12,6 +14,14 @@ export function str(value: string = ''): FluentStringInstance<FluentString> {
 export function arr<T>(value: T[] = []): FluentArrayInstance<FluentArray<T>, T> {
     return FluentArray.create(value);
 }
+
+/* eslint-disable @typescript-eslint/ban-types, max-len */
+export function map<T extends object>(items: T[], getKey?: ((item: T) => string)): ObjectsMap<T>;
+export function map<T extends object, S extends keyof T>(items: T[], key: S): ObjectsMap<T>;
+export function map<T extends object, S extends keyof T>(value: T[] = [], key?: S | ((item: T) => string)): ObjectsMap<T> {
+    return ObjectsMap.createFromArray(value, key as S);
+}
+/* eslint-enable @typescript-eslint/ban-types, max-len */
 
 export function fluent(value: string): FluentStringInstance<FluentString>;
 export function fluent<T>(value: T[]): FluentArrayInstance<FluentArray<T>, T>;

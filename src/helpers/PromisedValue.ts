@@ -1,13 +1,13 @@
-import { tap } from '@/fluent/index';
-
 export default class PromisedValue<T = unknown> implements Promise<T> {
 
     public static from<T>(promise: Promise<T>): PromisedValue<T> {
-        return tap(new PromisedValue(), promisedValue => {
-            promise
-                .then(promisedValue.resolve.bind(promisedValue))
-                .catch(promisedValue.reject.bind(promisedValue));
-        });
+        const promisedValue = new PromisedValue<T>();
+
+        promise
+            .then(promisedValue.resolve.bind(promisedValue))
+            .catch(promisedValue.reject.bind(promisedValue));
+
+        return promisedValue;
     }
 
     private promise!: Promise<T>;
