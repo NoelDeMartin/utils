@@ -1,6 +1,7 @@
 import {
     arrayFirst,
     arrayIsEmpty,
+    arrayProject,
     arrayRemove,
     arraySorted,
     arrayUnique,
@@ -17,6 +18,7 @@ import type { FluentInstance } from './FluentObject';
 const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     first: arrayFirst,
     isEmpty: arrayIsEmpty,
+    project: arrayProject,
     remove: arrayRemove,
     sorted: arraySorted,
     unique: arrayUnique,
@@ -27,6 +29,7 @@ const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
 export type FluentArrayHelpers<T> = {
     first(items: T[], filter: (item: T) => boolean): T | null;
     isEmpty(items: T[]): boolean;
+    project(items: T[], property: string): unknown[];
     remove(items: T[], item: T): boolean;
     sorted(items: T[]): T[];
     unique(items: T[], extractKey?: (item: T) => string): T[];
@@ -52,6 +55,9 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
     public *[Symbol.iterator](): Iterator<Item> {
         yield* this.value;
     }
+
+    public project!: <K extends keyof Item>(key: K) => Item[K][];
+    public where!: <K extends keyof Item>(key: K, value?: Item[K]) => Item[];
 
     public get(index: number): Item {
         return this.value[index];

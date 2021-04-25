@@ -27,6 +27,10 @@ export function arrayIsEmpty(items: unknown[]): boolean {
     return items.length === 0;
 }
 
+export function arrayProject<T, S extends keyof T>(items: T[], property: S): T[S][] {
+    return items.map(item => item[property]);
+}
+
 export function arrayRemove<T>(items: T[], item: T): boolean {
     const index = items.indexOf(item);
 
@@ -52,7 +56,7 @@ export function arrayUnique<T>(items: T[], extractKey?: ObjectKeyExtractor<T>): 
         : [...new Set(items)];
 }
 
-export function arrayWhere<T>(items: T[], filter: string, value?: unknown): T[] {
+export function arrayWhere<T, K extends keyof T>(items: T[], filter: string, value?: T[K]): T[] {
     return items.filter(item => {
         const property = item[filter as keyof T];
         const result = typeof property === 'function' ? property.call(item) : property;

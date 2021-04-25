@@ -71,8 +71,12 @@ describe('FluentArray', () => {
 
 });
 
+type User = { name: string; age: number };
 const fluentStringsArray = FluentArrayDefinition.create(['foo']);
 const fluentNumbersArray = FluentArrayDefinition.create([42]);
+const fluentUsersArray = FluentArrayDefinition.create([{ name: 'John', age: 42 } as User]);
+const names = fluentUsersArray.project('name');
+const ages = fluentUsersArray.project('age');
 
 describe('FluentArray types', () => {
 
@@ -81,6 +85,8 @@ describe('FluentArray types', () => {
         Expect<Equals<typeof fluentNumbersArray.slice, (s?: number, e?: number) => FluentArray<number>>> |
         Expect<Equals<typeof fluentStringsArray.remove, (i: string) => boolean>> |
         Expect<Equals<typeof fluentNumbersArray.remove, (i: number) => boolean>> |
+        Expect<Equals<typeof names, string[]>> |
+        Expect<Equals<typeof ages, number[]>> |
         true
     >());
 

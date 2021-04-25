@@ -1,7 +1,15 @@
 import { tt } from '@/testing/index';
 import type { Equals, Expect } from '@/testing/index';
 
-import { arrayFilter, arrayFirst, arrayRemove, arrayUnique, arrayWhere, arrayWithoutIndexes } from './array_helpers';
+import {
+    arrayFilter,
+    arrayFirst,
+    arrayProject,
+    arrayRemove,
+    arrayUnique,
+    arrayWhere,
+    arrayWithoutIndexes,
+} from './array_helpers';
 
 describe('Array helpers', () => {
 
@@ -31,6 +39,25 @@ describe('Array helpers', () => {
         expect(arrayWithoutIndexes(items, [1])).toEqual(['foo', 'baz']);
         expect(arrayWithoutIndexes(items, [0, 2])).toEqual(['bar']);
         expect(items).toEqual(['foo', 'bar', 'baz']);
+    });
+
+    it('projects properties', () => {
+        // Arrange.
+        class User {
+
+            constructor(public role: string) {}
+
+            public isAdmin(): boolean {
+                return this.role === 'admin';
+            }
+
+        }
+
+        const admin = new User('admin');
+        const guest = new User('guest');
+
+        // Act & Assert
+        expect(arrayProject([admin, guest], 'role')).toEqual(['admin', 'guest']);
     });
 
     it('filters by methods and values', () => {
