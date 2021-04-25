@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
 // Typescript equivalent of Laravel's tap helper method
 // @see https://medium.com/@taylorotwell/tap-tap-tap-1fc6fc1f93a6
 // @see https://github.com/laravel/framework/blob/v7.8.0/src/Illuminate/Support/helpers.php#L422..L431

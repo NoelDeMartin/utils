@@ -25,7 +25,7 @@ describe('tap', () => {
         // Arrange
         class Computer {
 
-            theMeaningOfLife = 42;
+            public theMeaningOfLife = 42;
 
             public getTheMeaningOfLife(): number {
                 return this.theMeaningOfLife;

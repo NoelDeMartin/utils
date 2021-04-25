@@ -15,11 +15,11 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     private _resolve!: (result: T) => void;
     private _reject!: (error?: Error) => void;
 
-    [Symbol.toStringTag]: string;
-
     constructor() {
         this.initPromise();
     }
+
+    public [Symbol.toStringTag]: string;
 
     public get value(): T | null {
         return this._value || null;

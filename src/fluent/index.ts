@@ -15,13 +15,13 @@ export function arr<T>(value: T[] = []): FluentArrayInstance<FluentArray<T>, T> 
     return FluentArray.create(value);
 }
 
-/* eslint-disable @typescript-eslint/ban-types, max-len */
+/* eslint-disable max-len */
 export function map<T extends object>(items: T[], getKey?: ((item: T) => string)): ObjectsMap<T>;
 export function map<T extends object, S extends keyof T>(items: T[], key: S): ObjectsMap<T>;
 export function map<T extends object, S extends keyof T>(value: T[] = [], key?: S | ((item: T) => string)): ObjectsMap<T> {
     return ObjectsMap.createFromArray(value, key as S);
 }
-/* eslint-enable @typescript-eslint/ban-types, max-len */
+/* eslint-enable max-len */
 
 export function fluent(value: string): FluentStringInstance<FluentString>;
 export function fluent<T>(value: T[]): FluentArrayInstance<FluentArray<T>, T>;

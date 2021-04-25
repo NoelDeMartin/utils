@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { toString } from './object_helpers';
 
 export type ObjectKeyExtractor<T> = (item: T) => string;
@@ -35,7 +34,7 @@ export default class ObjectsMap<Item extends object> {
         this.getKey = keyExtractor ?? (item => toString(item));
     }
 
-    *[Symbol.iterator](): Iterator<[string, Item]> {
+    public *[Symbol.iterator](): Iterator<[string, Item]> {
         yield* this.keysToItems;
     }
 

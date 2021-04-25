@@ -39,7 +39,7 @@
     "@babel/preset-env": "^7.12.16",
     "@babel/preset-typescript": "^7.12.16",
     "@microsoft/api-extractor": "^7.12.0",
-    "@noeldemartin/eslint-config-typescript": "0.0.0-next.fa3c9edeea6e1526504797ddd3097cbd1f039287",
+    "@noeldemartin/eslint-config-typescript": "0.0.0-next.bded47b9bf0a8721f5ac7317adea94f5002a10d3",
     "@noeldemartin/scripts": "0.0.0-next.0fe4a5ffafe6325621fd501c83dcd42fb8bf1930",
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-babel": "^5.2.3",

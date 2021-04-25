@@ -46,7 +46,7 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
         return prototype.create(value);
     }
 
-    *[Symbol.iterator](): Iterator<Item> {
+    public *[Symbol.iterator](): Iterator<Item> {
         yield* this.value;
     }
 
