@@ -52,6 +52,15 @@ export function arrayUnique<T>(items: T[], extractKey?: ObjectKeyExtractor<T>): 
         : [...new Set(items)];
 }
 
+export function arrayWhere<T>(items: T[], filter: string, value?: unknown): T[] {
+    return items.filter(item => {
+        const property = item[filter as keyof T];
+        const result = typeof property === 'function' ? property.call(item) : property;
+
+        return value ? result === value : !!result;
+    });
+}
+
 export function arrayWithoutIndexes<T>(items: T[], indexes: number[]): T[] {
     return items
         .map((value, index) => ([value, index] as [T, number]))

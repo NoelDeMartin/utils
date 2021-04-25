@@ -4,6 +4,7 @@ import {
     arrayRemove,
     arraySorted,
     arrayUnique,
+    arrayWhere,
     arrayWithoutIndexes,
 } from '@/helpers/array_helpers';
 
@@ -19,6 +20,7 @@ const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     remove: arrayRemove,
     sorted: arraySorted,
     unique: arrayUnique,
+    where: arrayWhere,
     withoutIndexes: arrayWithoutIndexes,
 };
 
@@ -28,6 +30,7 @@ export type FluentArrayHelpers<T> = {
     remove(items: T[], item: T): boolean;
     sorted(items: T[]): T[];
     unique(items: T[], extractKey?: (item: T) => string): T[];
+    where(items: T[], filter: string, value?: unknown): T[];
     withoutIndexes(items: T[], indexes: number[]): T[];
 };
 
