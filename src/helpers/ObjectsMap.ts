@@ -57,6 +57,10 @@ export default class ObjectsMap<Item extends object> {
         this.itemsToKeys.set(item, key);
     }
 
+    public require(key: string): Item {
+        return this.keysToItems.get(key) || fail(`Couldn't find item with '${key}' key`);
+    }
+
     public get(key: string): Item | undefined {
         return this.keysToItems.get(key);
     }
