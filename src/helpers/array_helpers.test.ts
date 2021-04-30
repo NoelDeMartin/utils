@@ -1,14 +1,17 @@
 import { tt } from '@/testing/index';
+import { toString } from '@/helpers/object_helpers';
 import type { Equals, Expect } from '@/testing/index';
 
 import {
     arrayFilter,
     arrayFirst,
+    arrayFrom,
     arrayProject,
     arrayRemove,
     arrayUnique,
     arrayWhere,
     arrayWithoutIndexes,
+    arrayZip,
 } from './array_helpers';
 
 describe('Array helpers', () => {
@@ -31,6 +34,8 @@ describe('Array helpers', () => {
 
         expect(arrayUnique(items)).toEqual(['foo', 'bar', 'baz']);
         expect(items).toEqual(['foo', 'bar', 'baz', 'foo', 'bar']);
+        expect(arrayUnique([4,1,2,1,3,4,2])).toEqual([4,1,2,3]);
+        expect(arrayUnique([4,1,2,1,3,4,2], n => toString(n % 2))).toEqual([4,1]);
     });
 
     it('gets items without specified indexes', () => {
@@ -80,12 +85,25 @@ describe('Array helpers', () => {
         expect(arrayWhere([admin, guest], 'role', 'guest')).toEqual([guest]);
     });
 
+    it('zips arrays', () => {
+        expect(arrayZip([1, 2, 3], [4, 5, 6])).toEqual([[1, 4], [2, 5], [3, 6]]);
+    });
+
 });
 
 const filteredItems = arrayFilter(['foo', null, 'bar', undefined]);
+const arrayFromNumber = arrayFrom(42);
+const arrayFromSet = arrayFrom(new Set(['foo']));
+const arrayFromArray = arrayFrom([new Date()]);
 
 describe('Array helpers types', () => {
 
-    it('has correct types', tt<Expect<Equals<typeof filteredItems, string[]>>>());
+    it('has correct types', tt<
+        Expect<Equals<typeof filteredItems, string[]>> |
+        Expect<Equals<typeof arrayFromNumber, number[]>> |
+        Expect<Equals<typeof arrayFromSet, string[]>> |
+        Expect<Equals<typeof arrayFromArray, Date[]>> |
+        true
+    >());
 
 });

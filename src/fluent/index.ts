@@ -1,4 +1,4 @@
-import { ObjectsMap } from '@/helpers/index';
+import { ObjectsMap, arrayFrom } from '@/helpers/index';
 
 import FluentArray from './FluentArray';
 import FluentString from './FluentString';
@@ -11,8 +11,11 @@ export function str(value: string = ''): FluentStringInstance<FluentString> {
     return FluentString.create(value);
 }
 
-export function arr<T>(value: T[] = []): FluentArrayInstance<FluentArray<T>, T> {
-    return FluentArray.create(value);
+export function arr<T>(value: Iterable<T>): FluentArrayInstance<FluentArray<T>, T>;
+export function arr<T>(value: T): FluentArrayInstance<FluentArray<T>, T>;
+export function arr<T>(): FluentArrayInstance<FluentArray<T>, T>;
+export function arr<T>(value: unknown = []): FluentArrayInstance<FluentArray<T>, T> {
+    return FluentArray.create(arrayFrom(value) as T[]);
 }
 
 /* eslint-disable max-len */

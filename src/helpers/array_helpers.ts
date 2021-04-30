@@ -1,8 +1,6 @@
 import type { Falsy } from '@/types/index';
 
-import ObjectsMap from './ObjectsMap';
-import type { Obj } from './object_helpers';
-import type { ObjectKeyExtractor } from './ObjectsMap';
+import { isIterable } from './object_helpers';
 
 export function arrayFilter<T>(items: T[]): Exclude<T, Falsy>[];
 export function arrayFilter<T>(items: T[], filter: (item: T) => boolean): T[];
@@ -50,9 +48,17 @@ export function arraySorted<T>(items: T[], compare?: (a: T, b: T) => number): T[
     return sorted;
 }
 
-export function arrayUnique<T>(items: T[], extractKey?: ObjectKeyExtractor<T>): T[] {
-    return (extractKey && typeof items[0] === 'object')
-        ? ObjectsMap.createFromArray(items as Obj[], extractKey as ObjectKeyExtractor<Obj>).getItems() as T[]
+export function arrayUnique<T>(items: T[], extractKey?: (item: T) => string): T[] {
+    return extractKey
+        ? Object.values(
+            items.reduce((unique, item) => {
+                const key = extractKey(item);
+
+                unique[key] = unique[key] ?? item;
+
+                return unique;
+            }, {} as Record<string, T>),
+        )
         : [...new Set(items)];
 }
 
@@ -65,9 +71,43 @@ export function arrayWhere<T, K extends keyof T>(items: T[], filter: string, val
     });
 }
 
+export function arrayWithout<T>(items: T[], exclude: T[]): T[] {
+    return arrayFilter(items, item => exclude.indexOf(item) === -1);
+}
+
 export function arrayWithoutIndexes<T>(items: T[], indexes: number[]): T[] {
     return items
         .map((value, index) => ([value, index] as [T, number]))
         .filter(([_, index]) => !indexes.includes(index))
         .map(([value]) => value);
+}
+
+export function arrayZip<T>(...arrays: T[][]): T[][] {
+    const zippedArrays: T[][] = [];
+
+    for (let i = 0; i < arrays[0].length; i++)
+        zippedArrays.push(arrays.map(a => a[i]));
+
+    return zippedArrays;
+}
+
+export function arrayFrom<T>(value: Iterable<T>): T[];
+export function arrayFrom<T>(value: T): T[];
+export function arrayFrom(value: unknown): unknown[] {
+    if (Array.isArray(value))
+        return value.slice(0);
+
+    if (isIterable(value))
+        return [...value];
+
+    return [value];
+}
+
+export function range(length: number): number[] {
+    const items: number[] = [];
+
+    for (let i = 0; i < length; i++)
+        items.push(i);
+
+    return items;
 }
