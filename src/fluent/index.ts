@@ -16,9 +16,9 @@ export function arr<T>(value: T[] = []): FluentArrayInstance<FluentArray<T>, T> 
 }
 
 /* eslint-disable max-len */
-export function map<T extends object>(items: T[], getKey?: ((item: T) => string)): ObjectsMap<T>;
-export function map<T extends object, S extends keyof T>(items: T[], key: S): ObjectsMap<T>;
-export function map<T extends object, S extends keyof T>(value: T[] = [], key?: S | ((item: T) => string)): ObjectsMap<T> {
+export function map<T extends object>(items: Iterable<T>, getKey?: ((item: T) => string)): ObjectsMap<T>;
+export function map<T extends object, S extends keyof T>(items: Iterable<T>, key: S): ObjectsMap<T>;
+export function map<T extends object, S extends keyof T>(value: Iterable<T> = [], key?: S | ((item: T) => string)): ObjectsMap<T> {
     return ObjectsMap.createFromArray(value, key as S);
 }
 /* eslint-enable max-len */

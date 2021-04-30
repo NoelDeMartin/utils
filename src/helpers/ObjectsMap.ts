@@ -5,12 +5,12 @@ export type ObjectKeyExtractor<T> = (item: T) => string;
 export default class ObjectsMap<Item extends object> {
 
     /* eslint-disable max-len */
-    public static createFromArray<T extends object>(items: T[], keyExtractor?: ObjectKeyExtractor<T>): ObjectsMap<T>;
-    public static createFromArray<T extends object, S extends keyof T>(items: T[], key: S): ObjectsMap<T>;
+    public static createFromArray<T extends object>(items: Iterable<T>, keyExtractor?: ObjectKeyExtractor<T>): ObjectsMap<T>;
+    public static createFromArray<T extends object, S extends keyof T>(items: Iterable<T>, key: S): ObjectsMap<T>;
     /* eslint-enable max-len */
 
     public static createFromArray<T extends object, S extends keyof T>(
-        items: T[],
+        items: Iterable<T>,
         key?: S | ObjectKeyExtractor<T>,
     ): ObjectsMap<T> {
         const keyExtractor = typeof key === 'string'
@@ -19,7 +19,9 @@ export default class ObjectsMap<Item extends object> {
 
         const map = new ObjectsMap(keyExtractor as ObjectKeyExtractor<T>);
 
-        items.forEach(item => map.add(item));
+        for (const item of items) {
+            map.add(item);
+        }
 
         return map;
     }
