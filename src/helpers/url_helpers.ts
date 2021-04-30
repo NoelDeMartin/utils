@@ -52,7 +52,15 @@ export function urlParentDirectory(url: string): string {
     return pathIndex !== -1 ? url.substr(0, pathIndex + 1) : url;
 }
 
-export function urlFilename(url: string): string {
+export function urlDirectoryName(url: string): string {
+    if (!url.endsWith('/')) {
+        url = urlParentDirectory(url);
+    }
+
+    return urlFileName(url.slice(0, -1));
+}
+
+export function urlFileName(url: string): string {
     const pathIndex = url.lastIndexOf('/');
 
     return pathIndex !== -1 ? url.substr(pathIndex + 1) : '';

@@ -1,4 +1,12 @@
-import { urlClean, urlParentDirectory, urlParse, urlResolve, urlResolveDirectory, urlRoot } from './url_helpers';
+import {
+    urlClean,
+    urlDirectoryName,
+    urlParentDirectory,
+    urlParse,
+    urlResolve,
+    urlResolveDirectory,
+    urlRoot,
+} from './url_helpers';
 
 describe('Url helper', () => {
 
@@ -30,6 +38,11 @@ describe('Url helper', () => {
     it('resolves parent directory for directories', () => {
         expect(urlParentDirectory('http://example.com/foo/bar/'))
             .toEqual('http://example.com/foo/');
+    });
+
+    it('gets directory names', () => {
+        expect(urlDirectoryName('https://example.com/path/to/directory/')).toEqual('directory');
+        expect(urlDirectoryName('https://example.com/path/to/directory/file')).toEqual('directory');
     });
 
     it('gets url roots', () => {
