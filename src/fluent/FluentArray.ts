@@ -57,7 +57,8 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
     }
 
     public project!: <K extends keyof Item>(key: K) => Item[K][];
-    public where!: <K extends keyof Item>(key: K, value?: Item[K]) => Item[];
+    public where!: <K extends keyof Item>(key: K, value?: Item[K]) =>
+        FluentArrayInstance<FluentArrayDefinition<Item>, Item>;
 
     public get(index: number): Item {
         return this.value[index];
