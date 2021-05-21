@@ -2,7 +2,7 @@ import { tt } from '@/testing/index';
 import type { Equals, Expect } from '@/testing/index';
 import type { GetOptionalKeys, GetRequiredKeys } from '@/types/index';
 
-import { objectWithout, objectWithoutEmpty } from './object_helpers';
+import { objectDeepClone, objectWithout, objectWithoutEmpty } from './object_helpers';
 
 describe('Object helpers', () => {
 
@@ -12,6 +12,12 @@ describe('Object helpers', () => {
 
     it('removes empty values', () => {
         expect(objectWithoutEmpty({ foo: false, bar: null, baz: undefined })).toEqual({ foo: false });
+    });
+
+    it('clones Dates properly', () => {
+        const date = new Date(Date.now() - 42);
+
+        expect(date.toISOString()).toEqual(objectDeepClone({ date }).date.toISOString());
     });
 
 });
