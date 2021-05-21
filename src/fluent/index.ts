@@ -1,4 +1,5 @@
-import { ObjectsMap, arrayFrom } from '@/helpers/index';
+import { ObjectsMap, arrayFrom, arrayPull, objectPull } from '@/helpers/index';
+import type { Obj } from '@/helpers/index';
 
 import FluentArray from './FluentArray';
 import FluentString from './FluentString';
@@ -25,6 +26,14 @@ export function map<T extends object, S extends keyof T>(value: Iterable<T> = []
     return ObjectsMap.createFromArray(value, key as S);
 }
 /* eslint-enable max-len */
+
+export function pull<T>(items: T[], index: number): T;
+export function pull<T extends Obj, K extends keyof T>(obj: T, key: K): T[K];
+export function pull(obj: unknown, key: unknown): unknown {
+    return Array.isArray(obj)
+        ? arrayPull(obj, key as number)
+        : objectPull(obj as Obj, key as keyof Obj);
+}
 
 export function fluent(value: string): FluentStringInstance<FluentString>;
 export function fluent<T>(value: T[]): FluentArrayInstance<FluentArray<T>, T>;

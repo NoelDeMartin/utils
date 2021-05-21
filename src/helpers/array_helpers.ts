@@ -29,6 +29,14 @@ export function arrayProject<T, S extends keyof T>(items: T[], property: S): T[S
     return items.map(item => item[property]);
 }
 
+export function arrayPull<T>(items: T[], index: number): T {
+    const value = items[index];
+
+    items.splice(index, 1);
+
+    return value;
+}
+
 export function arrayRemove<T>(items: T[], item: T): boolean {
     const index = items.indexOf(item);
 

@@ -1,7 +1,7 @@
 import { tt } from '@/testing/index';
 import type { Equals, Expect } from '@/testing/index';
 
-import { arr, fluent, str } from './index';
+import { arr, fluent, pull, str } from './index';
 import FluentArrayDefinition from './FluentArray';
 import FluentStringDefinition from './FluentString';
 import type { FluentArray } from './FluentArray';
@@ -16,17 +16,21 @@ describe('Fluency', () => {
 
 });
 
-const fluentStringArray = arr(['foo', 'bar']);
-const fluentNumbersArray = arr([42]);
-const fluentString = str('foobar');
-
 describe('Fluency types', () => {
 
-    it('has correct types', tt<
-        Expect<Equals<typeof fluentStringArray, FluentArray<string>>> |
-        Expect<Equals<typeof fluentNumbersArray, FluentArray<number>>> |
-        Expect<Equals<typeof fluentString, FluentString>> |
-        true
-    >());
+    it('has correct types', () => {
+        const fluentStringArray = arr(['foo', 'bar']);
+        const fluentNumbersArray = arr([42]);
+        const fluentString = str('foobar');
+        const objectValue = pull({ foo: 'bar' }, 'foo');
+
+        tt<
+            Expect<Equals<typeof fluentStringArray, FluentArray<string>>> |
+            Expect<Equals<typeof fluentNumbersArray, FluentArray<number>>> |
+            Expect<Equals<typeof fluentString, FluentString>> |
+            Expect<Equals<typeof objectValue, string>> |
+            true
+        >();
+    });
 
 });

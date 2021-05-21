@@ -104,6 +104,14 @@ export function objectPropertyIsObject<T extends string>(object: Obj, property: 
         && value.constructor === Object;
 }
 
+export function objectPull<T extends Obj, K extends keyof T>(obj: T, key: K): T[K] {
+    const value = obj[key];
+
+    delete obj[key];
+
+    return value;
+}
+
 export function objectWithout<T extends Obj, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
     const newObject: T = { ...obj };
 
