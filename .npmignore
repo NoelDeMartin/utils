@@ -6,4 +6,5 @@ api-extractor.json
 coverage
 jest.config.js
 scripts
+tmp
 tsconfig.json
