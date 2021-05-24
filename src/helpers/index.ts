@@ -7,6 +7,7 @@ export * from './caching_helpers';
 export * from './error_helpers';
 export * from './identity_helpers';
 export * from './inheritance_helpers';
+export * from './logical_helpers';
 export * from './object_helpers';
 export * from './promise_helpers';
 export * from './runtime_helpers';

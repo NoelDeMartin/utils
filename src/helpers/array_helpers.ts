@@ -1,5 +1,6 @@
 import type { Falsy } from '@/types/index';
 
+import { compare } from './logical_helpers';
 import { isIterable } from './object_helpers';
 
 export function arrayFilter<T>(items: T[]): Exclude<T, Falsy>[];
@@ -48,10 +49,23 @@ export function arrayRemove<T>(items: T[], item: T): boolean {
     return true;
 }
 
-export function arraySorted<T>(items: T[], compare?: (a: T, b: T) => number): T[] {
+export function arraySorted<T>(items: T[]): T[];
+export function arraySorted<T>(items: T[], compare?: (a: T, b: T) => number): T[];
+export function arraySorted<T>(items: T[], field?: keyof T, direction?: 'asc' | 'desc'): T[];
+export function arraySorted<T>(
+    items: T[],
+    compareOrField?: keyof T | ((a: T, b: T) => number),
+    direction?: 'asc' | 'desc',
+): T[] {
+    const comparisonFn = typeof compareOrField !== 'string'
+        ? compareOrField as undefined | ((a: T, b: T) => number)
+        : direction === 'desc'
+            ? (a: T, b: T) => compare(b[compareOrField], a[compareOrField])
+            : (a: T, b: T) => compare(a[compareOrField], b[compareOrField]);
+
     const sorted = items.slice(0);
 
-    sorted.sort(compare);
+    sorted.sort(comparisonFn);
 
     return sorted;
 }

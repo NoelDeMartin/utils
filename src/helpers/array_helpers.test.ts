@@ -8,6 +8,7 @@ import {
     arrayFrom,
     arrayProject,
     arrayRemove,
+    arraySorted,
     arrayUnique,
     arrayWhere,
     arrayWithoutIndexes,
@@ -36,6 +37,14 @@ describe('Array helpers', () => {
         expect(items).toEqual(['foo', 'bar', 'baz', 'foo', 'bar']);
         expect(arrayUnique([4,1,2,1,3,4,2])).toEqual([4,1,2,3]);
         expect(arrayUnique([4,1,2,1,3,4,2], n => toString(n % 2))).toEqual([4,1]);
+    });
+
+    it('sorts by field', () => {
+        const items = [{ name: 'Son Goku' }, { name: 'Astroboy' }, { name: 'Zetman' }];
+
+        expect(arraySorted(items, 'name').map(item => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
+        expect(arraySorted(items, 'name', 'asc').map(item => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
+        expect(arraySorted(items, 'name', 'desc').map(item => item.name)).toEqual(['Zetman', 'Son Goku', 'Astroboy']);
     });
 
     it('gets items without specified indexes', () => {
