@@ -1,5 +1,9 @@
 import type { Closure, ClosureArgs } from '@/types/index';
 
+export function isPromise(p: unknown): p is Promise<unknown> {
+    return 'then' in (p as Promise<unknown>);
+}
+
 export function silenced<Args extends ClosureArgs, Result>(
     operation: Closure<Args, Promise<Result>>,
 ): Closure<Args, Promise<Result | null>>;
