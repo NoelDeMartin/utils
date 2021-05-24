@@ -50,6 +50,14 @@ export function deepEquals(a: unknown, b: unknown): boolean {
     return !Object.keys(a).some(key => !deepEquals(a[key], b[key]));
 }
 
+export function invert(map: Record<string, string>): Record<string, string> {
+    return Object.entries(map).reduce((invertedMap, [key, value]) => {
+        invertedMap[value] = key;
+
+        return invertedMap;
+    }, {} as Record<string, string>);
+}
+
 export const isArray = Array.isArray.bind(Array);
 
 export function isEmpty(value: unknown): boolean {
