@@ -1,15 +1,17 @@
 import type { Constructor } from '@/types/index';
 
+import { objectWithout } from './object_helpers';
+
 export function useMixins<T extends Constructor<unknown>>(baseClass: T, mixinClasses: Constructor<unknown>[]): T {
-    const propertyDescriptors = mixinClasses
-        .reduce((propertyDescriptors, mixinClass) => {
-            Object.assign(propertyDescriptors, Object.getOwnPropertyDescriptors(mixinClass.prototype));
+    for (const mixinClass of mixinClasses) {
+        const mixinDescriptors = objectWithout(
+            Object.getOwnPropertyDescriptors(mixinClass.prototype),
+            ['constructor'],
+        );
 
-            return propertyDescriptors;
-        }, {} as { [name: string]: PropertyDescriptor });
-
-    for (const [propertyName, propertyDescriptor] of Object.entries(propertyDescriptors)) {
-        Object.defineProperty(baseClass.prototype, propertyName, propertyDescriptor);
+        for (const [propertyName, propertyDescriptor] of Object.entries(mixinDescriptors)) {
+            Object.defineProperty(baseClass.prototype, propertyName, propertyDescriptor);
+        }
     }
 
     return baseClass;
