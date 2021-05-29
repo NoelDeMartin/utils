@@ -1,6 +1,7 @@
 export { default as Error } from './Error';
 export { default as ObjectsMap, ObjectKeyExtractor } from './ObjectsMap';
 export { default as PromisedValue } from './PromisedValue';
+export { default as Semaphore } from './Semaphore';
 export { default as Storage, StorageSingleton } from './Storage';
 export * from './array_helpers';
 export * from './caching_helpers';
