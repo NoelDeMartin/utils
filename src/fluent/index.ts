@@ -21,6 +21,7 @@ export function arr<T>(value: unknown = []): FluentArrayInstance<FluentArray<T>,
 
 /* eslint-disable max-len */
 export function map<T>(items: string[], getKey?: ((item: string) => T)): Record<string, T>;
+export function map<T extends object>(items: []): ObjectsMap<T>;
 export function map<T extends object>(items: Iterable<T>, getKey?: ((item: T) => string)): ObjectsMap<T>;
 export function map<T extends object, S extends keyof T>(items: Iterable<T>, key: S): ObjectsMap<T>;
 export function map<T extends object, S extends keyof T>(value: Iterable<T> = [], key?: S | ((item: T) => string)): ObjectsMap<T> {
