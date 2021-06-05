@@ -104,6 +104,19 @@ export function objectHasOwnProperty(object: Obj, property: string): boolean {
     return Object.prototype.hasOwnProperty.call(object, property);
 }
 
+export function objectOnly<T extends Obj, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
+    const newObject: Pick<T, K> = {} as Pick<T, K>;
+
+    for (const key of keys) {
+        if (!(key in obj))
+            continue;
+
+        newObject[key] = obj[key];
+    }
+
+    return newObject;
+}
+
 export function objectPropertyIsObject<T extends string>(object: Obj, property: T): object is { [t in T]: Obj } {
     let value;
 
