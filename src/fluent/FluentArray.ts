@@ -1,14 +1,19 @@
 import {
+    arrayFilter,
     arrayFirst,
+    arrayFlatMap,
     arrayIsEmpty,
     arrayProject,
     arrayRemove,
+    arrayRemoveIndex,
+    arrayReplace,
     arraySorted,
     arrayUnique,
     arrayWhere,
     arrayWithout,
     arrayWithoutIndexes,
 } from '@/helpers/array_helpers';
+import type { Falsy } from '@/types/index';
 
 import FluentObjectDefinition, {
     addHelperMethodsToPrototype,
@@ -17,10 +22,14 @@ import FluentObjectDefinition, {
 import type { FluentInstance } from './FluentObject';
 
 const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
+    filter: arrayFilter,
     first: arrayFirst,
+    flatMap: arrayFlatMap,
     isEmpty: arrayIsEmpty,
     project: arrayProject,
     remove: arrayRemove,
+    removeIndex: arrayRemoveIndex,
+    replace: arrayReplace,
     sorted: arraySorted,
     unique: arrayUnique,
     where: arrayWhere,
@@ -30,9 +39,13 @@ const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
 
 export type FluentArrayHelpers<T> = {
     first(items: T[], filter: (item: T) => boolean): T | null;
+    filter(items: T[], filter?: (item: T) => boolean): T[] | Exclude<T, Falsy>[];
+    flatMap<R>(items: T[], transformation?: (item: T, index: number) => R[]): R[];
     isEmpty(items: T[]): boolean;
     project(items: T[], property: string): unknown[];
     remove(items: T[], item: T): boolean;
+    removeIndex(items: T[], index: number | string): boolean;
+    replace(items: T[], original: T, replacement: T): boolean;
     sorted(items: T[]): T[];
     unique(items: T[], extractKey?: (item: T) => string): T[];
     where(items: T[], filter: string, value?: unknown): T[];
@@ -59,7 +72,13 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
         yield* this.value;
     }
 
+    public flatMap!: <T>(callback: (item: Item, index: number) => T[])
+        => FluentArrayInstance<FluentArrayDefinition<T>, T>;
+
+    public map!: <T>(callback: (item: Item) => T) => FluentArrayInstance<FluentArrayDefinition<T>, T>;
+
     public project!: <K extends keyof Item>(key: K) => Item[K][];
+
     public where!: <K extends keyof Item>(key: K, value?: Item[K]) =>
         FluentArrayInstance<FluentArrayDefinition<Item>, Item>;
 
@@ -75,6 +94,11 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
         return Array.isArray(value);
     }
 
+}
+
+interface FluentArrayDefinition<Item> {
+    filter(): FluentArrayInstance<FluentArrayDefinition<Exclude<Item, Falsy>>, Exclude<Item, Falsy>>;
+    filter(filter: (item: Item) => boolean): FluentArrayInstance<FluentArrayDefinition<Item>, Item>;
 }
 
 addHelperMethodsToPrototype(FluentArrayDefinition, fluentArrayHelpers);

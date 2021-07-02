@@ -8,6 +8,7 @@ import {
     arrayFrom,
     arrayProject,
     arrayRemove,
+    arrayReplace,
     arraySorted,
     arrayUnique,
     arrayWhere,
@@ -28,6 +29,18 @@ describe('Array helpers', () => {
         expect(arrayRemove(items, 'bar')).toBe(true);
         expect(arrayRemove(items, 'bar')).toBe(false);
         expect(items).toEqual(['foo']);
+    });
+
+    it('replaces items', () => {
+        // Arrange
+        const items = ['foo', 'bar', 'baz'];
+
+        // Act
+        const result = arrayReplace(items, 'bar', 'qux');
+
+        // Assert
+        expect(result).toBe(true);
+        expect(items).toEqual(['foo', 'qux', 'baz']);
     });
 
     it('gets unique items', () => {

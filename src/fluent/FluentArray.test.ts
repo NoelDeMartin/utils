@@ -27,6 +27,14 @@ describe('FluentArray', () => {
         expect(fluentArray.concat(['baz']).concat(['qux'])).toBeInstanceOf(FluentArrayDefinition);
         expect(fluentArray.concat(['baz']).concat(['qux']).toArray()).toEqual(['foo', 'bar', 'baz', 'qux']);
         expect(fluentArray.concat(['baz']).remove('baz')).toBe(true);
+        expect(fluentArray.flatMap(() => [42, 42, 23]).unique().toArray()).toEqual([42, 23]);
+    });
+
+    it('extends primitive methods', () => {
+        const fluentArray = FluentArrayDefinition.create(['foo', 'bar', null]);
+
+        expect(fluentArray.filter().toArray()).toEqual(['foo', 'bar']);
+        expect(fluentArray.filter(item => !!item).toArray()).toEqual(['foo', 'bar']);
     });
 
     it('infers item types', () => {
@@ -75,6 +83,8 @@ type User = { name: string; age: number };
 const fluentStringsArray = FluentArrayDefinition.create(['foo']);
 const fluentNumbersArray = FluentArrayDefinition.create([42]);
 const fluentUsersArray = FluentArrayDefinition.create([{ name: 'John', age: 42 } as User]);
+const flatStringsArray = fluentNumbersArray.flatMap((item: number) => ['foo' + item]);
+const filteredStringsArray = FluentArrayDefinition.create(['foo', null]).filter();
 const names = fluentUsersArray.project('name');
 const ages = fluentUsersArray.project('age');
 
@@ -85,6 +95,8 @@ describe('FluentArray types', () => {
         Expect<Equals<typeof fluentNumbersArray.slice, (s?: number, e?: number) => FluentArray<number>>> |
         Expect<Equals<typeof fluentStringsArray.remove, (i: string) => boolean>> |
         Expect<Equals<typeof fluentNumbersArray.remove, (i: number) => boolean>> |
+        Expect<Equals<typeof flatStringsArray, FluentArray<string>>> |
+        Expect<Equals<typeof filteredStringsArray, FluentArray<string>>> |
         Expect<Equals<typeof names, string[]>> |
         Expect<Equals<typeof ages, number[]>> |
         true

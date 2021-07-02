@@ -22,6 +22,10 @@ export function arrayFirst<T>(items: T[], filter: (item: T) => boolean): T | nul
     return null;
 }
 
+export function arrayFlatMap<T, R>(items: T[], transformation: (item: T, index: number) => R[]): R[] {
+    return [...items.entries()].flatMap(([index, item]) => transformation(item, index));
+}
+
 export function arrayIsEmpty(items: unknown[]): boolean {
     return items.length === 0;
 }
@@ -45,6 +49,21 @@ export function arrayRemove<T>(items: T[], item: T): boolean {
         return false;
 
     items.splice(index, 1);
+
+    return true;
+}
+
+export function arrayRemoveIndex<T>(items: T[], index: number | string): boolean {
+    return items.splice(Number(index), 1).length > 0;
+}
+
+export function arrayReplace<T>(items: T[], original: T, replacement: T): boolean {
+    const index = items.indexOf(original);
+
+    if (index === -1)
+        return false;
+
+    items[index] = replacement;
 
     return true;
 }
