@@ -1,7 +1,25 @@
 import type { Falsy } from '@/types/index';
 
 import { compare } from './logical_helpers';
-import { isIterable } from './object_helpers';
+import { isIterable, objectWithoutEmpty } from './object_helpers';
+
+export function arrayDiff<T>(original: T[], updated: T[]): { added?: T[]; removed?: T[] } {
+    const removed = original.slice(0);
+    const added = [];
+
+    for (const updatedItem of updated) {
+        const index = removed.indexOf(updatedItem);
+
+        index !== -1
+            ? removed.splice(index, 1)
+            : added.push(updatedItem);
+    }
+
+    return objectWithoutEmpty({
+        added: added.length > 0 ? added : null,
+        removed: removed.length > 0 ? removed : null,
+    });
+}
 
 export function arrayFilter<T>(items: T[]): Exclude<T, Falsy>[];
 export function arrayFilter<T>(items: T[], filter: (item: T) => boolean): T[];

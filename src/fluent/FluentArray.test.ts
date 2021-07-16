@@ -28,6 +28,7 @@ describe('FluentArray', () => {
         expect(fluentArray.concat(['baz']).concat(['qux']).toArray()).toEqual(['foo', 'bar', 'baz', 'qux']);
         expect(fluentArray.concat(['baz']).remove('baz')).toBe(true);
         expect(fluentArray.flatMap(() => [42, 42, 23]).unique().toArray()).toEqual([42, 23]);
+        expect(fluentArray.diff(['foo', 'baz'])).toEqual({ added: ['baz'], removed: ['bar'] });
     });
 
     it('extends primitive methods', () => {

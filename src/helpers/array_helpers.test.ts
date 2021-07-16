@@ -3,6 +3,7 @@ import { toString } from '@/helpers/object_helpers';
 import type { Equals, Expect } from '@/testing/index';
 
 import {
+    arrayDiff,
     arrayFilter,
     arrayFirst,
     arrayFrom,
@@ -17,6 +18,12 @@ import {
 } from './array_helpers';
 
 describe('Array helpers', () => {
+
+    it('diffs arrays', () => {
+        expect(arrayDiff([], [])).toEqual({});
+        expect(arrayDiff(['foo', 'bar'], ['foo', 'baz'])).toEqual({ added: ['baz'], removed: ['bar'] });
+        expect(arrayDiff(['foo', 'bar'], ['bar', 'foo', 'bar'])).toEqual({ added: ['bar'] });
+    });
 
     it('finds item matching filter', () => {
         expect(arrayFirst([0, 10, 42], n => n > 10)).toBe(42);
