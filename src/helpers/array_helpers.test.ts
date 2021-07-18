@@ -118,6 +118,16 @@ describe('Array helpers', () => {
         expect(arrayZip([1, 2, 3], [4, 5, 6])).toEqual([[1, 4], [2, 5], [3, 6]]);
     });
 
+    it('creates arrays from values', () => {
+        class MyString extends String {}
+
+        expect(arrayFrom('foobar')).toEqual(['foobar']);
+        expect(arrayFrom(new String('foobar'))).toEqual([new String('foobar')]);
+        expect(arrayFrom(new MyString('foobar'))).toEqual([new MyString('foobar')]);
+        expect(arrayFrom(['foo', 'bar'])).toEqual(['foo', 'bar']);
+        expect(arrayFrom(new Set(['foo', 'bar']))).toEqual(['foo', 'bar']);
+    });
+
 });
 
 const filteredItems = arrayFilter(['foo', null, 'bar', undefined]);

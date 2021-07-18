@@ -77,8 +77,12 @@ export function isIterable(value: unknown): value is Iterable<unknown> {
     return typeof (value as { [Symbol.iterator]?: unknown })[Symbol.iterator] === 'function';
 }
 
-export function isObject(obj: unknown): obj is Obj {
-    return typeof obj === 'object' && obj !== null;
+export function isObject(value: unknown): value is Obj {
+    return typeof value === 'object' && value !== null;
+}
+
+export function isString(value: unknown): value is string | String {
+    return typeof value === 'string' || value instanceof String;
 }
 
 export function isNullable(value: unknown): value is undefined | null {

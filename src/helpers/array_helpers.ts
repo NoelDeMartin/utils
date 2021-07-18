@@ -1,7 +1,7 @@
 import type { Falsy } from '@/types/index';
 
 import { compare } from './logical_helpers';
-import { isIterable } from './object_helpers';
+import { isIterable, isString } from './object_helpers';
 
 export function arrayDiff<T>(original: T[], updated: T[]): { added: T[]; removed: T[] } {
     const removed = original.slice(0);
@@ -153,7 +153,7 @@ export function arrayFrom(value: unknown): unknown[] {
     if (Array.isArray(value))
         return value.slice(0);
 
-    if (isIterable(value))
+    if (isIterable(value) && !isString(value))
         return [...value];
 
     return [value];
