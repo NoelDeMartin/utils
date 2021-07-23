@@ -21,28 +21,23 @@ describe('Url helper', () => {
     });
 
     it('resolves directory adding paths', () => {
-        expect(urlResolveDirectory('http://example.com', 'foobar'))
-            .toEqual('http://example.com/foobar/');
+        expect(urlResolveDirectory('http://example.com', 'foobar')).toEqual('http://example.com/foobar/');
     });
 
     it('resolves directory for existing directory', () => {
-        expect(urlResolveDirectory('http://example.com/foobar/'))
-            .toEqual('http://example.com/foobar/');
+        expect(urlResolveDirectory('http://example.com/foobar/')).toEqual('http://example.com/foobar/');
     });
 
-    it('resolves parent directory for paths', () => {
-        expect(urlParentDirectory('http://example.com/foo/bar'))
-            .toEqual('http://example.com/foo/');
-    });
-
-    it('resolves parent directory for directories', () => {
-        expect(urlParentDirectory('http://example.com/foo/bar/'))
-            .toEqual('http://example.com/foo/');
+    it('resolves parent directories', () => {
+        expect(urlParentDirectory('http://example.com/foo/bar')).toEqual('http://example.com/foo/');
+        expect(urlParentDirectory('http://example.com/foo/bar/')).toEqual('http://example.com/foo/');
+        expect(urlParentDirectory('http://example.com/')).toBeNull();
     });
 
     it('gets directory names', () => {
         expect(urlDirectoryName('https://example.com/path/to/directory/')).toEqual('directory');
         expect(urlDirectoryName('https://example.com/path/to/directory/file')).toEqual('directory');
+        expect(urlDirectoryName('https://example.com')).toBeNull();
     });
 
     it('gets url roots', () => {

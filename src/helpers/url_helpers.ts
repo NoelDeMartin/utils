@@ -34,30 +34,36 @@ export function urlResolveDirectory(...parts: string[]): string {
 }
 
 export function urlRoot(url: string): string {
-    const protocolIndex = url.indexOf('://');
-    const pathIndex = url.substr(protocolIndex + 3).indexOf('/');
+    const protocolIndex = url.indexOf('://') + 3;
+    const pathIndex = url.substr(protocolIndex).indexOf('/');
 
     return pathIndex !== -1
-        ? url.substring(0, protocolIndex + 3 + pathIndex)
+        ? url.substring(0, protocolIndex + pathIndex)
         : url;
 }
 
-export function urlParentDirectory(url: string): string {
-    if (url.endsWith('/')) {
+export function urlParentDirectory(url: string): string | null {
+    if (url.endsWith('/'))
         url = url.substring(0, url.length - 1);
-    }
+
+    if (urlRoot(url) === url)
+        return null;
 
     const pathIndex = url.lastIndexOf('/');
 
-    return pathIndex !== -1 ? url.substr(0, pathIndex + 1) : url;
+    return pathIndex !== -1 ? url.substr(0, pathIndex + 1) : null;
 }
 
-export function urlDirectoryName(url: string): string {
-    if (!url.endsWith('/')) {
-        url = urlParentDirectory(url);
-    }
+export function urlDirectoryName(url: string): string | null {
+    if (!url.endsWith('/'))
+        url = urlParentDirectory(url) ?? url + '/';
 
-    return urlFileName(url.slice(0, -1));
+    const rootPathUrl = url.slice(0, -1);
+
+    if (urlRoot(url) === rootPathUrl)
+        return null;
+
+    return urlFileName(rootPathUrl);
 }
 
 export function urlFileName(url: string): string {
