@@ -3,6 +3,10 @@ import type { Falsy } from '@/types/index';
 import { compare } from './logical_helpers';
 import { isIterable, isString } from './object_helpers';
 
+export function arrayClear(items: unknown[]): void {
+    items.splice(0, items.length);
+}
+
 export function arrayDiff<T>(original: T[], updated: T[]): { added: T[]; removed: T[] } {
     const removed = original.slice(0);
     const added = [];

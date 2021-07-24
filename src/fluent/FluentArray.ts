@@ -1,4 +1,5 @@
 import {
+    arrayClear,
     arrayDiff,
     arrayFilter,
     arrayFirst,
@@ -23,6 +24,7 @@ import FluentObjectDefinition, {
 import type { FluentInstance } from './FluentObject';
 
 const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
+    clear: arrayClear,
     diff: arrayDiff,
     filter: arrayFilter,
     first: arrayFirst,
@@ -40,6 +42,7 @@ const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
 };
 
 export type FluentArrayHelpers<T> = {
+    clear(items: T[]): void;
     diff(items: T[], updated: T[]): { added: T[]; removed: T[] };
     first(items: T[], filter: (item: T) => boolean): T | null;
     filter(items: T[], filter?: (item: T) => boolean): T[] | Exclude<T, Falsy>[];
