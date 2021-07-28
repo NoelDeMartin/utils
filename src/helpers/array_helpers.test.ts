@@ -126,6 +126,7 @@ describe('Array helpers', () => {
         expect(arrayFrom(new MyString('foobar'))).toEqual([new MyString('foobar')]);
         expect(arrayFrom(['foo', 'bar'])).toEqual(['foo', 'bar']);
         expect(arrayFrom(new Set(['foo', 'bar']))).toEqual(['foo', 'bar']);
+        expect(arrayFrom(null)).toEqual([null]);
     });
 
 });

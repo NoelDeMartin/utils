@@ -74,7 +74,7 @@ export function isEmpty(value: unknown): boolean {
 }
 
 export function isIterable(value: unknown): value is Iterable<unknown> {
-    return typeof (value as { [Symbol.iterator]?: unknown })[Symbol.iterator] === 'function';
+    return typeof (value as { [Symbol.iterator]?: unknown })?.[Symbol.iterator] === 'function';
 }
 
 export function isObject(value: unknown): value is Obj {
