@@ -2,7 +2,7 @@ import type { Constructor } from '@/types/index';
 
 import { objectWithout } from './object_helpers';
 
-const BASE_PROTOTYPE = Object.getPrototypeOf(Object);
+const OBJECT_PROTOTYPE = Object.getPrototypeOf(Object);
 
 function createMixedClass(baseClass: Constructor, mixinClasses: Constructor[]): Constructor {
     class MixedClass extends baseClass {
@@ -21,28 +21,28 @@ function createMixedClass(baseClass: Constructor, mixinClasses: Constructor[]): 
 
     }
 
-    extendPrototype(MixedClass, mixinClasses);
+    for (const mixinClass of mixinClasses) {
+        extendPrototype(MixedClass, mixinClass);
+    }
 
     return MixedClass;
 }
 
-function extendPrototype(mixedClass: Constructor, mixinClasses: Constructor[]): void {
-    for (const mixinClass of mixinClasses) {
-        let mixinParentClass = mixinClass;
+function extendPrototype(mixedClass: Constructor, mixinClass: Constructor): void {
+    let parentMixin = mixinClass;
 
-        do {
-            const mixinDescriptors = objectWithout(
-                Object.getOwnPropertyDescriptors(mixinParentClass.prototype),
-                ['constructor'],
-            );
+    do {
+        const mixinDescriptors = objectWithout(
+            Object.getOwnPropertyDescriptors(parentMixin.prototype),
+            ['constructor'],
+        );
 
-            for (const [propertyName, propertyDescriptor] of Object.entries(mixinDescriptors)) {
-                Object.defineProperty(mixedClass.prototype, propertyName, propertyDescriptor);
-            }
+        for (const [propertyName, propertyDescriptor] of Object.entries(mixinDescriptors)) {
+            Object.defineProperty(mixedClass.prototype, propertyName, propertyDescriptor);
+        }
 
-            mixinParentClass = Object.getPrototypeOf(mixinParentClass);
-        } while (mixinParentClass !== BASE_PROTOTYPE);
-    }
+        parentMixin = Object.getPrototypeOf(parentMixin);
+    } while (parentMixin !== OBJECT_PROTOTYPE);
 }
 
 export function mixinFor<T>(_: Constructor<T>): Constructor<T> {
