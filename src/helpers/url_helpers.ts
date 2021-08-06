@@ -7,6 +7,18 @@ export interface UrlParts {
     fragment?: string;
 }
 
+export function requireUrlParentDirectory(url: string): string {
+    return urlParentDirectory(url) ?? fail(`Failed getting parent directory from '${url}'`);
+}
+
+export function requireUrlDirectoryName(url: string): string {
+    return urlDirectoryName(url) ?? fail(`Failed getting directory name from '${url}'`);
+}
+
+export function requireUrlParse(url: string): UrlParts {
+    return urlParse(url) ?? fail(`Failed parsing url from '${url}'`);
+}
+
 export function urlResolve(...parts: string[]): string {
     let url = parts.shift() as string;
 
