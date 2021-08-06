@@ -6,6 +6,9 @@ export type GetOptionalKeys<T> = { [K in keyof T]-?: Record<string, never> exten
 export type GetRequiredKeys<T> = { [K in keyof T]-?: T extends Record<K, T[K]> ? K : never }[keyof T];
 export type ReturnType<T extends (...args: any[]) => unknown> = T extends (...args: any[]) => infer R ? R : never;
 
+// Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/3573
+export type Use<T> = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
+
 export interface Constructor<T = Object> {
     new (...args: any[]): T;
 }

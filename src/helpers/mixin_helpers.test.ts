@@ -1,22 +1,25 @@
 import { tt } from '@/testing/index';
 import type { Equals, Expect } from '@/testing/index';
 
-import TargetClass, { BaseClass } from './inheritance_helpers.stubs';
+import TargetClass, { BaseClass } from './mixin_helpers.stubs';
 
 describe('Inheritance helpers', () => {
 
     it('mixes methods', () => {
-        const instance = new TargetClass;
+        const instance = new TargetClass<string, number>();
 
         instance.id = 1;
         instance.specificId = 2;
         instance.name = '3';
         instance.age = 4;
+        instance.baseSecret = '5';
+        instance.mixinSecret = 6;
 
         expect(instance.getId()).toEqual('id: 1');
         expect(instance.getSpecificId()).toEqual('specific id: 2');
         expect(instance.getName()).toEqual('name: 3');
         expect(instance.getAge()).toEqual('age: 4');
+        expect(instance.getSecrets()).toEqual(['5', 6]);
     });
 
     it('works with instanceof', () => {
@@ -51,7 +54,8 @@ describe('Inheritance helpers', () => {
     it('uses mixin methods within final class', () => {
         const instance = new TargetClass;
 
-        expect(instance.describe()).toEqual('id: 23, specific id: 32, name: John, surname: Doe, age: 42');
+        expect(instance.describe())
+            .toEqual('id: 23, specific id: 32, name: John, surname: Doe, age: 42, lives in planet Earth');
     });
 
     it.todo('disallows using mixins for unsupported classes');
@@ -60,13 +64,14 @@ describe('Inheritance helpers', () => {
 
 describe('Inheritance helpers types', () => {
 
-    let instance: TargetClass;
+    let instance: TargetClass<string, number>;
 
     it('has proper types', tt<
         Expect<Equals<typeof instance.name, string>> |
         Expect<Equals<typeof instance.age, number>> |
         Expect<Equals<typeof instance.getName, () => string>> |
         Expect<Equals<typeof instance.getAge, () => string>> |
+        Expect<Equals<typeof instance.getSecrets, () => [string?, number?]>> |
         true
     >());
 
