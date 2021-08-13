@@ -57,6 +57,9 @@ export function fluent(value: unknown): unknown {
 export { tap } from './tap';
 export type { Tapped } from './tap';
 
+export { value } from './value';
+export { when } from './when';
+
 export { default as FluentObjectDefinition } from './FluentObject';
 export type { FluentHelperMethods, FluentInstance, FluentPrimitiveMethods, Helper, HelperParams } from './FluentObject';
 
