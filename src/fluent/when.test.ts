@@ -10,6 +10,10 @@ class NumberStore {
 
 }
 
+function isNumberStore(store: unknown): store is NumberStore {
+    return store instanceof NumberStore;
+}
+
 describe('When helper', () => {
 
     it('works with truthy boolean', () => {
@@ -40,11 +44,19 @@ describe('When helper', () => {
         expect(store.value).toBeNull();
     });
 
-    it('works with type guards', () => {
+    it('works with truthy type guards', () => {
         const store = new NumberStore as unknown as number;
 
-        when(store, (store: unknown): store is NumberStore => store instanceof NumberStore).setValue(42);
+        when(store, isNumberStore).setValue(42);
         expect((store as unknown as NumberStore).value).toEqual(42);
+    });
+
+    it('works with truthy type guards', () => {
+        const store = {};
+
+        when(store, isNumberStore).setValue(42);
+
+        expect(store).toEqual({});
     });
 
 });
