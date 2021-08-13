@@ -1,9 +1,10 @@
-import { value } from '@/fluent/value';
-
 export function when<T extends object>(target: T, condition: () => boolean): T;
 export function when<T extends object>(target: T, condition: boolean): T;
-export function when<T extends object>(target: T, condition: boolean | (() => boolean)): T {
-    const success = value(condition);
+export function when<T extends object>(target: unknown, condition: (t: unknown) => t is T): T;
+export function when<T extends object>(target: T, condition: unknown): T {
+    const success = typeof condition === 'function'
+        ? condition(target)
+        : !!condition;
 
     return new Proxy(target, {
         get(target, property, receiver) {

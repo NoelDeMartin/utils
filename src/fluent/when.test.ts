@@ -40,4 +40,11 @@ describe('When helper', () => {
         expect(store.value).toBeNull();
     });
 
+    it('works with type guards', () => {
+        const store = new NumberStore as unknown as number;
+
+        when(store, (store: unknown): store is NumberStore => store instanceof NumberStore).setValue(42);
+        expect((store as unknown as NumberStore).value).toEqual(42);
+    });
+
 });
