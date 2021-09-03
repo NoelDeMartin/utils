@@ -22,6 +22,16 @@ export function arrayDiff<T>(original: T[], updated: T[]): { added: T[]; removed
     return { added, removed };
 }
 
+export function arrayChunk<T>(items: T[], chunkSize: number): T[][] {
+    const chunks = [];
+
+    for (let i = 0; i < items.length; i += chunkSize) {
+        chunks.push(items.slice(i, i + chunkSize));
+    }
+
+    return chunks;
+}
+
 export function arrayFilter<T>(items: T[]): Exclude<T, Falsy>[];
 export function arrayFilter<T>(items: T[], filter: (item: T) => boolean): T[];
 export function arrayFilter<T>(items: T[], filter?: (item: T) => boolean): T[] {

@@ -1,3 +1,4 @@
+import { arrayChunk } from '@/helpers/array_helpers';
 import {
     urlClean,
     urlDirectoryName,
@@ -18,6 +19,12 @@ describe('Url helper', () => {
     it('uses new domains when resolving different domains', () => {
         expect(urlResolve('http://example.com', 'http://somethingelse.com/foobar'))
             .toEqual('http://somethingelse.com/foobar');
+    });
+
+    it('splits arrays into chunks', () => {
+        expect(arrayChunk([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
+        expect(arrayChunk([1, 2, 3, 4, 5, 6], 2)).toEqual([[1, 2], [3, 4], [5, 6]]);
+        expect(arrayChunk([1, 2, 3, 4, 5, 6], 10)).toEqual([[1, 2, 3, 4, 5, 6]]);
     });
 
     it('resolves directory adding paths', () => {
