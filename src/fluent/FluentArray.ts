@@ -78,14 +78,14 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
         yield* this.value;
     }
 
-    public flatMap!: <T>(callback: (item: Item, index: number) => T[])
+    declare public flatMap: <T>(callback: (item: Item, index: number) => T[])
         => FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
-    public map!: <T>(callback: (item: Item) => T) => FluentArrayInstance<FluentArrayDefinition<T>, T>;
+    declare public map: <T>(callback: (item: Item) => T) => FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
-    public project!: <K extends keyof Item>(key: K) => Item[K][];
+    declare public project: <K extends keyof Item>(key: K) => Item[K][];
 
-    public where!: <K extends keyof Item>(key: K, value?: Item[K]) =>
+    declare public where: <K extends keyof Item>(key: K, value?: Item[K]) =>
         FluentArrayInstance<FluentArrayDefinition<Item>, Item>;
 
     public get(index: number): Item {

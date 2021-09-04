@@ -10,10 +10,10 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
         return promisedValue;
     }
 
-    private promise!: Promise<T>;
     private _value?: T;
-    private _resolve!: (result: T) => void;
-    private _reject!: (error?: Error) => void;
+    declare private promise: Promise<T>;
+    declare private _resolve: (result: T) => void;
+    declare private _reject: (error?: Error) => void;
 
     constructor() {
         this.initPromise();
