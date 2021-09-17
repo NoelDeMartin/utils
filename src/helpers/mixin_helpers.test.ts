@@ -1,7 +1,8 @@
 import { tt } from '@/testing/index';
 import type { Equals, Expect } from '@/testing/index';
 
-import TargetClass, { BaseClass } from './mixin_helpers.stubs';
+import TargetClass, { BaseClass, MixinAA } from './mixin_helpers.stubs';
+import { usesMixin } from './mixin_helpers';
 
 describe('Inheritance helpers', () => {
 
@@ -56,6 +57,12 @@ describe('Inheritance helpers', () => {
 
         expect(instance.describe())
             .toEqual('id: 23, specific id: 32, name: John, surname: Doe, age: 42, lives in planet Earth');
+    });
+
+    it('detects mixins in use', () => {
+        expect(usesMixin(TargetClass, MixinAA)).toBe(true);
+        expect(usesMixin(new TargetClass, MixinAA)).toBe(true);
+        expect(usesMixin({}, MixinAA)).toBe(false);
     });
 
     it.todo('disallows using mixins for unsupported classes');

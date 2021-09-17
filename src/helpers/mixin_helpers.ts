@@ -7,6 +7,8 @@ const OBJECT_PROTOTYPE = Object.getPrototypeOf(Object);
 function createMixedClass(baseClass: Constructor, mixinClasses: Constructor[]): Constructor {
     class MixedClass extends baseClass {
 
+        public static __mixins = mixinClasses;
+
         constructor(...args: any[]) {
             super(...args);
 
@@ -79,4 +81,9 @@ export function mixedWithoutTypes(mixins: Constructor[]): Object;
 export function mixedWithoutTypes<Base>(baseClass: Base, mixins: Constructor[]): Base;
 export function mixedWithoutTypes(...args: any[]): unknown {
     return (mixed as Function)(...args);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+export function usesMixin(target: any, mixin: Constructor): boolean {
+    return (target?.__mixins ?? target?.__proto__?.constructor?.__mixins ?? []).includes(mixin);
 }
