@@ -164,20 +164,11 @@ export function arrayZip<T>(...arrays: T[][]): T[][] {
 export function arrayFrom<T>(value: Iterable<T>): T[];
 export function arrayFrom<T>(value: T): T[];
 export function arrayFrom(value: unknown): unknown[] {
-    if (Array.isArray(value))
-        return value.slice(0);
-
-    if (isIterable(value) && !isString(value))
-        return [...value];
-
-    return [value];
+    return Array.isArray(value) || (isIterable(value) && !isString(value))
+        ? Array.from(value)
+        : [value];
 }
 
 export function range(length: number): number[] {
-    const items: number[] = [];
-
-    for (let i = 0; i < length; i++)
-        items.push(i);
-
-    return items;
+    return Array.from({ length }, (_, item) => item);
 }
