@@ -25,6 +25,16 @@ describe('Array helpers', () => {
         expect(arrayDiff(['foo', 'bar'], ['bar', 'foo', 'bar'])).toEqual({ added: ['bar'], removed: [] });
     });
 
+    it('diffs arrays using custom search function', () => {
+        const compareIds = (a: { id: number }, b: { id: number }) => a.id === b.id;
+        const item = (id: number) => ({ id });
+
+        expect(arrayDiff([item(0), item(42)], [item(42), item(23)], compareIds)).toEqual({
+            added: [item(23)],
+            removed: [item(0)],
+        });
+    });
+
     it('finds item matching filter', () => {
         expect(arrayFirst([0, 10, 42], n => n > 10)).toBe(42);
         expect(arrayFirst([0, 10, 42], n => n > 100)).toBeNull();

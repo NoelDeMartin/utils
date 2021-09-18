@@ -7,12 +7,19 @@ export function arrayClear(items: unknown[]): void {
     items.splice(0, items.length);
 }
 
-export function arrayDiff<T>(original: T[], updated: T[]): { added: T[]; removed: T[] } {
+export function arrayDiff<T>(
+    original: T[],
+    updated: T[],
+    compare?: (a: T, b: T) => boolean,
+): { added: T[]; removed: T[] } {
     const removed = original.slice(0);
     const added = [];
+    const search: ((item: T, items: T[]) => number) = compare
+        ? (item, items) => items.findIndex(otherItem => compare(item, otherItem))
+        : (item, items) => items.indexOf(item);
 
     for (const updatedItem of updated) {
-        const index = removed.indexOf(updatedItem);
+        const index = search(updatedItem, removed);
 
         index !== -1
             ? removed.splice(index, 1)
