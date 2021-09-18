@@ -1,3 +1,5 @@
+import { fail } from './error_helpers';
+
 export interface UrlParts {
     protocol?: string;
     domain?: string;

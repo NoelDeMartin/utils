@@ -1,5 +1,6 @@
 import { arrayChunk } from '@/helpers/array_helpers';
 import {
+    requireUrlDirectoryName,
     urlClean,
     urlDirectoryName,
     urlParentDirectory,
@@ -91,6 +92,11 @@ describe('Url helper', () => {
             ),
         )
             .toEqual('http://example.com?query=search');
+    });
+
+    it('requires urls', () => {
+        expect(() => requireUrlDirectoryName('https://example.org')).toThrowError();
+        expect(requireUrlDirectoryName('https://example.org/foobar/')).toEqual('foobar');
     });
 
 });
