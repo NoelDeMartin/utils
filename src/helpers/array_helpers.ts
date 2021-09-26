@@ -1,4 +1,4 @@
-import type { Falsy } from '@/types/index';
+import type { Closure, Falsy } from '@/types/index';
 
 import { compare } from './logical_helpers';
 import { isIterable, isString } from './object_helpers';
@@ -105,24 +105,53 @@ export function arrayReplace<T>(items: T[], original: T, replacement: T): boolea
 }
 
 export function arraySorted<T>(items: T[]): T[];
-export function arraySorted<T>(items: T[], compare?: (a: T, b: T) => number): T[];
-export function arraySorted<T>(items: T[], field?: keyof T, direction?: 'asc' | 'desc'): T[];
+export function arraySorted<T>(items: T[], direction: 'asc' | 'desc'): T[];
+export function arraySorted<T>(items: T[], compare: (a: T, b: T) => number): T[];
+export function arraySorted<T>(items: T[], field: keyof T, direction?: 'asc' | 'desc'): T[];
+export function arraySorted<T>(items: T[], fields: (keyof T)[], direction?: 'asc' | 'desc'): T[];
 export function arraySorted<T>(
     items: T[],
-    compareOrField?: keyof T | ((a: T, b: T) => number),
+    compareOrFieldOrDirection?: keyof T | (keyof T)[] | ((a: T, b: T) => number) | 'asc' | 'desc',
     direction?: 'asc' | 'desc',
 ): T[] {
-    const comparisonFn = typeof compareOrField !== 'string'
-        ? compareOrField as undefined | ((a: T, b: T) => number)
-        : direction === 'desc'
-            ? (a: T, b: T) => compare(b[compareOrField], a[compareOrField])
-            : (a: T, b: T) => compare(a[compareOrField], b[compareOrField]);
+    direction = compareOrFieldOrDirection === 'asc' || compareOrFieldOrDirection === 'desc'
+        ? compareOrFieldOrDirection as 'asc' | 'desc'
+        : direction;
 
-    const sorted = items.slice(0);
+    const getComparisonFunction = (): Closure<[T, T], number> | undefined => {
+        const compareItems = direction === 'desc'
+            ? (field: keyof T) => (a: T, b: T) => compare(b[field], a[field])
+            : (field: keyof T) => (a: T, b: T) => compare(a[field], b[field]);
 
-    sorted.sort(comparisonFn);
+        switch (typeof compareOrFieldOrDirection) {
+            case 'function':
+                return compareOrFieldOrDirection;
+            case 'string':
+                if (compareOrFieldOrDirection === 'asc')
+                    return;
 
-    return sorted;
+                if (compareOrFieldOrDirection === 'desc')
+                    return (a, b) => compare(b, a);
+
+                return compareItems(compareOrFieldOrDirection);
+            case 'object': {
+                const comparisonFunctions = compareOrFieldOrDirection.map(field => compareItems(field));
+
+                return (a: T, b: T) => {
+                    for (const comparisonFunction of comparisonFunctions) {
+                        const result = comparisonFunction(a, b);
+
+                        if (result !== 0)
+                            return result;
+                    }
+
+                    return 0;
+                };
+            }
+        }
+    };
+
+    return items.slice(0).sort(getComparisonFunction());
 }
 
 export function arrayUnique<T>(items: T[], extractKey?: (item: T) => string): T[] {

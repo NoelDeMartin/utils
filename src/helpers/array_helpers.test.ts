@@ -69,12 +69,32 @@ describe('Array helpers', () => {
         expect(arrayUnique([4,1,2,1,3,4,2], n => toString(n % 2))).toEqual([4,1]);
     });
 
-    it('sorts by field', () => {
+    it('sorts items', () => {
+        expect(arraySorted([1, 3, 2])).toEqual([1, 2, 3]);
+        expect(arraySorted([1, 3, 2], 'asc')).toEqual([1, 2, 3]);
+        expect(arraySorted([1, 3, 2], 'desc')).toEqual([3, 2, 1]);
+    });
+
+    it('sorts items by field', () => {
         const items = [{ name: 'Son Goku' }, { name: 'Astroboy' }, { name: 'Zetman' }];
 
         expect(arraySorted(items, 'name').map(item => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
         expect(arraySorted(items, 'name', 'asc').map(item => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
         expect(arraySorted(items, 'name', 'desc').map(item => item.name)).toEqual(['Zetman', 'Son Goku', 'Astroboy']);
+    });
+
+    it('sorts items by multiple fields', () => {
+        const sonGokuKid = { name: 'Son Goku', age: 11 };
+        const sonGokuAdult = { name: 'Son Goku', age: 31 };
+        const astroboy = { name: 'Astroboy', age: 18 };
+        const zetman = { name: 'Zetman', age: 16 };
+        const items = [sonGokuAdult, sonGokuKid, astroboy, zetman];
+
+        expect(arraySorted(items, ['name'])).toEqual([astroboy, sonGokuAdult, sonGokuKid, zetman]);
+        expect(arraySorted(items, ['name'], 'desc')).toEqual([zetman, sonGokuAdult, sonGokuKid, astroboy]);
+        expect(arraySorted(items, ['name', 'age'])).toEqual([astroboy, sonGokuKid, sonGokuAdult, zetman]);
+        expect(arraySorted(items, ['name', 'age'], 'desc')).toEqual([zetman, sonGokuAdult, sonGokuKid, astroboy]);
+        expect(arraySorted(items, ['age'])).toEqual([sonGokuKid, zetman, astroboy, sonGokuAdult]);
     });
 
     it('gets items without specified indexes', () => {
