@@ -1,3 +1,4 @@
+import type { Constructor } from '@/types/index';
 import type { Equals } from '@/testing/index';
 
 export type Obj = Record<string, unknown>;
@@ -59,6 +60,10 @@ export function invert(map: Record<string, string>): Record<string, string> {
 }
 
 export const isArray = Array.isArray.bind(Array);
+
+export function isConstructor(value: object): value is Constructor {
+    return 'prototype' in value;
+}
 
 export function isEmpty(value: unknown): boolean {
     if (value === null || value === undefined)
