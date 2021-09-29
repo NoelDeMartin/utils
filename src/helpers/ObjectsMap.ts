@@ -40,6 +40,10 @@ export default class ObjectsMap<Item extends object> {
         yield* this.keysToItems;
     }
 
+    public get size(): number {
+        return this.keysToItems.size;
+    }
+
     public items(): IterableIterator<Item> {
         return this.keysToItems.values();
     }
