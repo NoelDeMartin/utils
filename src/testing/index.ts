@@ -11,3 +11,5 @@ export type Equals<X, Y> =
 export function tt<T>(): () => unknown {
     return () => expect(true).toBe(true);
 }
+
+export * from './mocking';
