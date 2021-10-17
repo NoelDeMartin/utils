@@ -1,4 +1,5 @@
-export function runtimeGlobal(): Window & typeof globalThis | NodeJS.Global {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function runtimeGlobal<T = any>(): T {
     return typeof global !== 'undefined'
         ? global
         : typeof globalThis !== 'undefined'

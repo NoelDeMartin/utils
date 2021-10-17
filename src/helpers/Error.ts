@@ -1,6 +1,6 @@
 import { runtimeGlobal } from '@/helpers/runtime_helpers';
 
-const BaseError = runtimeGlobal().Error;
+const BaseError = runtimeGlobal<typeof globalThis>().Error;
 
 class Error extends BaseError {
 
