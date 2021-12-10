@@ -62,6 +62,14 @@ export function arrayFlatMap<T, R>(items: T[], transformation: (item: T, index: 
     return [...items.entries()].flatMap(([index, item]) => transformation(item, index));
 }
 
+export function arrayWithItemAt<T>(items: T[], item: T, index: number): T[] {
+    return [
+        ...items.slice(0, index + 1),
+        item,
+        ...items.slice(index + 1),
+    ];
+}
+
 export function arrayIsEmpty(items: unknown[]): boolean {
     return items.length === 0;
 }
@@ -154,6 +162,10 @@ export function arraySorted<T>(
     return items.slice(0).sort(getComparisonFunction());
 }
 
+export function arraySwap(items: unknown[], firstIndex: number, secondIndex: number): void {
+    [items[firstIndex], items[secondIndex]] = [items[secondIndex], items[firstIndex]];
+}
+
 export function arrayUnique<T>(items: T[], extractKey?: (item: T) => string): T[] {
     return extractKey
         ? Object.values(
@@ -179,6 +191,10 @@ export function arrayWhere<T, K extends keyof T>(items: T[], filter: string, val
 
 export function arrayWithout<T>(items: T[], exclude: T[]): T[] {
     return arrayFilter(items, item => exclude.indexOf(item) === -1);
+}
+
+export function arrayWithoutIndex<T>(items: T[], index: number): T[] {
+    return arrayWithoutIndexes(items, [index]);
 }
 
 export function arrayWithoutIndexes<T>(items: T[], indexes: number[]): T[] {
