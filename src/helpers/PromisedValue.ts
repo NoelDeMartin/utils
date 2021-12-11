@@ -10,7 +10,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
         return promisedValue;
     }
 
-    private _value?: T;
+    declare private _value?: T;
     declare private promise: Promise<T>;
     declare private _resolve: (result: T) => void;
     declare private _reject: (error?: Error) => void;
@@ -19,7 +19,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
         this.initPromise();
     }
 
-    public [Symbol.toStringTag]: string;
+    declare public [Symbol.toStringTag]: string;
 
     public get value(): T | null {
         return this._value || null;

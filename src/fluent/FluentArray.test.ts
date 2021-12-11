@@ -47,7 +47,7 @@ describe('FluentArray', () => {
         class SuperFluentArray<T extends { toString(): string }> extends FluentArrayDefinition<T> {
 
             // TODO avoid doing this
-            public static create: <T>(value?: T[]) => FluentArrayInstance<SuperFluentArray<T>, T>;
+            declare public static create: <T>(value?: T[]) => FluentArrayInstance<SuperFluentArray<T>, T>;
 
             public slice(): this {
                 return this.create(this.value.reverse());

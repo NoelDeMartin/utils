@@ -7,9 +7,7 @@ export type Equals<X, Y> =
     (<T>() => T extends X ? 1 : 2) extends
     (<T>() => T extends Y ? 1 : 2) ? true : false;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-unused-vars
-export function tt<T>(): () => unknown {
-    return () => expect(true).toBe(true);
-}
+// eslint-disable-next-line
+export const tt: <T>() => () => any = () => () => expect(true).toBe(true);
 
 export * from './mocking';

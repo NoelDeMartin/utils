@@ -6,7 +6,7 @@ export function catchError(callback: () => unknown): Error | null {
 
         return null;
     } catch (error) {
-        return error;
+        return error as Error;
     }
 }
 
