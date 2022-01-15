@@ -16,6 +16,7 @@ import {
     arrayWithoutIndexes,
     arrayZip,
 } from './array_helpers';
+import { arrayRandomItem } from '@/main';
 
 describe('Array helpers', () => {
 
@@ -38,6 +39,12 @@ describe('Array helpers', () => {
     it('finds item matching filter', () => {
         expect(arrayFirst([0, 10, 42], n => n > 10)).toBe(42);
         expect(arrayFirst([0, 10, 42], n => n > 100)).toBeNull();
+    });
+
+    it('gets random items', () => {
+        expect(arrayRandomItem([])).toBeNull();
+        expect(arrayRandomItem([42])).toBe(42);
+        expect([23, 42].includes(arrayRandomItem([23, 42]) as number)).toBe(true);
     });
 
     it('removes items', () => {

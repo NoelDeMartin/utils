@@ -86,6 +86,10 @@ export function arrayPull<T>(items: T[], index: number): T {
     return value;
 }
 
+export function arrayRandomItem<T>(items: T[]): T | null {
+    return items.length === 0 ? null : items[Math.floor(Math.random() * items.length)];
+}
+
 export function arrayRemove<T>(items: T[], item: T): boolean {
     const index = items.indexOf(item);
 
