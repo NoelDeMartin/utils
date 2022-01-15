@@ -42,6 +42,12 @@ describe('Url helper', () => {
         expect(urlParentDirectory('http://example.com/')).toBeNull();
     });
 
+    it('resolves urls with non-standard protocols', () => {
+        expect(urlResolve('storage://local/path/', 'file')).toEqual('storage://local/path/file');
+        expect(urlResolve('storage://local/path/', 'storage://local/another/path/file'))
+            .toEqual('storage://local/another/path/file');
+    });
+
     it('gets directory names', () => {
         expect(urlDirectoryName('https://example.com/path/to/directory/')).toEqual('directory');
         expect(urlDirectoryName('https://example.com/path/to/directory/file')).toEqual('directory');

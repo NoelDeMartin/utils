@@ -29,7 +29,7 @@ export function urlResolve(...parts: string[]): string {
 
         if (fragment.startsWith('/')) {
             url = urlRoot(url) + fragment;
-        } else if (fragment.startsWith('http://') || fragment.startsWith('https://')) {
+        } else if (fragment.match(/^\w+:\/\//)) {
             url = fragment;
         } else if (url.endsWith('/')) {
             url += fragment;
