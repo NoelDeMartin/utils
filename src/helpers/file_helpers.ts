@@ -1,4 +1,4 @@
-export const enum FileMediaType {
+export enum FileMediaType {
     JSON = 'application/json',
     CSV = 'text/csv',
 }
