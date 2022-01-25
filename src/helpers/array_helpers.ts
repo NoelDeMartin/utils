@@ -90,6 +90,20 @@ export function arrayRandomItem<T>(items: T[]): T | null {
     return items.length === 0 ? null : items[Math.floor(Math.random() * items.length)];
 }
 
+export function arrayRandomItems<T>(items: T[], count: number): T[] {
+    const itemsLeft = items.slice(0);
+    const randomItems = [];
+
+    while (itemsLeft.length > 0 && randomItems.length < count) {
+        const index = Math.floor(Math.random() * itemsLeft.length);
+
+        randomItems.push(itemsLeft[index]);
+        itemsLeft.splice(index, 1);
+    }
+
+    return randomItems;
+}
+
 export function arrayRemove<T>(items: T[], item: T): boolean {
     const index = items.indexOf(item);
 

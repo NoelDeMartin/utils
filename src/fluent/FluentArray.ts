@@ -7,6 +7,7 @@ import {
     arrayIsEmpty,
     arrayProject,
     arrayRandomItem,
+    arrayRandomItems,
     arrayRemove,
     arrayRemoveIndex,
     arrayReplace,
@@ -33,6 +34,7 @@ const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     isEmpty: arrayIsEmpty,
     project: arrayProject,
     randomItem: arrayRandomItem,
+    randomItems: arrayRandomItems,
     remove: arrayRemove,
     removeIndex: arrayRemoveIndex,
     replace: arrayReplace,
@@ -51,7 +53,8 @@ export type FluentArrayHelpers<T> = {
     flatMap<R>(items: T[], transformation?: (item: T, index: number) => R[]): R[];
     isEmpty(items: T[]): boolean;
     project(items: T[], property: string): unknown[];
-    randomItem(items: T[]): T;
+    randomItem(items: T[]): T | null;
+    randomItems(items: T[], count: number): T[];
     remove(items: T[], item: T): boolean;
     removeIndex(items: T[], index: number | string): boolean;
     replace(items: T[], original: T, replacement: T): boolean;
