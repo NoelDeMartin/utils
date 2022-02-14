@@ -16,7 +16,7 @@ import {
     arrayWithoutIndexes,
     arrayZip,
 } from './array_helpers';
-import { arrayRandomItem } from '@/main';
+import { arrayRandomItem, arrayWithout } from '@/main';
 
 describe('Array helpers', () => {
 
@@ -102,6 +102,15 @@ describe('Array helpers', () => {
         expect(arraySorted(items, ['name', 'age'])).toEqual([astroboy, sonGokuKid, sonGokuAdult, zetman]);
         expect(arraySorted(items, ['name', 'age'], 'desc')).toEqual([zetman, sonGokuAdult, sonGokuKid, astroboy]);
         expect(arraySorted(items, ['age'])).toEqual([sonGokuKid, zetman, astroboy, sonGokuAdult]);
+    });
+
+    it('gets items without specified items', () => {
+        const items = ['foo', 'bar', 'baz'];
+
+        expect(arrayWithout(items, 'bar')).toEqual(['foo', 'baz']);
+        expect(arrayWithout(items, ['bar'])).toEqual(['foo', 'baz']);
+        expect(arrayWithout(items, ['foo', 'baz'])).toEqual(['bar']);
+        expect(items).toEqual(['foo', 'bar', 'baz']);
     });
 
     it('gets items without specified indexes', () => {

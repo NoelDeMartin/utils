@@ -207,8 +207,10 @@ export function arrayWhere<T, K extends keyof T>(items: T[], filter: string, val
     });
 }
 
-export function arrayWithout<T>(items: T[], exclude: T[]): T[] {
-    return arrayFilter(items, item => exclude.indexOf(item) === -1);
+export function arrayWithout<T>(items: T[], exclude: T | T[]): T[] {
+    return Array.isArray(exclude)
+        ? arrayFilter(items, item => exclude.indexOf(item) === -1)
+        : arrayWithoutIndex(items, items.indexOf(exclude));
 }
 
 export function arrayWithoutIndex<T>(items: T[], index: number): T[] {
