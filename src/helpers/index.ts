@@ -11,6 +11,7 @@ export * from './error_helpers';
 export * from './file_helpers';
 export * from './hash_helpers';
 export * from './identity_helpers';
+export * from './location_helpers';
 export * from './logical_helpers';
 export * from './mixin_helpers';
 export * from './network_helpers';
