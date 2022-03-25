@@ -11,6 +11,12 @@ export function getLocationQueryParameters<T extends string = string>(): Partial
     return queryParameters as Partial<{ [key in T]: string }>;
 }
 
+export function hasLocationQueryParameter(parameter: string): boolean {
+    const url = new URL(location.href);
+
+    return url.searchParams.has(parameter);
+}
+
 export function updateLocationQueryParameters(parameters: Record<string, string | undefined>): void {
     const url = Object.entries(parameters).reduce(
         (url, [parameter, value]) => {
