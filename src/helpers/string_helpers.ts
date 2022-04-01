@@ -1,3 +1,10 @@
+export function stringExcerpt(text: string, maxLength: number = 300): string {
+    if (text.length < maxLength)
+        return text;
+
+    return text.substring(maxLength - 3) + '...';
+}
+
 export function stringReverse(text: string): string {
     return text.split('').reverse().join('');
 }

@@ -16,6 +16,7 @@ describe('String helpers', () => {
         expect(stringToSlug('Sin perdón')).toEqual('sin-perdon');
         expect(stringToSlug('Mañana')).toEqual('manana');
         expect(stringToSlug('It\'s always sunny in philadelphia')).toEqual('its-always-sunny-in-philadelphia');
+        expect(stringToSlug('It\'s always sunny in philadelphia   ')).toEqual('its-always-sunny-in-philadelphia');
         expect(stringToSlug('already-a-slug')).toEqual('already-a-slug');
     });
 
