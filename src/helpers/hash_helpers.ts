@@ -152,7 +152,7 @@ function rhex(n: any) {
     let s = '',
         j = 0;
     for (; j < 4; j++)
-        s += hex_chr[(n >> (j * 8 + 4)) & 0x0F] + hex_chr[(n >> (j * 8)) & 0x0F];
+        s += hex_chr[(n >> (j * 8 + 4)) & 0x0F] as string + hex_chr[(n >> (j * 8)) & 0x0F];
     return s;
 }
 

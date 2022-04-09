@@ -14,10 +14,10 @@ export function stringSplitWords(text: string): string[] {
 }
 
 export function stringToCamelCase(text: string): string {
-    const words = stringSplitWords(text);
+    const [firstWord, ...otherWords] = stringSplitWords(text);
 
-    return words[0].toLowerCase()
-        + words.slice(1).map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase()).join('');
+    return (firstWord ?? '').toLowerCase()
+        + otherWords.map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase()).join('');
 }
 
 export function stringToSlug(text: string, separator: string = '-'): string {

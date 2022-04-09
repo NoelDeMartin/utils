@@ -29,7 +29,7 @@ describe('Semaphore', () => {
 
         const items: string[] = [];
         const lock = new Semaphore;
-        const writers = [new Writer, new Writer];
+        const writers: [Writer, Writer] = [new Writer, new Writer];
 
         // Act
         const promises: Promise<void>[] = [];

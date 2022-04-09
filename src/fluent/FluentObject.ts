@@ -46,7 +46,7 @@ export function addHelperMethodsToPrototype(
         prototype[name] = function(...args: any[]) {
             const value = method(this.value, ...args);
 
-            return this.chain(value);
+            return this.chain?.(value);
         };
     }
 }
@@ -75,7 +75,7 @@ export function addPrimitiveMethodsToPrototype(
         prototype[name] = function(...args: any[]) {
             const value = descriptor.value.call(this.value, ...args);
 
-            return this.chain(value);
+            return this.chain?.(value);
         };
     }
 }

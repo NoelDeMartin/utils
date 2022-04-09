@@ -39,8 +39,8 @@ describe('FluentArray', () => {
     });
 
     it('infers item types', () => {
-        expect(FluentArrayDefinition.create(['foo', 'bar']).get(1).toUpperCase()).toBe('BAR');
-        expect(FluentArrayDefinition.create([-42, 42]).get(1).toFixed(2)).toBe('42.00');
+        expect(FluentArrayDefinition.create(['foo', 'bar']).get(1)?.toUpperCase()).toBe('BAR');
+        expect(FluentArrayDefinition.create([-42, 42]).get(1)?.toFixed(2)).toBe('42.00');
     });
 
     it('can be subclassed', () => {

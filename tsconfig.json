@@ -3,6 +3,7 @@
         "target": "esnext",
         "module": "esnext",
         "strict": true,
+        "noUncheckedIndexedAccess": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "baseUrl": "./src",

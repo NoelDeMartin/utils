@@ -78,7 +78,7 @@ export function arrayProject<T, S extends keyof T>(items: T[], property: S): T[S
     return items.map(item => item[property]);
 }
 
-export function arrayPull<T>(items: T[], index: number): T {
+export function arrayPull<T>(items: T[], index: number): T | undefined {
     const value = items[index];
 
     items.splice(index, 1);
@@ -87,17 +87,19 @@ export function arrayPull<T>(items: T[], index: number): T {
 }
 
 export function arrayRandomItem<T>(items: T[]): T | null {
-    return items.length === 0 ? null : items[Math.floor(Math.random() * items.length)];
+    return items.length === 0
+        ? null
+        : items[Math.floor(Math.random() * items.length)] as T;
 }
 
 export function arrayRandomItems<T>(items: T[], count: number): T[] {
     const itemsLeft = items.slice(0);
-    const randomItems = [];
+    const randomItems = [] as T[];
 
     while (itemsLeft.length > 0 && randomItems.length < count) {
         const index = Math.floor(Math.random() * itemsLeft.length);
 
-        randomItems.push(itemsLeft[index]);
+        randomItems.push(itemsLeft[index] as T);
         itemsLeft.splice(index, 1);
     }
 
@@ -226,9 +228,10 @@ export function arrayWithoutIndexes<T>(items: T[], indexes: number[]): T[] {
 
 export function arrayZip<T>(...arrays: T[][]): T[][] {
     const zippedArrays: T[][] = [];
+    const arraysLength = arrays[0]?.length ?? 0;
 
-    for (let i = 0; i < arrays[0].length; i++)
-        zippedArrays.push(arrays.map(a => a[i]));
+    for (let i = 0; i < arraysLength; i++)
+        zippedArrays.push(arrays.map(a => a[i] as T));
 
     return zippedArrays;
 }
