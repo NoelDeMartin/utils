@@ -1,8 +1,24 @@
+import type { ArrayItem, Tuple } from '@/types/index';
+
 export function stringExcerpt(text: string, maxLength: number = 300): string {
     if (text.length < maxLength)
         return text;
 
     return text.substring(maxLength - 3) + '...';
+}
+
+export function stringMatch<Length extends number, Optional extends number = number>(
+    text: string,
+    pattern: RegExp,
+): Tuple<ArrayItem<RegExpMatchArray>, Length, Optional> | null {
+    return text.match(pattern) as Tuple<ArrayItem<RegExpMatchArray>, Length> | null;
+}
+
+export function stringMatchAll<Length extends number, Optional extends number = number>(
+    text: string,
+    pattern: RegExp,
+): IterableIterator<Tuple<ArrayItem<RegExpMatchArray>, Length, Optional>> {
+    return text.matchAll(pattern) as IterableIterator<Tuple<ArrayItem<RegExpMatchArray>, Length>>;
 }
 
 export function stringReverse(text: string): string {
