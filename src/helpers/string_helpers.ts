@@ -1,5 +1,9 @@
 import type { ArrayItem, Tuple } from '@/types/index';
 
+export function stringCapitalize(text: string): string {
+    return text[0]?.toUpperCase() + text.slice(1);
+}
+
 export function stringExcerpt(text: string, maxLength: number = 300): string {
     if (text.length < maxLength)
         return text;
