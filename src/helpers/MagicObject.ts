@@ -15,11 +15,11 @@ export default abstract class MagicObject {
     }
 
     protected __set(property: string, value: unknown): void {
-        //
+        Reflect.set(this, property, value);
     }
 
     protected __delete(property: string): void {
-        //
+        Reflect.deleteProperty(this, property);
     }
 
     protected initializeProxy(): void {
