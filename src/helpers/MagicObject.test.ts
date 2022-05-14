@@ -14,20 +14,10 @@ class Stub extends MagicObject {
     }
 
     protected __get(property: string): unknown {
-        if (property in this.attributes) {
-            return this.attributes[property];
-        }
-
-        return super.__get(property);
+        return this.attributes[property];
     }
 
     protected __set(property: string, value: unknown): void {
-        if (property in this) {
-            super.__set(property, value);
-
-            return;
-        }
-
         this.attributes[property] = value;
     }
 

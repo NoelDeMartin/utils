@@ -59,14 +59,14 @@ export default class MagicObject {
         this._proxyTarget = this;
         this._proxy = new Proxy(this._proxyTarget, {
             get(target, property, receiver) {
-                if (typeof property !== 'string' || Static.isReservedProperty(property)) {
+                if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
                     return Reflect.get(target, property, receiver);
                 }
 
                 return target.__get(property);
             },
             set(target, property, value, receiver) {
-                if (typeof property !== 'string' || Static.isReservedProperty(property)) {
+                if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
                     return Reflect.set(target, property, value, receiver);
                 }
 
@@ -75,7 +75,7 @@ export default class MagicObject {
                 return true;
             },
             deleteProperty(target, property) {
-                if (typeof property !== 'string' || Static.isReservedProperty(property)) {
+                if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
                     return Reflect.deleteProperty(target, property);
                 }
 
