@@ -6,6 +6,7 @@ export { default as Semaphore } from './Semaphore';
 export { default as Storage, StorageSingleton } from './Storage';
 export * from './array_helpers';
 export * from './caching_helpers';
+export * from './chaos_helpers';
 export * from './date_helpers';
 export * from './error_helpers';
 export * from './file_helpers';
