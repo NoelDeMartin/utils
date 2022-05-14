@@ -1,5 +1,5 @@
 export { default as Error, ErrorOptions } from './Error';
-export { default as MagicObject } from './MagicObject';
+export { default as MagicObject, MagicObjectConstructor } from './MagicObject';
 export { default as ObjectsMap, ObjectKeyExtractor } from './ObjectsMap';
 export { default as PromisedValue } from './PromisedValue';
 export { default as Semaphore } from './Semaphore';
