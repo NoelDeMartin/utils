@@ -152,6 +152,8 @@ export function objectWithout<T extends Obj, K extends keyof T>(obj: T, keys: K[
     return newObject;
 }
 
+export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithoutEmpty<T>;
+export function objectWithoutEmpty<T extends object>(obj: T): ObjectWithoutEmpty<T>;
 export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithoutEmpty<T> {
     const cleanObject = {} as Record<string, unknown>;
 

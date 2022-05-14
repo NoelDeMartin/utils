@@ -11,7 +11,13 @@ describe('Object helpers', () => {
     });
 
     it('removes empty values', () => {
-        expect(objectWithoutEmpty({ foo: false, bar: null, baz: undefined })).toEqual({ foo: false });
+        interface MyObject {
+            foo: boolean;
+            bar: null;
+            baz: undefined;
+        }
+
+        expect(objectWithoutEmpty<MyObject>({ foo: false, bar: null, baz: undefined })).toEqual({ foo: false });
     });
 
     it('clones Dates properly', () => {

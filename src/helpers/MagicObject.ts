@@ -1,4 +1,4 @@
-import type { Constructor } from '@/main';
+import type { Constructor } from '../types/classes';
 
 export type MagicObjectConstructor<T extends MagicObject = MagicObject> = Constructor<T> & typeof MagicObject;
 
