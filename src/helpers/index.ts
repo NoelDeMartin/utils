@@ -9,6 +9,7 @@ export * from './caching_helpers';
 export * from './chaos_helpers';
 export * from './date_helpers';
 export * from './error_helpers';
+export * from './escape_helpers';
 export * from './file_helpers';
 export * from './hash_helpers';
 export * from './identity_helpers';
