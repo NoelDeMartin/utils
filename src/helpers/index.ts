@@ -5,6 +5,7 @@ export { default as PromisedValue } from './PromisedValue';
 export { default as Semaphore } from './Semaphore';
 export { default as Storage, StorageSingleton } from './Storage';
 export * from './array_helpers';
+export * from './boolean_helpers';
 export * from './caching_helpers';
 export * from './chaos_helpers';
 export * from './date_helpers';
