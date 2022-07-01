@@ -1,4 +1,4 @@
-import { stringReverse, stringToCamelCase, stringToSlug, stringToStudlyCase } from './string_helpers';
+import { stringExcerpt, stringReverse, stringToCamelCase, stringToSlug, stringToStudlyCase } from './string_helpers';
 
 describe('String helpers', () => {
 
@@ -25,6 +25,13 @@ describe('String helpers', () => {
         expect(stringToStudlyCase('foo-bar')).toEqual('FooBar');
         expect(stringToStudlyCase('Foo Bar')).toEqual('FooBar');
         expect(stringToStudlyCase('fooBar')).toEqual('FooBar');
+    });
+
+    it('returns string excerpts', () => {
+        expect(stringExcerpt('We suffer more in imagination than in reality', 23))
+            .toEqual('We suffer more in im...');
+        expect(stringExcerpt('Your external self will seldom surpass your personal self', 42, ' [...]'))
+            .toEqual('Your external self will seldom surpa [...]');
     });
 
 });

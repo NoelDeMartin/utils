@@ -4,11 +4,11 @@ export function stringCapitalize(text: string): string {
     return text[0]?.toUpperCase() + text.slice(1);
 }
 
-export function stringExcerpt(text: string, maxLength: number = 300): string {
+export function stringExcerpt(text: string, maxLength: number = 300, filler: string = '...'): string {
     if (text.length < maxLength)
         return text;
 
-    return text.substring(maxLength - 3) + '...';
+    return text.substring(0, maxLength - filler.length) + filler;
 }
 
 export function stringMatch<Length extends number, Optional extends number = number>(
