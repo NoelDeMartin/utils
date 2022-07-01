@@ -26,7 +26,7 @@ export function silenced<Args extends ClosureArgs, Result, Default>(
             try {
                 return await operationOrPromise(...args);
             } catch (error) {
-                return defaultValue || null;
+                return defaultValue ?? null;
             }
         };
 }
