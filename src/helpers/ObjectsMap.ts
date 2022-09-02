@@ -97,6 +97,20 @@ export default class ObjectsMap<Item extends object> {
         this.keysToItems.delete(key);
     }
 
+    public filter(condition: (item: Item, key: string) => boolean): this {
+        const filteredMap = (this.constructor as typeof ObjectsMap).createFromArray([], this.getKey);
+
+        for (const [key, item] of this.entries()) {
+            if (!condition(item, key)) {
+                continue;
+            }
+
+            filteredMap.add(item);
+        }
+
+        return filteredMap as this;
+    }
+
     public clear(): void {
         this.itemsToKeys = new WeakMap();
         this.keysToItems.clear();

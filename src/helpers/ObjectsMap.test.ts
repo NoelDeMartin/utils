@@ -21,4 +21,42 @@ describe('ObjectsMap', () => {
         }
     });
 
+    it('filters items by key', () => expectUsersFilter(
+        [
+            { name: 'John' },
+            { name: 'Amy' },
+            { name: 'Bob' },
+        ],
+        (_, name) => name !== 'Amy',
+        [
+            { name: 'John' },
+            { name: 'Bob' },
+        ],
+    ));
+
+    it('filters items by value', () => expectUsersFilter(
+        [
+            { name: 'John', age: 12 },
+            { name: 'Amy', age: 18 },
+            { name: 'Bob', age: 23 },
+        ],
+        ({ age }) => age >= 18,
+        [
+            { name: 'Amy', age: 18 },
+            { name: 'Bob', age: 23 },
+        ],
+    ));
+
 });
+
+function expectUsersFilter<T extends { name: string }>(
+    initial: T[],
+    condition: (item: T, name: string) => boolean,
+    expected: T[],
+) {
+    const filtered = ObjectsMap.createFromArray(initial, 'name')
+        .filter(condition)
+        .getItems();
+
+    expect(filtered).toEqual(expected);
+}
