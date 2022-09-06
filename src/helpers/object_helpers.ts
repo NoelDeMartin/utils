@@ -142,10 +142,11 @@ export function objectPull<T extends Obj, K extends keyof T>(obj: T, key: K): T[
     return value;
 }
 
-export function objectWithout<T extends Obj, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
+export function objectWithout<T extends Obj, K extends keyof T>(obj: T, keys: K | K[]): Omit<T, K> {
     const newObject: T = { ...obj };
+    const keysArray = Array.isArray(keys) ? keys : [keys];
 
-    for (const key of keys) {
+    for (const key of keysArray) {
         delete newObject[key];
     }
 
