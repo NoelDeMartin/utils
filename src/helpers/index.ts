@@ -1,4 +1,4 @@
-export { default as JSError, JSErrorOptions } from './JSError';
+export { default as JSError, RuntimeErrorClass, JSErrorOptions } from './JSError';
 export { default as MagicObject, MagicObjectConstructor } from './MagicObject';
 export { default as ObjectsMap, ObjectKeyExtractor } from './ObjectsMap';
 export { default as PromisedValue } from './PromisedValue';

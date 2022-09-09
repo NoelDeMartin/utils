@@ -1,9 +1,18 @@
 import { runtimeGlobal } from '@/helpers/runtime_helpers';
-import type { ClosureArgs, ReplaceConstructorArgs } from '@/types/index';
+import type { ClosureArgs } from '@/types/index';
 
-const BaseError = runtimeGlobal<typeof globalThis>().Error;
+export const RuntimeErrorClass = runtimeGlobal<typeof globalThis>().Error;
 
-class JSError extends BaseError {
+export interface JSErrorOptions {
+    cause?: unknown;
+}
+
+export default class JSError extends RuntimeErrorClass {
+
+    declare public name: string;
+    declare public message: string;
+    declare public stack?: string;
+    declare public cause?: unknown;
 
     constructor(message?: string, options?: JSErrorOptions) {
         super(...[message, options] as ClosureArgs);
@@ -13,10 +22,4 @@ class JSError extends BaseError {
         Object.setPrototypeOf(this, new.target.prototype);
     }
 
-}
-
-export default JSError as ReplaceConstructorArgs<typeof BaseError, [message?: string, options?: JSErrorOptions]>;
-
-export interface JSErrorOptions {
-    cause?: unknown;
 }
