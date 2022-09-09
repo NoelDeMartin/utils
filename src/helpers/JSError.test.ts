@@ -1,23 +1,23 @@
 import { catchError, fail } from '@/helpers/error_helpers';
 
-import CustomError from './Error';
+import JSError from './JSError';
 
 describe('SoukaiError', () => {
 
     it('behaves like an error', () => {
         // Act
-        const error = catchError(() => fail(CustomError, 'foobar'));
+        const error = catchError(() => fail(JSError, 'foobar'));
 
         // Assert
         expect(error).not.toBeNull();
         expect(error).toBeInstanceOf(Error);
-        expect(error).toBeInstanceOf(CustomError);
+        expect(error).toBeInstanceOf(JSError);
 
-        const customError = error as Error;
-        expect(customError.name).toEqual('Error');
-        expect(customError.message).toEqual('foobar');
-        expect(customError.stack).not.toBeNull();
-        expect(customError.stack).toContain('Error.test');
+        const jsError = error as Error;
+        expect(jsError.name).toEqual('Error');
+        expect(jsError.message).toEqual('foobar');
+        expect(jsError.stack).not.toBeNull();
+        expect(jsError.stack).toContain('Error.test');
     });
 
     it('can be subclassed', () => {
@@ -27,7 +27,7 @@ describe('SoukaiError', () => {
         // Assert
         expect(error).not.toBeNull();
         expect(error).toBeInstanceOf(Error);
-        expect(error).toBeInstanceOf(CustomError);
+        expect(error).toBeInstanceOf(JSError);
         expect(error).toBeInstanceOf(StubError);
 
         const stubError = error as StubError;
@@ -39,7 +39,7 @@ describe('SoukaiError', () => {
 
 });
 
-class StubError extends CustomError {
+class StubError extends JSError {
 
     constructor(m: string) {
         super(`Custom message: ${m}`);

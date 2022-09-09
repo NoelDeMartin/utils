@@ -1,4 +1,4 @@
-import CustomError from '@/helpers/Error';
+import JSError from '@/helpers/JSError';
 
 import { catchError, fail } from './error_helpers';
 
@@ -38,4 +38,4 @@ describe('Error helpers', () => {
 
 });
 
-class StubError extends CustomError {}
+class StubError extends JSError {}
