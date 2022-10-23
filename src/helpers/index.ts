@@ -1,9 +1,14 @@
 export { default as JSError, RuntimeErrorClass, JSErrorOptions } from './JSError';
 export { default as MagicObject, MagicObjectConstructor } from './MagicObject';
 export { default as ObjectsMap, ObjectKeyExtractor } from './ObjectsMap';
-export { default as PromisedValue } from './PromisedValue';
 export { default as Semaphore } from './Semaphore';
 export { default as Storage, StorageSingleton } from './Storage';
+export {
+    default as PromisedValue,
+    PromisedValueResolveListener,
+    PromisedValueRejectListener,
+    PromisedValueResetListener,
+} from './PromisedValue';
 export * from './array_helpers';
 export * from './boolean_helpers';
 export * from './caching_helpers';

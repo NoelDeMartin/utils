@@ -1,3 +1,9 @@
+import { arrayRemove } from './array_helpers';
+
+export type PromisedValueResolveListener<T> = (result: T) => unknown;
+export type PromisedValueRejectListener = (reason?: Error) => unknown;
+export type PromisedValueResetListener = () => unknown;
+
 export default class PromisedValue<T = unknown> implements Promise<T> {
 
     public static from<T>(promise: Promise<T>): PromisedValue<T> {
@@ -13,10 +19,14 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     declare private _value?: T;
     declare private promise: Promise<T>;
     declare private _resolve: (result: T) => void;
-    declare private _reject: (error?: Error) => void;
+    declare private _reject: (reason?: Error) => void;
+
+    private resolveListeners: PromisedValueResolveListener<T>[] = [];
+    private rejectListeners: PromisedValueRejectListener[] = [];
+    private resetListeners: PromisedValueResetListener[] = [];
 
     constructor() {
-        this.initPromise();
+        this.setPromiseValues();
     }
 
     declare public [Symbol.toStringTag]: string;
@@ -47,18 +57,52 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     }
 
     public resolve(value: T): void {
-        if (this.isResolved())
-            this.initPromise();
+        if (this.isResolved()) {
+            this.reset();
+        }
 
         this._value = value;
         this._resolve(value);
+
+        this.resolveListeners.forEach(listener => listener(value));
     }
 
     public reject(reason?: Error): void {
+        if (this.isResolved()) {
+            this.reset();
+        }
+
+        delete this._value;
         this._reject(reason);
+
+        this.rejectListeners.forEach(listener => listener(reason));
     }
 
-    private initPromise(): void {
+    public onResolve(listener: PromisedValueResolveListener<T>): () => void {
+        this.resolveListeners.push(listener);
+
+        return () => arrayRemove(this.resolveListeners, listener);
+    }
+
+    public onReject(listener: PromisedValueRejectListener): () => void {
+        this.rejectListeners.push(listener);
+
+        return () => arrayRemove(this.rejectListeners, listener);
+    }
+
+    public onReset(listener: PromisedValueResetListener): () => void {
+        this.resetListeners.push(listener);
+
+        return () => arrayRemove(this.resetListeners, listener);
+    }
+
+    public reset(): void {
+        this.setPromiseValues();
+
+        this.rejectListeners.forEach(listener => listener());
+    }
+
+    private setPromiseValues(): void {
         this.promise = new Promise((resolve, reject) => {
             this._resolve = resolve;
             this._reject = reject;
