@@ -8,6 +8,7 @@ export type GetRequiredKeys<T> = { [K in keyof T]-?: T extends Record<K, T[K]> ?
 export type GetClosureArgs<T extends Closure> = T extends (...args: infer Args) => ClosureResult ? Args : never;
 export type GetClosureResult<T extends Closure> = T extends (...args: any[]) => infer Result ? Result : never;
 export type Pretty<T> = T extends infer U ? { [K in keyof U]: U[K] } : never;
+export type KeyOf<Object, Values> = { [k in keyof Object]: Object[k] extends Values ? k : never; }[keyof Object];
 
 // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/3573
 export type Use<T> = {}; // eslint-disable-line @typescript-eslint/no-unused-vars

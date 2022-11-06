@@ -1,4 +1,4 @@
-import type { Constructor } from '@/types/index';
+import type { Constructor, KeyOf } from '@/types/index';
 import type { Equals } from '@/testing/index';
 
 export type Obj = Record<string, unknown>;
@@ -111,6 +111,14 @@ export const objectEntries = Object.entries.bind(Object) as <T extends Obj>(obj:
 
 export function objectHasOwnProperty(object: Obj, property: string): boolean {
     return Object.prototype.hasOwnProperty.call(object, property);
+}
+
+export function objectMap<T>(items: T[], property: KeyOf<T, number | string>): Record<string, T> {
+    return items.reduce((map, item) => {
+        map[item[property] as unknown as number | string] = item;
+
+        return map;
+    }, {} as Record<string, T>);
 }
 
 export function objectOnly<T extends Obj, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
