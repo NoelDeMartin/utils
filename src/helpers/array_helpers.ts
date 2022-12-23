@@ -39,6 +39,14 @@ export function arrayChunk<T>(items: T[], chunkSize: number): T[][] {
     return chunks;
 }
 
+export function arrayEquals<T>(original: T[], updated: T[]): boolean {
+    if (original.length !== updated.length) {
+        return false;
+    }
+
+    return !original.some((value, index) => updated[index] !== value);
+}
+
 export function arrayFilter<T>(items: T[]): Exclude<T, Falsy>[];
 export function arrayFilter<T>(items: T[], filter: (item: T) => boolean): T[];
 export function arrayFilter<T>(items: T[], filter?: (item: T) => boolean): T[] {

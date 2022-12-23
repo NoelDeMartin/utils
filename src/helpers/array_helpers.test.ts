@@ -4,21 +4,29 @@ import type { Equals, Expect } from '@/testing/index';
 
 import {
     arrayDiff,
+    arrayEquals,
     arrayFilter,
     arrayFirst,
     arrayFrom,
     arrayProject,
+    arrayRandomItem,
     arrayRemove,
     arrayReplace,
     arraySorted,
     arrayUnique,
     arrayWhere,
+    arrayWithout,
     arrayWithoutIndexes,
     arrayZip,
 } from './array_helpers';
-import { arrayRandomItem, arrayWithout } from '@/main';
 
 describe('Array helpers', () => {
+
+    it('compares arrays', () => {
+        expect(arrayEquals(['one'], ['one'])).toBe(true);
+        expect(arrayEquals(['one'], ['one', 'two'])).toBe(false);
+        expect(arrayEquals(['one', 'two'], ['two', 'one'])).toBe(false);
+    });
 
     it('diffs arrays', () => {
         expect(arrayDiff([], [])).toEqual({ added: [], removed: [] });
