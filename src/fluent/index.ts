@@ -57,6 +57,7 @@ export function fluent(value: unknown): unknown {
 export { tap } from './tap';
 export type { Tapped } from './tap';
 
+export { noop } from './noop';
 export { value } from './value';
 export { when } from './when';
 
