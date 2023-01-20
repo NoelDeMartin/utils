@@ -12,6 +12,31 @@ There is a bunch of helpers I've been reusing across projects, and I wanted to g
 
 The best way to check these out is by looking at the test files within the [src/helpers/](src/helpers/) folder.
 
+### MagicObject
+
+One particularly interesting helper is `MagicObject`. I've found myself using this pattern ever more often, so I encapsulated it in this class. The idea is that taking advantage of [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) objects, and a using [an obscure property of JavaScript constructors](https://262.ecma-international.org/5.1/#sec-13.2.2), we can use [PHP's Magic Methods](https://www.php.net/manual/en/language.oop5.magic.php) in JavaScript:
+
+```js
+class MyClass extends MagicObject {
+
+    protected __get(property: string) {
+        if (property === 'foo') {
+            return 'Foo works!';
+        }
+
+        return undefined;
+    }
+
+}
+
+const myObject = new MyClass();
+
+console.log(myObject.foo); // prints "Foo works!"
+console.log(myObject.bar); // prints undefined
+```
+
+Take a look at the [source code](./src/helpers/MagicObject.ts) and [tests](./src/helpers/MagicObject.test.ts) if you're interested to learn more!
+
 ## Fluent API
 
 I strive to write readable code, and I wasn't happy with combining my own helpers with built-in methods. There is nothing in the fluent API that's not implemented in some helper, this is all about readability.
