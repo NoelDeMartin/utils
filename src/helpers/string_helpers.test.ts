@@ -21,6 +21,7 @@ describe('String helpers', () => {
         expect(stringToSlug('Not clean: [/\\?!] end')).toEqual('not-clean-end');
         expect(stringToSlug('土豆')).toEqual('土豆');
         expect(stringToSlug('ラーメン')).toEqual('ラーメン');
+        expect(stringToSlug('【試食系列(1)－鰻魚啫喱Jellied Eels (內有短片)】')).toEqual('試食系列-1-鰻魚啫喱jellied-eels-內有短片');
     });
 
     it('converts strings to StudlyCase', () => {

@@ -42,12 +42,13 @@ export function stringToCamelCase(text: string): string {
 
 export function stringToSlug(text: string, separator: string = '-'): string {
     text = text
-        .trim()
         .normalize('NFD')
-        .replace(/_|-/g, ' ')
+        .replace(/[֊־᐀‐‑‒–—―⸗⸚⸺⸻~〜〰゠︱︲﹘﹣－(){}><[\]]/g, ' ')
         .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
-        .replace(/['".,#!$%/\\^&*;:{}=`~()@+?><[\]]/g, '') // Remove punctuation and special characters
+        .replace(/[\u3000-\u303f]/g, '') // Remove punctuation
+        .replace(/['".,#!$%/\\^&*;:=`@+?]/g, '') // Remove special characters
         .toLowerCase()
+        .trim()
         .replace(/\s+/g, separator);
 
     if (separator.length > 0) {
