@@ -245,11 +245,11 @@ export function arrayZip<T>(...arrays: T[][]): T[][] {
 }
 
 export function arrayFrom<T>(value: Iterable<T>): T[];
-export function arrayFrom<T>(value: T): T[];
-export function arrayFrom(value: unknown): unknown[] {
+export function arrayFrom<T>(value: T, ignoreEmptyValues?: boolean): T[];
+export function arrayFrom(value: unknown, ignoreEmptyValues: boolean = false): unknown[] {
     return Array.isArray(value) || (isIterable(value) && !isString(value))
         ? Array.from(value)
-        : [value];
+        : ignoreEmptyValues && (value === null || value === undefined) ? [] : [value];
 }
 
 export function range(length: number): number[] {

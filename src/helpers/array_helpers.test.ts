@@ -181,6 +181,7 @@ describe('Array helpers', () => {
         expect(arrayFrom(['foo', 'bar'])).toEqual(['foo', 'bar']);
         expect(arrayFrom(new Set(['foo', 'bar']))).toEqual(['foo', 'bar']);
         expect(arrayFrom(null)).toEqual([null]);
+        expect(arrayFrom(null, true)).toEqual([]);
     });
 
 });
