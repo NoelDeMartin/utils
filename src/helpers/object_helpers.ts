@@ -78,6 +78,10 @@ export function isEmpty(value: unknown): boolean {
     return false;
 }
 
+export function isInstanceOf<T>(value: unknown, objectClass: Constructor<T>): value is T {
+    return value instanceof objectClass;
+}
+
 export function isIterable(value: unknown): value is Iterable<unknown> {
     return typeof (value as { [Symbol.iterator]?: unknown })?.[Symbol.iterator] === 'function';
 }
