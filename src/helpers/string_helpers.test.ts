@@ -18,6 +18,9 @@ describe('String helpers', () => {
         expect(stringToSlug('It\'s always sunny in philadelphia')).toEqual('its-always-sunny-in-philadelphia');
         expect(stringToSlug('It\'s always sunny in philadelphia   ')).toEqual('its-always-sunny-in-philadelphia');
         expect(stringToSlug('already-a-slug')).toEqual('already-a-slug');
+        expect(stringToSlug('Not clean: [/\\?!] end')).toEqual('not-clean-end');
+        expect(stringToSlug('土豆')).toEqual('土豆');
+        expect(stringToSlug('ラーメン')).toEqual('ラーメン');
     });
 
     it('converts strings to StudlyCase', () => {

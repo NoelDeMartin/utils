@@ -45,13 +45,14 @@ export function stringToSlug(text: string, separator: string = '-'): string {
         .trim()
         .normalize('NFD')
         .replace(/_|-/g, ' ')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^\d\w\s]/g, '')
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
+        .replace(/['".,#!$%/\\^&*;:{}=`~()@+?><[\]]/g, '') // Remove punctuation and special characters
         .toLowerCase()
         .replace(/\s+/g, separator);
 
-    if (separator.length > 0)
+    if (separator.length > 0) {
         text = text.replace(new RegExp(`${separator}+`, 'g'), separator);
+    }
 
     return text;
 }
