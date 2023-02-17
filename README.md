@@ -72,6 +72,10 @@ return fluent('foo-bar') // or, to be explicit, str('...')
     .toString(); // returns "HelloWorld"
 ```
 
+And all of this works properly with TypeScript! So when I create a variable with `fluent('foo')`, I get auto-completion for both my custom helpers and native methods - along the complete method chain!
+
+### tap
+
 I also included my own port of [Laravel's tap helper](https://medium.com/@taylorotwell/tap-tap-tap-1fc6fc1f93a6). This allows me to rewrite this kind of code:
 
 ```js
@@ -90,4 +94,36 @@ return tap(new Foo(), foo => {
 });
 ```
 
-And all of this works properly with TypeScript! So when I create a variable with `fluent('foo')`, I get auto-completion for both my custom helpers and native methods - along the complete method chain!
+### facade
+
+Something else Laravel-inspired are [facades](https://laravel.com/docs/10.x/facades#main-content). Unlike Laravel, there is no underlying service container, these facades just hold static proxies to an instance:
+
+```js
+// UsersService.ts
+export default class UsersService {
+
+    async all() {
+        const response = await fetch('/users');
+        const json = await response.json();
+
+        return json.map(userJson => User.fromJson(userJson));
+    }
+
+}
+
+// Users.ts
+import UsersService from './UsersService';
+
+export default facade(new UsersService());
+
+// Anywhere in your app...
+import Users from './Users';
+
+const users = await Users.all();
+
+// In your tests...
+import Users from './Users';
+import UsersServiceMock from './UsersServiceMock';
+
+Users.setInstance(new UsersServiceMock());
+```
