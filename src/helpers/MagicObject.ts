@@ -1,5 +1,10 @@
 import type { Constructor } from '../types/classes';
 
+export interface MagicObjectProxy<T> {
+    target: T;
+    instance: T;
+}
+
 export type MagicObjectConstructor<T extends MagicObject = MagicObject> = Constructor<T> & typeof MagicObject;
 
 export default class MagicObject {
@@ -25,16 +30,21 @@ export default class MagicObject {
         return !!this.__reservedProperties.get(this)?.has(property);
     }
 
-    declare protected _proxyTarget: this;
-    declare protected _proxy: this;
+    declare protected _proxy: MagicObjectProxy<this>;
 
     constructor() {
         if (this.static().buildingPureInstance())
             return;
 
-        this.initializeProxy();
+        this._proxy = this.createProxy();
 
-        return this._proxy;
+        this.initialize();
+
+        return this._proxy.instance;
+    }
+
+    protected initialize(): void {
+        //
     }
 
     protected static(): MagicObjectConstructor<this> {
@@ -42,48 +52,50 @@ export default class MagicObject {
     }
 
     protected __get(property: string): unknown {
-        return Reflect.get(this._proxyTarget, property);
+        return Reflect.get(this._proxy.target, property);
     }
 
     protected __set(property: string, value: unknown): void {
-        Reflect.set(this._proxyTarget, property, value);
+        Reflect.set(this._proxy.target, property, value);
     }
 
     protected __delete(property: string): void {
-        Reflect.deleteProperty(this._proxyTarget, property);
+        Reflect.deleteProperty(this._proxy.target, property);
     }
 
-    protected initializeProxy(): void {
+    protected createProxy(): MagicObjectProxy<this> {
         const Static = this.static();
 
-        this._proxyTarget = this;
-        this._proxy = new Proxy(this._proxyTarget, {
-            get(target, property, receiver) {
-                if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
-                    return Reflect.get(target, property, receiver);
-                }
+        return {
+            target: this,
+            instance: new Proxy(this, {
+                get(target, property, receiver) {
+                    if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
+                        return Reflect.get(target, property, receiver);
+                    }
 
-                return target.__get(property);
-            },
-            set(target, property, value, receiver) {
-                if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
-                    return Reflect.set(target, property, value, receiver);
-                }
+                    return target.__get(property);
+                },
+                set(target, property, value, receiver) {
+                    if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
+                        return Reflect.set(target, property, value, receiver);
+                    }
 
-                target.__set(property, value);
+                    target.__set(property, value);
 
-                return true;
-            },
-            deleteProperty(target, property) {
-                if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
-                    return Reflect.deleteProperty(target, property);
-                }
+                    return true;
+                },
+                deleteProperty(target, property) {
+                    if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
+                        return Reflect.deleteProperty(target, property);
+                    }
 
-                target.__delete(property);
+                    target.__delete(property);
 
-                return true;
-            },
-        });
+                    return true;
+                },
+            }),
+        };
     }
 
 }

@@ -1,5 +1,5 @@
 export { default as JSError, RuntimeErrorClass, JSErrorOptions } from './JSError';
-export { default as MagicObject, MagicObjectConstructor } from './MagicObject';
+export { default as MagicObject, MagicObjectConstructor, MagicObjectProxy } from './MagicObject';
 export { default as ObjectsMap, ObjectKeyExtractor } from './ObjectsMap';
 export { default as Semaphore } from './Semaphore';
 export { default as Storage, StorageSingleton } from './Storage';
