@@ -1,4 +1,5 @@
 import type { Constructor } from '../types/classes';
+import type { ClosureArgs } from '../types/helpers';
 
 export interface MagicObjectProxy<T> {
     target: T;
@@ -9,21 +10,21 @@ export type MagicObjectConstructor<T extends MagicObject = MagicObject> = Constr
 
 export default class MagicObject {
 
-    private static __buildingPureInstance: boolean;
+    private static __conjuring: boolean;
     private static __reservedProperties: WeakMap<typeof MagicObject, Set<string>> = new WeakMap;
 
-    private static buildingPureInstance(this: MagicObjectConstructor): boolean {
-        if (this.__buildingPureInstance)
-            return true;
+    protected static isConjuring(): boolean {
+        return this.__conjuring;
+    }
 
-        if (this.__reservedProperties.has(this))
-            return false;
+    private static isMagicReady(): boolean {
+        return this.__reservedProperties.has(this);
+    }
 
-        this.__buildingPureInstance = true;
+    private static prepareMagic(): void {
+        this.__conjuring = true;
         this.__reservedProperties.set(this, new Set(Object.getOwnPropertyNames(new this)));
-        this.__buildingPureInstance = false;
-
-        return false;
+        this.__conjuring = false;
     }
 
     protected static isReservedProperty(property: string): boolean {
@@ -32,18 +33,28 @@ export default class MagicObject {
 
     declare protected _proxy: MagicObjectProxy<this>;
 
-    constructor() {
-        if (this.static().buildingPureInstance())
+    constructor(...args: ClosureArgs) {
+        if (this.static().isConjuring()) {
             return;
+        }
+
+        if (!this.static().isMagicReady()) {
+            this.static().prepareMagic();
+        }
 
         this._proxy = this.createProxy();
 
-        this.initialize();
+        this.initialize(...args);
 
         return this._proxy.instance;
     }
 
-    protected initialize(): void {
+    protected reserveProperty(property: string): void {
+        Object.assign(this, { [property]: null });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    protected initialize(...args: ClosureArgs): void {
         //
     }
 

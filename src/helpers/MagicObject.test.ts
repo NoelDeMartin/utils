@@ -1,16 +1,36 @@
+import { stringToCamelCase } from '@/helpers/string_helpers';
+
 import MagicObject from './MagicObject';
+
+type Attributes = Record<string, unknown>;
 
 class Stub extends MagicObject {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [property: string]: any;
 
-    public constructor(private attributes: Record<string, unknown> = {}) {
+    public constructor(attributes: Attributes) {
         super();
+
+        this.initializeAttributes(attributes);
     }
 
-    public getAttributes(): Record<string, unknown> {
+    public getAttributes(): Attributes {
         return this.attributes;
+    }
+
+    protected initializeAttributes(attributes: Attributes): void {
+        if (this.static().isConjuring()) {
+            this.reserveProperty('attributes');
+
+            return;
+        }
+
+        this.attributes = Object.entries(attributes).reduce((attributes, [name, value]) => {
+            attributes[stringToCamelCase(name)] = value;
+
+            return attributes;
+        }, {} as Attributes);
     }
 
     protected __get(property: string): unknown {
@@ -55,6 +75,15 @@ describe('MagicObject', () => {
         // Assert
         expect(object.lorem).toBeUndefined();
         expect(object.getAttributes()).toEqual({});
+    });
+
+    it('Runs methods in constructor', () => {
+        // Act
+        const object = new Stub({ 'foo-bar': true });
+
+        // Assert
+        expect(object['foo-bar']).toBeUndefined();
+        expect(object.fooBar).toBe(true);
     });
 
 });
