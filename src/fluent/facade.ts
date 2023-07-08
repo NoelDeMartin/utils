@@ -7,7 +7,9 @@ import type { Obj } from '@/helpers/object_helpers';
 export type FacadeMethods<TInstance, TMockClass extends Constructor> = {
     instance: TInstance | null;
     mockClass: TMockClass | null;
+    mockInstance: ClassInstance<TMockClass> | null;
     setInstance(instance: TInstance): void;
+    setMockInstance: (mockClass: ClassInstance<TMockClass>) => void;
     setMockClass: (mockClass: TMockClass) => void;
     requireInstance(): TInstance;
     mock: <T extends ClassInstance<TMockClass>>(mockInstance?: T | Obj | object) => T;
@@ -29,11 +31,17 @@ export function facade<TInstance extends object, TMockClass extends Constructor>
     const facade: FacadeMethods<TInstance, TMockClass> = {
         instance,
         mockClass,
+        mockInstance: null,
         setInstance: instance => facade.instance = instance,
+        setMockInstance: mockInstance => facade.mockInstance = mockInstance,
         setMockClass: mockClass => facade.mockClass = mockClass,
         requireInstance: () => facade.instance ?? fail('Facade not initialized'),
         mock<T extends ClassInstance<TMockClass>>(mockInstance?: T | Obj | object) {
-            const instance = mock(mockInstance ?? (facade.mockClass ? new facade.mockClass() : {}));
+            const instance = mock(
+                mockInstance ??
+                facade.mockInstance ??
+                (facade.mockClass ? new facade.mockClass() : {}),
+            );
 
             facade.instance = instance as TInstance;
 

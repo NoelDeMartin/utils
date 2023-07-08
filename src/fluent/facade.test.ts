@@ -24,7 +24,7 @@ describe('Facades', () => {
         expect(users.getNames).toHaveBeenCalled();
     });
 
-    it('Mocks instances using mock classes', () => {
+    it('Mocks instances using mock class setter', () => {
         // Arrange
         class UsersService {
 
@@ -55,7 +55,7 @@ describe('Facades', () => {
         expect(users.getNames).toHaveBeenCalled();
     });
 
-    it('Mocks instances using mock classes', () => {
+    it('Mocks instances using mock class initializer', () => {
         // Arrange
         class UsersService {
 
@@ -80,13 +80,51 @@ describe('Facades', () => {
         const users = facade(new UsersService(), UsersServiceMock);
 
         // Act
-        const mockUsers = users.mock();
+        const usersMock = users.mock();
         const names = users.getNames();
 
         // Assert
         expect(names).toEqual(['mocked']);
 
-        mockUsers.assertNamesCalled();
+        usersMock.assertNamesCalled();
+    });
+
+    it('Mocks instances using mock class instance', () => {
+        // Arrange
+        class UsersService {
+
+            public getNames(): string[] {
+                return ['john', 'amy'];
+            }
+
+        }
+
+        class UsersServiceMock extends UsersService {
+
+            public getNames(): string[] {
+                return ['mocked'];
+            }
+
+            public assertNamesCalled(): void {
+                expect(this.getNames).toHaveBeenCalled();
+            }
+
+        }
+
+        const users = facade(new UsersService());
+        const usersMock = new UsersServiceMock();
+
+        users.setMockInstance(usersMock);
+
+        // Act
+        users.mock();
+
+        const names = users.getNames();
+
+        // Assert
+        expect(names).toEqual(['mocked']);
+
+        usersMock.assertNamesCalled();
     });
 
 });
