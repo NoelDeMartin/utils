@@ -39,7 +39,7 @@ export function facade<TInstance extends object, TMockClass extends Constructor>
         mock<T extends ClassInstance<TMockClass>>(mockInstance?: T | Obj | object) {
             const instance = mock(
                 mockInstance ??
-                facade.mockInstance ??
+                getFacadeInstance(facade.mockInstance) ??
                 (facade.mockClass ? new facade.mockClass() : {}),
             );
 
@@ -57,4 +57,16 @@ export function facade<TInstance extends object, TMockClass extends Constructor>
         },
         set: (_, property, receiver) => Reflect.set(facade.requireInstance(), property, receiver),
     }) as unknown as Facade<TInstance, TMockClass>;
+}
+
+export function isFacade(facade: unknown): facade is Facade<unknown, Constructor<object>> {
+    return typeof facade === 'object'
+        && facade !== null
+        && 'requireInstance' in facade;
+}
+
+export function getFacadeInstance<T>(facade: Facade<T, Constructor<object>>): T;
+export function getFacadeInstance<T>(facade: T): T;
+export function getFacadeInstance<T>(facade: T): T {
+    return isFacade(facade) ? facade.requireInstance() as T : facade;
 }
