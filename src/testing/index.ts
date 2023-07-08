@@ -12,3 +12,4 @@ export type HasKey<T, K extends string> = K extends keyof T ? true : false;
 export const tt: <T>() => () => any = () => () => expect(true).toBe(true);
 
 export * from './mocking';
+export * from './namespace';

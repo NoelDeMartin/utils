@@ -1,3 +1,4 @@
+import { testing } from '@/testing/namespace';
 import type { Obj } from '@/helpers/object_helpers';
 
 export type Mock<T> = T;
@@ -28,11 +29,11 @@ export function mock<T>(
             continue;
         }
 
-        instance[property] = jest.fn((...args) => value.call(instance, ...args)) as unknown as T[keyof T];
+        instance[property] = testing().fn((...args) => value.call(instance, ...args)) as unknown as T[keyof T];
     }
 
     for (const method of methods) {
-        instance[method] = jest.fn() as unknown as T[keyof T];
+        instance[method] = testing().fn() as unknown as T[keyof T];
     }
 
     return instance;
