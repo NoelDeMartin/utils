@@ -51,6 +51,22 @@ export function deepEquals(a: unknown, b: unknown): boolean {
     return !Object.keys(a).some(key => !deepEquals(a[key], b[key]));
 }
 
+export function getClassMethods(target: object): string[] {
+    const properties = new Set<string>();
+    const classDefinition = target.constructor === Object.constructor ? target : target.constructor;
+
+    let prototype = (classDefinition as { prototype: Constructor }).prototype;
+    while (prototype.constructor !== Object) {
+        Object.getOwnPropertyNames(prototype).forEach(property => properties.add(property));
+
+        prototype = Object.getPrototypeOf(prototype);
+    }
+
+    properties.delete('constructor');
+
+    return Array.from(properties);
+}
+
 export function invert(map: Record<string, string>): Record<string, string> {
     return Object.entries(map).reduce((invertedMap, [key, value]) => {
         invertedMap[value] = key;

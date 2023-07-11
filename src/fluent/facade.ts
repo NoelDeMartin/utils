@@ -1,4 +1,5 @@
 import { fail } from '@/helpers/error_helpers';
+import { getClassMethods } from '@/helpers/object_helpers';
 import { mock } from '@/testing/mocking';
 import type { ClassInstance } from '@/types/helpers';
 import type { Constructor } from '@/types/classes';
@@ -40,7 +41,7 @@ export function facade<TInstance extends object, TMockClass extends Constructor>
             const instance = mock(
                 mockInstance ??
                 getFacadeInstance(facade.mockInstance) ??
-                (facade.mockClass ? new facade.mockClass() : {}),
+                (facade.mockClass ? new facade.mockClass() : getClassMethods(facade.instance as object)),
             );
 
             facade.instance = instance as TInstance;

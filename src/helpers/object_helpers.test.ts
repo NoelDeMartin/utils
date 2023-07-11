@@ -2,9 +2,38 @@ import { tt } from '@/testing/index';
 import type { Equals, Expect } from '@/testing/index';
 import type { GetOptionalKeys, GetRequiredKeys } from '@/types/index';
 
-import { objectDeepClone, objectWithout, objectWithoutEmpty } from './object_helpers';
+import { getClassMethods, objectDeepClone, objectWithout, objectWithoutEmpty } from './object_helpers';
 
 describe('Object helpers', () => {
+
+    it('gets class methods', () => {
+        // Arrange
+        class Foo {
+
+            public hello(): void {
+                //
+            }
+
+        }
+
+        class Bar extends Foo {
+
+            public goodbye(): void {
+                //
+            }
+
+        }
+
+        // Act
+        const classMethods = getClassMethods(Bar);
+        const instanceMethods = getClassMethods(new Bar);
+
+        // Assert
+        expect(classMethods).toHaveLength(2);
+        expect(classMethods).toContain('hello');
+        expect(classMethods).toContain('goodbye');
+        expect(instanceMethods).toEqual(classMethods);
+    });
 
     it('removes keys', () => {
         expect(objectWithout({ foo: 'foo', bar: 'bar' }, ['foo'])).toEqual({ bar: 'bar' });

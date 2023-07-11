@@ -15,6 +15,26 @@ describe('Facades', () => {
         const users = facade(new UsersService());
 
         // Act
+        users.mock();
+        users.getNames();
+
+        // Assert
+        expect(users.getNames).toHaveBeenCalled();
+    });
+
+    it('Mocks instances using provided mocks', () => {
+        // Arrange
+        class UsersService {
+
+            public getNames(): string[] {
+                return ['john', 'amy'];
+            }
+
+        }
+
+        const users = facade(new UsersService());
+
+        // Act
         users.mock({ getNames: jest.fn(() => ['mocked']) });
 
         const names = users.getNames();
