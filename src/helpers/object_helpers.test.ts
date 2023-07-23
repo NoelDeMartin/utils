@@ -2,7 +2,7 @@ import { tt } from '@/testing/index';
 import type { Equals, Expect } from '@/testing/index';
 import type { GetOptionalKeys, GetRequiredKeys } from '@/types/index';
 
-import { getClassMethods, objectDeepClone, objectWithout, objectWithoutEmpty } from './object_helpers';
+import { getClassMethods, monkeyPatch, objectDeepClone, objectWithout, objectWithoutEmpty } from './object_helpers';
 
 describe('Object helpers', () => {
 
@@ -33,6 +33,33 @@ describe('Object helpers', () => {
         expect(classMethods).toContain('hello');
         expect(classMethods).toContain('goodbye');
         expect(instanceMethods).toEqual(classMethods);
+    });
+
+    it('patches methods', () => {
+        // Arrange
+        class Computer {
+
+            public foo: string = '';
+
+            public run(question: string): number {
+                question;
+
+                return 42;
+            }
+
+        }
+
+        const computer = new Computer();
+        const callback = jest.fn();
+
+        monkeyPatch(computer, 'run', (question) => callback(`Question: ${question}`));
+
+        // Act
+        const result = computer.run('What\'s the meaning of life?');
+
+        // Assert
+        expect(result).toEqual(42);
+        expect(callback).toHaveBeenCalledWith('Question: What\'s the meaning of life?');
     });
 
     it('removes keys', () => {

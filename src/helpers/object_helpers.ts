@@ -1,4 +1,4 @@
-import type { Constructor, KeyOf } from '@/types/index';
+import type { Closure, ClosureArgs, Constructor, GetObjectMethods, KeyOf, VoidClosure } from '@/types/index';
 import type { Equals } from '@/testing/index';
 
 export type Obj = Record<string, unknown>;
@@ -112,6 +112,16 @@ export function isString(value: unknown): value is string | String {
 
 export function isNullable(value: unknown): value is undefined | null {
     return typeof value === 'undefined' || value === null;
+}
+
+export function monkeyPatch<T, K extends GetObjectMethods<T>>(object: T, method: K, callback: VoidClosure<T[K]>): void {
+    const originalMethod = object[method] as unknown as Closure;
+
+    object[method] = ((...args: ClosureArgs) => {
+        (callback as unknown as Closure)(...args);
+
+        return originalMethod.call(object, ...args);
+    }) as unknown as T[K];
 }
 
 export function objectDeepClone<T extends Obj>(object: T): T {
