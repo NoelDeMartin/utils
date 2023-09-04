@@ -154,10 +154,32 @@ export function arraySorted<T>(
         ? compareOrFieldOrDirection as 'asc' | 'desc'
         : direction;
 
+    const fieldDefaults: Partial<Record<keyof T, unknown>> = {};
+    const getDefaultValue = (sample: unknown): unknown => {
+        switch (typeof sample) {
+            case 'string':
+                return '';
+            case 'number':
+                return Number.MIN_SAFE_INTEGER;
+            case 'boolean':
+                return false;
+            default:
+                return null;
+        }
+    };
+    const getFieldValue = (object: T, field: keyof T): unknown => {
+        if (!(field in fieldDefaults)) {
+            const sampleValue = items.find(item => item[field] !== undefined && item[field] !== null)?.[field];
+
+            fieldDefaults[field] = getDefaultValue(sampleValue);
+        }
+
+        return object[field] ?? fieldDefaults[field];
+    };
     const getComparisonFunction = (): Closure<[T, T], number> | undefined => {
         const compareItems = direction === 'desc'
-            ? (field: keyof T) => (a: T, b: T) => compare(b[field], a[field])
-            : (field: keyof T) => (a: T, b: T) => compare(a[field], b[field]);
+            ? (field: keyof T) => (a: T, b: T) => compare(getFieldValue(b, field), getFieldValue(a, field))
+            : (field: keyof T) => (a: T, b: T) => compare(getFieldValue(a, field), getFieldValue(b, field));
 
         switch (typeof compareOrFieldOrDirection) {
             case 'function':

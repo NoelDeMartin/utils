@@ -98,6 +98,14 @@ describe('Array helpers', () => {
         expect(arraySorted(items, 'name', 'desc').map(item => item.name)).toEqual(['Zetman', 'Son Goku', 'Astroboy']);
     });
 
+    it('sorts items by field with undefined value', () => {
+        const items = [{ completed: true }, { completed: undefined },{ completed: true }];
+
+        expect(arraySorted(items, 'completed').map(item => item.completed)).toEqual([undefined, true, true]);
+        expect(arraySorted(items, 'completed', 'asc').map(item => item.completed)).toEqual([undefined, true, true]);
+        expect(arraySorted(items, 'completed', 'desc').map(item => item.completed)).toEqual([true, true, undefined]);
+    });
+
     it('sorts items by multiple fields', () => {
         const sonGokuKid = { name: 'Son Goku', age: 11 };
         const sonGokuAdult = { name: 'Son Goku', age: 31 };
