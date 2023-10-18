@@ -1,4 +1,4 @@
-import type { Closure, Falsy } from '@/types/index';
+import type { Closure, Falsy, Narrow } from '@/types/index';
 
 import { compare } from './logical_helpers';
 import { isIterable, isString } from './object_helpers';
@@ -47,7 +47,7 @@ export function arrayEquals<T>(original: T[], updated: T[]): boolean {
     return !original.some((value, index) => updated[index] !== value);
 }
 
-export function arrayFilter<T>(items: T[]): Exclude<T, Falsy>[];
+export function arrayFilter<T>(items: Narrow<T[]>): Exclude<T, Falsy>[];
 export function arrayFilter<T>(items: T[], filter: (item: T) => boolean): T[];
 export function arrayFilter<T>(items: T[], filter?: (item: T) => boolean): T[] {
     return filter
