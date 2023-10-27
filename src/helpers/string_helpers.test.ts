@@ -1,4 +1,11 @@
-import { stringExcerpt, stringReverse, stringToCamelCase, stringToSlug, stringToStudlyCase } from './string_helpers';
+import {
+    stringExcerpt,
+    stringReverse,
+    stringToCamelCase,
+    stringToSlug,
+    stringToStudlyCase,
+    stringToTitleCase, 
+} from './string_helpers';
 
 describe('String helpers', () => {
 
@@ -29,6 +36,13 @@ describe('String helpers', () => {
         expect(stringToStudlyCase('foo-bar')).toEqual('FooBar');
         expect(stringToStudlyCase('Foo Bar')).toEqual('FooBar');
         expect(stringToStudlyCase('fooBar')).toEqual('FooBar');
+    });
+
+    it('converts strings to Title Case', () => {
+        expect(stringToTitleCase('foo_bar')).toEqual('Foo Bar');
+        expect(stringToTitleCase('foo-bar')).toEqual('Foo Bar');
+        expect(stringToTitleCase('Foo Bar')).toEqual('Foo Bar');
+        expect(stringToTitleCase('fooBar')).toEqual('Foo Bar');
     });
 
     it('returns string excerpts', () => {

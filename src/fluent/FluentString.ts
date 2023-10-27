@@ -1,4 +1,10 @@
-import { stringReverse, stringToCamelCase, stringToSlug, stringToStudlyCase } from '@/helpers/string_helpers';
+import {
+    stringReverse,
+    stringToCamelCase,
+    stringToSlug,
+    stringToStudlyCase,
+    stringToTitleCase, 
+} from '@/helpers/string_helpers';
 import type { ClassInstance } from '@/types/index';
 
 import FluentObjectDefinition, {
@@ -12,6 +18,7 @@ export const fluentStringHelpers = {
     toCamelCase: stringToCamelCase,
     toSlug: stringToSlug,
     toStudlyCase: stringToStudlyCase,
+    toTitleCase: stringToTitleCase,
 };
 
 export type FluentStringInstance<FluentClass> =

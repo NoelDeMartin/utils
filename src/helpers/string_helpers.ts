@@ -64,6 +64,12 @@ export function stringToStudlyCase(text: string): string {
     return words.map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase()).join('');
 }
 
+export function stringToTitleCase(text: string): string {
+    const words = stringSplitWords(text);
+
+    return words.map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+}
+
 export function stringTrimmed(text: string): string {
     return text.trim();
 }
