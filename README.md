@@ -1,4 +1,4 @@
-# JavaScript Utilities [![Build Status](https://semaphoreci.com/api/v1/noeldemartin/utils/branches/main/badge.svg)](https://semaphoreci.com/noeldemartin/utils)
+# JavaScript Utilities ![CI](https://github.com/NoelDeMartin/utils/actions/workflows/ci.yml/badge.svg)
 
 These are some JavaScript utilities I use in different projects. If you want to use them as well, you're most welcome. You can install the package with:
 
