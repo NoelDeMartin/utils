@@ -1,5 +1,22 @@
 import type { Closure, ClosureArgs } from '@/types/index';
 
+export async function asyncFirst<TValue, TResult>(
+    values: TValue[],
+    operation: (value: TValue) => Promise<TResult | null>,
+): Promise<TResult | null> {
+    for (const value of values) {
+        const result = await operation(value);
+
+        if (!result) {
+            continue;
+        }
+
+        return result;
+    }
+
+    return null;
+}
+
 export function isPromise(p: unknown): p is Promise<unknown> {
     return 'then' in (p as Promise<unknown>);
 }
