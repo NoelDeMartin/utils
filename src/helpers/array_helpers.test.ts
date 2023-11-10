@@ -197,6 +197,7 @@ describe('Array helpers', () => {
 let enabled: boolean | undefined;
 const filteredItems = arrayFilter(['foo', null, 'bar', undefined]);
 const filteredConditionalItems = arrayFilter(['foo', null, enabled && 'bar', undefined]);
+const filteredConstItems = arrayFilter(['foo' as const, null, enabled && 'bar', undefined]);
 const arrayFromNumber = arrayFrom(42);
 const arrayFromSet = arrayFrom(new Set(['foo']));
 const arrayFromArray = arrayFrom([new Date()]);
@@ -204,8 +205,9 @@ const arrayFromArray = arrayFrom([new Date()]);
 describe('Array helpers types', () => {
 
     it('has correct types', tt<
-        Expect<Equals<typeof filteredItems, ('foo' | 'bar')[]>> |
-        Expect<Equals<typeof filteredConditionalItems, ('foo' | 'bar')[]>> |
+        Expect<Equals<typeof filteredItems, string[]>> |
+        Expect<Equals<typeof filteredConditionalItems, string[]>> |
+        Expect<Equals<typeof filteredConstItems, ('foo' | 'bar')[]>> |
         Expect<Equals<typeof arrayFromNumber, number[]>> |
         Expect<Equals<typeof arrayFromSet, string[]>> |
         Expect<Equals<typeof arrayFromArray, Date[]>> |
