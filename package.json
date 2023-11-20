@@ -8,7 +8,7 @@
   "types": "dist/noeldemartin-utils.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "rm dist -rf && npm run build:js && npm run build:types",
+    "build": "rm -rf dist && npm run build:js && npm run build:types",
     "build:js": "noeldemartin-build-javascript",
     "build:types": "noeldemartin-build-types && ./scripts/fix-error-types.sh",
     "lint": "noeldemartin-lint src",
