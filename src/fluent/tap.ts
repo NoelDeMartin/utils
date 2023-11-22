@@ -29,8 +29,8 @@ function proxyTap<Target extends object>(target: Target): Tapped<Target> {
 
 /* eslint-disable max-len */
 export function tap<Target extends object>(target: Target): Tapped<Target>;
-export function tap<Target>(target: Target, callback: (target: Target) => unknown): Target;
 export function tap<Target>(target: Target, callback: (target: Target) => Promise<unknown>): Promise<Target>;
+export function tap<Target>(target: Target, callback: (target: Target) => unknown): Target;
 export function tap<Target extends object>(target: Target, callback?: (target: Target) => unknown | Promise<unknown>): Target | Tapped<Target> | Promise<Target> {
     if (!callback)
         return proxyTap(target);

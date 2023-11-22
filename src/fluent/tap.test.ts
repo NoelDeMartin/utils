@@ -1,7 +1,11 @@
-import { after } from '@/helpers/index';
+import { after } from '@/helpers/time_helpers';
+import { noop } from '@/fluent/noop';
+import { tt } from '@/testing/index';
+import type { Equals, Expect } from '@/testing/index';
+
 import { tap } from './tap';
 
-describe('tap', () => {
+describe('tap helper', () => {
 
     it('taps using callbacks', () => {
         expect(tap({ foo: 'foo' }, o => o.foo += 'bar').foo).toBe('foobar');
@@ -42,5 +46,21 @@ describe('tap', () => {
         expect(tappedComputer.theMeaningOfLife).toBe(42);
         expect(tappedComputer.getTheMeaningOfLife()).toBe(tappedComputer);
     });
+
+});
+
+
+const numberResult = tap(42, noop);
+const stringResult = tap('42', noop);
+const promisedNumberResult = tap(42, () => Promise.resolve());
+
+describe('tap helper types', () => {
+
+    it('has correct types', tt<
+        Expect<Equals<typeof numberResult, 42>> |
+        Expect<Equals<typeof stringResult, '42'>> |
+        Expect<Equals<typeof promisedNumberResult, Promise<number>>> |
+        true
+    >());
 
 });
