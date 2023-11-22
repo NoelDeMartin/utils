@@ -12,6 +12,9 @@ export type GetOptionalKeys<T> = { [K in keyof T]-?: Record<string, never> exten
 export type GetRequiredKeys<T> = { [K in keyof T]-?: T extends Record<K, T[K]> ? K : never }[keyof T];
 export type KeyOf<Object, Values> = { [k in keyof Object]: Object[k] extends Values ? k : never; }[keyof Object];
 export type ObjectValues<T> = T[keyof T];
+export type OnlyKnownProperties<TGeneric, TKnown> = {
+    [ K in keyof TGeneric]: K extends keyof TKnown ? TGeneric[K] : never
+};
 export type Pretty<T> = T extends infer U ? { [K in keyof U]: U[K] } : never;
 export type VoidClosure<T> = T extends (...args: infer A) => ClosureResult ? (...args: A) => void : never;
 
