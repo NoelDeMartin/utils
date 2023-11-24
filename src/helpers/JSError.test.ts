@@ -2,7 +2,7 @@ import { catchError, fail } from '@/helpers/error_helpers';
 
 import JSError from './JSError';
 
-describe('SoukaiError', () => {
+describe('JSError', () => {
 
     it('behaves like an error', () => {
         // Act
