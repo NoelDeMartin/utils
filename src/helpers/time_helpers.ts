@@ -41,6 +41,12 @@ export function debounce<Args extends ClosureArgs>(
     return debouncedCallback;
 }
 
+export async function forever(): Promise<void> {
+    await new Promise(() => {
+        // Nothing to do here.
+    });
+}
+
 export function isValidDateString(value: string): boolean {
     if (typeof value !== 'string')
         return false;
