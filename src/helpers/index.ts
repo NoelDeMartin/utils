@@ -17,6 +17,7 @@ export * from './date_helpers';
 export * from './error_helpers';
 export * from './escape_helpers';
 export * from './file_helpers';
+export * from './format_helpers';
 export * from './hash_helpers';
 export * from './identity_helpers';
 export * from './location_helpers';
