@@ -2,7 +2,14 @@ import { tt } from '@/testing/index';
 import type { Equals, Expect } from '@/testing/index';
 import type { GetOptionalKeys, GetRequiredKeys } from '@/types/index';
 
-import { getClassMethods, monkeyPatch, objectDeepClone, objectWithout, objectWithoutEmpty } from './object_helpers';
+import {
+    getClassMethods,
+    monkeyPatch,
+    objectDeepClone,
+    objectOnly,
+    objectWithout,
+    objectWithoutEmpty,
+} from './object_helpers';
 
 describe('Object helpers', () => {
 
@@ -80,6 +87,20 @@ describe('Object helpers', () => {
         const date = new Date(Date.now() - 42);
 
         expect(date.toISOString()).toEqual(objectDeepClone({ date }).date.toISOString());
+    });
+
+    it('gets subset', () => {
+        class Stub {
+
+            public foo = true;
+            public bar = false;
+
+        }
+
+        expect(objectOnly({ foo: true, bar: false }, 'foo')).toEqual({ foo: true });
+        expect(objectOnly({ foo: true, bar: false }, ['foo'])).toEqual({ foo: true });
+        expect(objectOnly(new Stub(), 'foo')).toEqual({ foo: true });
+        expect(objectOnly(new Stub(), ['foo'])).toEqual({ foo: true });
     });
 
 });

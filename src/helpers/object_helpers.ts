@@ -151,10 +151,11 @@ export function objectMap<T>(items: T[], property: KeyOf<T, number | string>): R
     }, {} as Record<string, T>);
 }
 
-export function objectOnly<T extends Obj, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
+export function objectOnly<T extends object, K extends keyof T>(obj: T, keys: K | K[]): Pick<T, K> {
     const newObject: Pick<T, K> = {} as Pick<T, K>;
+    const keysArray = Array.isArray(keys) ? keys : [keys];
 
-    for (const key of keys) {
+    for (const key of keysArray) {
         if (!(key in obj))
             continue;
 
