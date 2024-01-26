@@ -61,6 +61,7 @@ export { tap } from './tap';
 export type { Tapped } from './tap';
 
 export { noop } from './noop';
+export { required } from './required';
 export { value } from './value';
 export { when } from './when';
 
