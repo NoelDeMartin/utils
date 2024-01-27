@@ -17,6 +17,7 @@ export type OnlyKnownProperties<TGeneric, TKnown> = {
 };
 export type Pretty<T> = T extends infer U ? { [K in keyof U]: U[K] } : never;
 export type VoidClosure<T> = T extends (...args: infer A) => ClosureResult ? (...args: A) => void : never;
+export type Writable<T> = { -readonly [K in keyof T]: T[K]; };
 
 // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/3573
 export type Use<T> = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
