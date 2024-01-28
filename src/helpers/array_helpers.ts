@@ -1,7 +1,7 @@
 import type { Closure, Falsy } from '@/types/helpers';
 
 import { compare } from './logical_helpers';
-import { isIterable, isString } from './object_helpers';
+import { isIterable, isString, toString } from './object_helpers';
 
 export function arrayClear(items: unknown[]): void {
     items.splice(0, items.length);
@@ -66,8 +66,8 @@ export function arrayFirst<T>(items: T[], filter: (item: T) => boolean): T | nul
     return null;
 }
 
-export function arrayFlatMap<T, R>(items: T[], transformation: (item: T, index: number) => R[]): R[] {
-    return [...items.entries()].flatMap(([index, item]) => transformation(item, index));
+export function arrayFlatMap<T, R>(items: T[], map: (item: T, index: number) => R[]): R[] {
+    return [...items.entries()].flatMap(([index, item]) => map(item, index));
 }
 
 export function arrayWithItemAt<T>(items: T[], item: T, index: number): T[] {
@@ -76,6 +76,29 @@ export function arrayWithItemAt<T>(items: T[], item: T, index: number): T[] {
         item,
         ...items.slice(index + 1),
     ];
+}
+
+export function arrayGroupBy<TItem, TKey extends string>(
+    items: TItem[],
+    groupBy: (item: TItem) => TKey,
+): Record<TKey, TItem[]>;
+export function arrayGroupBy<TItem, TKey extends keyof TItem>(
+    items: TItem[],
+    groupBy: TKey,
+): Record<string, TItem[]>;
+export function arrayGroupBy<TItem>(
+    items: TItem[],
+    groupBy: string | ((item: TItem) => string),
+): Record<string, TItem[]> {
+    const group = typeof groupBy === 'string'
+        ? (item: TItem) => toString(item[groupBy as unknown as keyof TItem])
+        : groupBy;
+
+    return items.reduce((groups, item) => {
+        (groups[group(item)] ??= []).push(item);
+
+        return groups;
+    }, {} as Record<string, TItem[]>);
 }
 
 export function arrayIsEmpty(items: unknown[]): boolean {

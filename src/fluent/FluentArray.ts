@@ -4,6 +4,7 @@ import {
     arrayFilter,
     arrayFirst,
     arrayFlatMap,
+    arrayGroupBy,
     arrayIsEmpty,
     arrayProject,
     arrayRandomItem,
@@ -31,6 +32,7 @@ const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     filter: arrayFilter,
     first: arrayFirst,
     flatMap: arrayFlatMap,
+    groupBy: arrayGroupBy,
     isEmpty: arrayIsEmpty,
     project: arrayProject,
     randomItem: arrayRandomItem,
@@ -50,7 +52,9 @@ export type FluentArrayHelpers<T> = {
     diff(items: T[], updated: T[]): { added: T[]; removed: T[] };
     first(items: T[], filter: (item: T) => boolean): T | null;
     filter(items: T[], filter?: (item: T) => boolean): T[] | Exclude<T, Falsy>[];
-    flatMap<R>(items: T[], transformation?: (item: T, index: number) => R[]): R[];
+    flatMap<TMapped>(items: T[], map?: (item: T, index: number) => TMapped[]): TMapped[];
+    groupBy<TKey extends string>(items: T[], groupBy: (item: T) => TKey): Record<TKey, T[]>;
+    groupBy<TKey extends keyof T>(items: T[], groupBy: TKey): Record<string, T[]>;
     isEmpty(items: T[]): boolean;
     project(items: T[], property: string): unknown[];
     randomItem(items: T[]): T | null;

@@ -8,6 +8,7 @@ import {
     arrayFilter,
     arrayFirst,
     arrayFrom,
+    arrayGroupBy,
     arrayProject,
     arrayRandomItem,
     arrayRemove,
@@ -120,6 +121,43 @@ describe('Array helpers', () => {
         expect(arraySorted(items, ['age'])).toEqual([sonGokuKid, zetman, astroboy, sonGokuAdult]);
     });
 
+    it('groups items', () => {
+        const pirates = [
+            { name: 'Monkey D. Luffy', band: 'mugiwara' },
+            { name: 'Roronoa Zoro', band: 'mugiwara' },
+            { name: 'Nami', band: 'mugiwara' },
+            { name: 'Marshall D. Teach', band: 'blackbeard' },
+            { name: 'Jesus Burgess', band: 'blackbeard' },
+            { name: 'Shiryu', band: 'blackbeard' },
+        ];
+
+        expect(arrayGroupBy(pirates, 'band')).toEqual({
+            mugiwara: [
+                { name: 'Monkey D. Luffy', band: 'mugiwara' },
+                { name: 'Roronoa Zoro', band: 'mugiwara' },
+                { name: 'Nami', band: 'mugiwara' },
+            ],
+            blackbeard: [
+                { name: 'Marshall D. Teach', band: 'blackbeard' },
+                { name: 'Jesus Burgess', band: 'blackbeard' },
+                { name: 'Shiryu', band: 'blackbeard' },
+            ],
+        });
+
+        expect(arrayGroupBy(pirates, pirate => pirate.band === 'mugiwara' ? 'good' : 'bad')).toEqual({
+            good: [
+                { name: 'Monkey D. Luffy', band: 'mugiwara' },
+                { name: 'Roronoa Zoro', band: 'mugiwara' },
+                { name: 'Nami', band: 'mugiwara' },
+            ],
+            bad: [
+                { name: 'Marshall D. Teach', band: 'blackbeard' },
+                { name: 'Jesus Burgess', band: 'blackbeard' },
+                { name: 'Shiryu', band: 'blackbeard' },
+            ],
+        });
+    });
+
     it('gets items without specified items', () => {
         const items = ['foo', 'bar', 'baz'];
 
@@ -201,6 +239,8 @@ const filteredConstItems = arrayFilter(['foo' as const, null, enabled && 'bar', 
 const arrayFromNumber = arrayFrom(42);
 const arrayFromSet = arrayFrom(new Set(['foo']));
 const arrayFromArray = arrayFrom([new Date()]);
+const groupedByKey = arrayGroupBy([{ id: 'Foo Bar' }], 'id');
+const groupedByFunction = arrayGroupBy([{ id: 'Foo Bar' }], item => item.id ? 'one' : 'two');
 
 describe('Array helpers types', () => {
 
@@ -211,6 +251,8 @@ describe('Array helpers types', () => {
         Expect<Equals<typeof arrayFromNumber, number[]>> |
         Expect<Equals<typeof arrayFromSet, string[]>> |
         Expect<Equals<typeof arrayFromArray, Date[]>> |
+        Expect<Equals<keyof typeof groupedByKey, string>> |
+        Expect<Equals<keyof typeof groupedByFunction, 'one' | 'two'>> |
         true
     >());
 
