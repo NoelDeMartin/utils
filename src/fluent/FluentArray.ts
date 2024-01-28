@@ -53,7 +53,7 @@ export type FluentArrayHelpers<T> = {
     first(items: T[], filter: (item: T) => boolean): T | null;
     filter(items: T[], filter?: (item: T) => boolean): T[] | Exclude<T, Falsy>[];
     flatMap<TMapped>(items: T[], map?: (item: T, index: number) => TMapped[]): TMapped[];
-    groupBy<TKey extends string>(items: T[], groupBy: (item: T) => TKey): Record<TKey, T[]>;
+    groupBy<TKey extends string>(items: T[], groupBy: (item: T) => TKey): Partial<Record<TKey, T[]>>;
     groupBy<TKey extends keyof T>(items: T[], groupBy: TKey): Record<string, T[]>;
     isEmpty(items: T[]): boolean;
     project(items: T[], property: string): unknown[];

@@ -81,7 +81,7 @@ export function arrayWithItemAt<T>(items: T[], item: T, index: number): T[] {
 export function arrayGroupBy<TItem, TKey extends string>(
     items: TItem[],
     groupBy: (item: TItem) => TKey,
-): Record<TKey, TItem[]>;
+): Partial<Record<TKey, TItem[]>>;
 export function arrayGroupBy<TItem, TKey extends keyof TItem>(
     items: TItem[],
     groupBy: TKey,
@@ -89,7 +89,7 @@ export function arrayGroupBy<TItem, TKey extends keyof TItem>(
 export function arrayGroupBy<TItem>(
     items: TItem[],
     groupBy: string | ((item: TItem) => string),
-): Record<string, TItem[]> {
+): Partial<Record<string, TItem[]>> {
     const group = typeof groupBy === 'string'
         ? (item: TItem) => toString(item[groupBy as unknown as keyof TItem])
         : groupBy;
