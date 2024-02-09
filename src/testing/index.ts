@@ -11,5 +11,9 @@ export type HasKey<T, K extends string> = K extends keyof T ? true : false;
 // eslint-disable-next-line
 export const tt: <T>() => () => any = () => () => expect(true).toBe(true);
 
+export * from './FakeResponse';
+export * from './FakeServer';
 export * from './mocking';
 export * from './namespace';
+export { default as FakeResponse } from './FakeResponse';
+export { default as FakeServer } from './FakeServer';
