@@ -2,24 +2,28 @@ import { fail } from '@/helpers/error_helpers';
 import type { ValueWithoutEmpty } from '@/helpers/object_helpers';
 
 export function required<T extends object | null | undefined>(
-    value: (() => T) | T,
-    errorMessage: string,
-): ValueWithoutEmpty<T> {
+    getValue: () => T,
+    errorMessage?: string
+): ValueWithoutEmpty<T>;
+export function required<T>(value: T, errorMessage?: string): ValueWithoutEmpty<T>;
+export function required<T>(value: (() => T) | T, errorMessage?: string): ValueWithoutEmpty<T> {
     errorMessage ??= 'Required value is missing';
 
     if (typeof value === 'function') {
+        const getValue = value as unknown as () => object;
+
         return new Proxy(
             {},
             {
                 get(_, property, receiver) {
-                    const model = value() ?? fail<ValueWithoutEmpty<T>>(errorMessage);
+                    const obj = getValue() ?? fail<ValueWithoutEmpty<T>>(errorMessage);
 
-                    return Reflect.get(model, property, receiver);
+                    return Reflect.get(obj, property, receiver);
                 },
                 set(_, property, value, receiver) {
-                    const model = value() ?? fail<ValueWithoutEmpty<T>>(errorMessage);
+                    const obj = getValue() ?? fail<ValueWithoutEmpty<T>>(errorMessage);
 
-                    return Reflect.set(model, property, value, receiver);
+                    return Reflect.set(obj, property, value, receiver);
                 },
             },
         ) as ValueWithoutEmpty<T>;
