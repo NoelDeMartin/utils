@@ -57,6 +57,28 @@ export default class FakeServer {
         };
     }
 
+    public getRequest(url: string): FakeServerRequest | null;
+    public getRequest(method: string, url: string): FakeServerRequest | null;
+    public getRequest(methodOrUrl: string, url?: string): FakeServerRequest | null {
+        const method = typeof url === 'string' ? methodOrUrl : false;
+        url = url ?? methodOrUrl;
+
+        return this.requests.find(request => request.url === url && (!method || request.method === method)) ?? null;
+    }
+
+    public getRequests(url?: string): FakeServerRequest[];
+    public getRequests(method: string, url: string): FakeServerRequest[];
+    public getRequests(methodOrUrl?: string, url?: string): FakeServerRequest[] {
+        if (!methodOrUrl) {
+            return this.requests;
+        }
+
+        const method = typeof url === 'string' ? methodOrUrl : false;
+        url = url ?? methodOrUrl;
+
+        return this.requests.filter(request => request.url === url && (!method || request.method === method));
+    }
+
     public respond(url: string, response: Response | FakeServerResponse): void {
         this.responses[url] ??= [];
         this.responses[url]?.push('response' in response ? response : { response });
@@ -69,10 +91,6 @@ export default class FakeServer {
     public reset(): void {
         this.requests = [];
         this.responses = {};
-    }
-
-    public requested(url: string): boolean {
-        return !!this.requests.find(request => request.url === url);
     }
 
     protected async matchResponse(request: FakeServerRequest): GetClosureResult<typeof fetch> {
