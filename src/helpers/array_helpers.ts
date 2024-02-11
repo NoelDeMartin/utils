@@ -255,6 +255,15 @@ export function arrayUnique<T>(items: T[], extractKey?: (item: T) => string): T[
         : [...new Set(items)];
 }
 
+export function arrayFind<T, K extends keyof T>(items: T[], filter: string, value?: T[K]): T | undefined {
+    return items.find(item => {
+        const property = item[filter as keyof T];
+        const result = typeof property === 'function' ? property.call(item) : property;
+
+        return value ? result === value : !!result;
+    });
+}
+
 export function arrayWhere<T, K extends keyof T>(items: T[], filter: string, value?: T[K]): T[] {
     return items.filter(item => {
         const property = item[filter as keyof T];
