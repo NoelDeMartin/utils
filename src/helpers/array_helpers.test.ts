@@ -239,6 +239,7 @@ const filteredConstItems = arrayFilter(['foo' as const, null, enabled && 'bar', 
 const arrayFromNumber = arrayFrom(42);
 const arrayFromSet = arrayFrom(new Set(['foo']));
 const arrayFromArray = arrayFrom([new Date()]);
+const arrayFromConditional = arrayFrom(Date.now() ? 42 : [42]);
 const groupedByKey = arrayGroupBy([{ id: 'Foo Bar' }], 'id');
 const groupedByFunction = arrayGroupBy([{ id: 'Foo Bar' }], item => item.id ? 'one' : 'two');
 
@@ -251,6 +252,7 @@ describe('Array helpers types', () => {
         Expect<Equals<typeof arrayFromNumber, number[]>> |
         Expect<Equals<typeof arrayFromSet, string[]>> |
         Expect<Equals<typeof arrayFromArray, Date[]>> |
+        Expect<Equals<typeof arrayFromConditional, number[]>> |
         Expect<Equals<keyof typeof groupedByKey, string>> |
         Expect<Equals<keyof typeof groupedByFunction, 'one' | 'two'>> |
         true

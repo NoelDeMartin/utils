@@ -3,6 +3,8 @@ import type { Closure, Falsy } from '@/types/helpers';
 import { compare } from './logical_helpers';
 import { isIterable, isString, toString } from './object_helpers';
 
+export type ArrayFrom<T> = T extends Iterable<infer TItem> ? TItem[] : T[];
+
 export function arrayClear(items: unknown[]): void {
     items.splice(0, items.length);
 }
@@ -289,12 +291,12 @@ export function arrayZip<T>(...arrays: T[][]): T[][] {
     return zippedArrays;
 }
 
-export function arrayFrom<T>(value: Iterable<T>): T[];
-export function arrayFrom<T>(value: T, ignoreEmptyValues?: boolean): T[];
-export function arrayFrom(value: unknown, ignoreEmptyValues: boolean = false): unknown[] {
-    return Array.isArray(value) || (isIterable(value) && !isString(value))
+export function arrayFrom<T>(value: T, ignoreEmptyValues: boolean = false): ArrayFrom<T> {
+    const items = Array.isArray(value) || (isIterable(value) && !isString(value))
         ? Array.from(value)
         : ignoreEmptyValues && (value === null || value === undefined) ? [] : [value];
+
+    return items as ArrayFrom<T>;
 }
 
 export function range(length: number): number[] {
