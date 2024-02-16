@@ -1,4 +1,4 @@
-import { getClassMethods } from '@/helpers/object_helpers';
+import { getClassMethods, isPlainObject } from '@/helpers/object_helpers';
 import { testing } from '@/testing/namespace';
 import type { Obj } from '@/helpers/object_helpers';
 
@@ -12,7 +12,7 @@ export function mock<T extends object>(
 ): Mock<T> {
     const instance = (Array.isArray(methodsOrInstance) ? defaultInstance : methodsOrInstance) as T;
     const methods = (Array.isArray(methodsOrInstance) ? methodsOrInstance : []) as Array<keyof T>;
-    const properties = getClassMethods(instance);
+    const properties = isPlainObject(instance) ? Object.getOwnPropertyNames(instance) : getClassMethods(instance);
 
     for (const property of properties) {
         const value = instance[property as keyof T];

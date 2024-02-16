@@ -106,6 +106,10 @@ export function isObject(value: unknown): value is Obj {
     return typeof value === 'object' && value !== null;
 }
 
+export function isPlainObject(value: object): boolean {
+    return Object.getPrototypeOf(value) === Object.prototype;
+}
+
 export function isString(value: unknown): value is string | String {
     return typeof value === 'string' || value instanceof String;
 }

@@ -1,53 +1,69 @@
-import { fail } from '@/helpers/error_helpers';
 import { getClassMethods } from '@/helpers/object_helpers';
 import { mock } from '@/testing/mocking';
-import type { ClassInstance } from '@/types/helpers';
 import type { Constructor } from '@/types/classes';
-import type { Obj } from '@/helpers/object_helpers';
 
-export type FacadeMethods<TInstance, TMockClass extends Constructor> = {
-    instance: TInstance | null;
-    mockClass: TMockClass | null;
-    mockInstance: ClassInstance<TMockClass> | null;
-    setInstance(instance: TInstance): void;
-    setMockInstance: (mockClass: ClassInstance<TMockClass>) => void;
-    setMockClass: (mockClass: TMockClass) => void;
+export type FacadeMethods<TInstance, TMock extends TInstance> = {
+    setInstance(instance: TInstance): TInstance;
+    setMockClass(mockClass: Constructor<TMock>): void;
+    setMockFactory(mockFactory: () => TMock): void;
+    setMockFacade(mockFacade: Facade<TMock>): void;
     requireInstance(): TInstance;
-    mock: <T extends ClassInstance<TMockClass>>(mockInstance?: T | Obj | object) => T;
+    mock(partialInstance?: Partial<TInstance>): TMock;
+    reset(): TInstance;
 };
 
-export type Facade<TInstance, TMockClass extends Constructor> = TInstance & FacadeMethods<TInstance, TMockClass>;
+export type Facade<TInstance, TMock extends TInstance = TInstance> = TInstance & FacadeMethods<TInstance, TMock>;
 
-export function facade<TInstance extends object>(
-    instance?: TInstance | null
-): Facade<TInstance, Constructor<TInstance>>;
-export function facade<TInstance extends object, TMockClass extends Constructor>(
-    instance: TInstance | null,
-    mockClass: TMockClass | null,
-): Facade<TInstance, TMockClass>;
-export function facade<TInstance extends object, TMockClass extends Constructor>(
-    instance: TInstance | null = null,
-    mockClass: TMockClass | null = null,
-): Facade<TInstance, TMockClass> {
-    const facade: FacadeMethods<TInstance, TMockClass> = {
-        instance,
-        mockClass,
-        mockInstance: null,
-        setInstance: instance => facade.instance = instance,
-        setMockInstance: mockInstance => facade.mockInstance = mockInstance,
-        setMockClass: mockClass => facade.mockClass = mockClass,
-        requireInstance: () => facade.instance ?? fail('Facade not initialized'),
-        mock<T extends ClassInstance<TMockClass>>(mockInstance?: T | Obj | object) {
-            const instance = mock(
-                mockInstance ??
-                getFacadeInstance(facade.mockInstance) ??
-                (facade.mockClass ? new facade.mockClass() : getClassMethods(facade.instance as object)),
-            );
+export function facade<TInstance extends object, TMock extends TInstance>(
+    defaultClassOrFactory: (() => TInstance) | Constructor<TInstance>,
+): Facade<TInstance, TMock> {
+    let instance: TInstance | null = null;
+    let mockClass: Constructor<TMock> | null = null;
+    let mockFactory: (() => TMock) | null = null;
+    let mockFacade: Facade<TMock> | null = null;
 
-            facade.instance = instance as TInstance;
+    function newDefaultInstance(): TInstance {
+        try {
+            return (defaultClassOrFactory as (() => TInstance))();
+        } catch (error) {
+            return new (defaultClassOrFactory as Constructor<TInstance>)();
+        }
+    }
 
-            return instance as T;
-        },
+    function newMockInstance(partialInstance?: Partial<TInstance>): TMock {
+        if (partialInstance) {
+            return mock<TMock>(partialInstance);
+        }
+
+        if (mockFacade) {
+            return mock(mockFacade.reset());
+        }
+
+        if (mockClass) {
+            return mock(new mockClass());
+        }
+
+        if (mockFactory) {
+            return mockFactory();
+        }
+
+        return mock<TMock>(getClassMethods(facade.requireInstance()));
+    }
+
+    function setInstance(newInstance: TInstance): TInstance {
+        instance = newInstance;
+
+        return newInstance;
+    }
+
+    const facade: FacadeMethods<TInstance, TMock> = {
+        setInstance,
+        setMockClass: newMockClass => mockClass = newMockClass,
+        setMockFactory: newMockFactory => mockFactory = newMockFactory,
+        setMockFacade: newMockFacade => mockFacade = newMockFacade,
+        requireInstance: () => instance ?? setInstance(newDefaultInstance()),
+        mock: (partialInstance) => setInstance(newMockInstance(partialInstance)) as TMock,
+        reset: () => setInstance(newDefaultInstance()),
     };
 
     return new Proxy(facade, {
@@ -57,7 +73,7 @@ export function facade<TInstance extends object, TMockClass extends Constructor>
             return Reflect.get(t, property, receiver);
         },
         set: (_, property, receiver) => Reflect.set(facade.requireInstance(), property, receiver),
-    }) as unknown as Facade<TInstance, TMockClass>;
+    }) as unknown as Facade<TInstance, TMock>;
 }
 
 export function isFacade(facade: unknown): facade is Facade<unknown, Constructor<object>> {
@@ -66,7 +82,7 @@ export function isFacade(facade: unknown): facade is Facade<unknown, Constructor
         && 'requireInstance' in facade;
 }
 
-export function getFacadeInstance<T>(facade: Facade<T, Constructor<object>>): T;
+export function getFacadeInstance<T>(facade: Facade<T>): T;
 export function getFacadeInstance<T>(facade: T): T;
 export function getFacadeInstance<T>(facade: T): T {
     return isFacade(facade) ? facade.requireInstance() as T : facade;

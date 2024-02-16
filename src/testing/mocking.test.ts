@@ -48,6 +48,17 @@ describe('Mocking types', () => {
         expect(targetMockWithFullMockClass.bar).toHaveBeenCalled();
     });
 
+    it('mocks object functions', () => {
+        // Arrange
+        const instance = mock({ hello: () => 'hi' });
+
+        // Act
+        instance.hello();
+
+        // Assert
+        expect(instance.hello).toHaveBeenCalled();
+    });
+
     it('has correct types', tt<
         Expect<Equals<typeof targetMock, Mock<Target>>> |
         Expect<Equals<typeof targetMockWithClass, Mock<Target>>> |
