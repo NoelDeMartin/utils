@@ -3,6 +3,8 @@ import { arrayRemove } from '@/helpers/array_helpers';
 import { toString } from '@/helpers/object_helpers';
 import type { GetClosureArgs, GetClosureResult } from '@/types/helpers';
 
+export type FetchSpy = (request: FakeServerRequest) => unknown;
+
 export interface FakeServerRequest {
     url: string;
     method: string;
@@ -18,10 +20,12 @@ export interface FakeServerResponse {
 
 export default class FakeServer {
 
+    public readonly fetch: typeof fetch;
+    protected fetchSpy: FetchSpy | null = null;
     protected requests: FakeServerRequest[] = [];
     protected responses: Record<string, FakeServerResponse[]> = {};
 
-    public getFetch(): typeof fetch {
+    constructor() {
         const getRequest = (...[input, options]: GetClosureArgs<typeof fetch>): FakeServerRequest => {
             if (typeof input === 'string') {
                 return {
@@ -46,15 +50,21 @@ export default class FakeServer {
             };
         };
 
-        return async (input, options) => {
+        this.fetch = async (input, options) => {
             const request = getRequest(input, options);
             const response = await this.matchResponse(request);
 
             request.response = response;
             this.requests.push(request);
 
+            this.fetchSpy?.(request);
+
             return response;
         };
+    }
+
+    public spy(fetchSpy: FetchSpy): void {
+        this.fetchSpy = fetchSpy;
     }
 
     public getRequest(url: string): FakeServerRequest | null;
