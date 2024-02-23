@@ -1,4 +1,6 @@
 import Semaphore from '@/helpers/Semaphore';
+import { after } from '@/helpers/time_helpers';
+import { range } from '@/helpers/array_helpers';
 
 describe('Semaphore', () => {
 
@@ -43,6 +45,23 @@ describe('Semaphore', () => {
 
         // Assert
         expect(items).toEqual(['one', 'three', 'two']);
+    });
+
+    it('Locks threads launched synchronously', async () => {
+        // Arrange
+        const lock = new Semaphore();
+        const items: string[] = [];
+        const concurrency = 100;
+
+        // Act
+        await Promise.all(range(concurrency).map((i) => lock.run(async () => {
+            await after({ ms: Math.floor(Math.random() * 10) });
+
+            items.push(`Item #${i}`);
+        })));
+
+        // Assert
+        expect(items).toEqual(range(concurrency).map(i => `Item #${i}`));
     });
 
 });

@@ -10,10 +10,14 @@ export default class Semaphore {
         this.listeners = new Set();
     }
 
-    public async acquire(): Promise<void> {
-        await this.waitAvailable();
+    public acquire(): Promise<void> {
+        if (this.count === 0) {
+            return this.waitAvailable().then(() => this.acquire());
+        }
 
         this.count = Math.max(this.count - 1, 0);
+
+        return Promise.resolve();
     }
 
     public release(): void {
