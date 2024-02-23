@@ -1,6 +1,25 @@
-import { asyncMemo, once, setAsyncMemo } from './caching_helpers';
+import { asyncMemo, memo, once, setAsyncMemo } from './caching_helpers';
 
 describe('Cache helpers', () => {
+
+    it('caches results', () => {
+        // Arrange
+        let calls = 0;
+        const key = 'store';
+        const result = 42;
+        const results = [];
+        const operation = () => (calls++, result);
+
+        // Act
+        results.push(memo(key, operation));
+        results.push(memo(key, operation));
+        results.push(memo(key, operation));
+
+        // Assert
+        expect(calls).toBe(1);
+
+        results.forEach(actualResult => expect(actualResult).toEqual(result));
+    });
 
     it('caches async results', async () => {
         // Arrange
