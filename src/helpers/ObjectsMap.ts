@@ -66,7 +66,7 @@ export default class ObjectsMap<Item extends object> {
     }
 
     public require(key: string): Item {
-        return this.keysToItems.get(key) || fail(`Couldn't find item with '${key}' key`);
+        return this.keysToItems.get(key) ?? fail(`Couldn't find item with '${key}' key`);
     }
 
     public get(key: string): Item | undefined {
@@ -116,6 +116,20 @@ export default class ObjectsMap<Item extends object> {
     public clear(): void {
         this.itemsToKeys = new WeakMap();
         this.keysToItems.clear();
+    }
+
+    public clone<T extends ObjectsMap<Item>>(this: T): T {
+        const ThisConstructor = this.constructor as { new (keyExtractor: (item: Item) => string): T };
+        const copy = new ThisConstructor(this.getKey);
+
+        copy.keysToItems = new Map(this.keysToItems);
+        copy.itemsToKeys = new WeakMap();
+
+        for (const [key, item] of copy.keysToItems.entries()) {
+            copy.itemsToKeys.set(item, key);
+        }
+
+        return copy;
     }
 
 }
