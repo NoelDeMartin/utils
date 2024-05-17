@@ -22,6 +22,7 @@ export * from './hash_helpers';
 export * from './identity_helpers';
 export * from './location_helpers';
 export * from './logical_helpers';
+export * from './math_helpers';
 export * from './mixin_helpers';
 export * from './network_helpers';
 export * from './object_helpers';
