@@ -25,6 +25,11 @@ export function required<T>(value: (() => T) | T, errorMessage?: string): ValueW
 
                     return Reflect.set(obj, property, value, receiver);
                 },
+                getPrototypeOf() {
+                    const obj = getValue() ?? fail<ValueWithoutEmpty<T>>(errorMessage);
+
+                    return Object.getPrototypeOf(obj);
+                },
             },
         ) as ValueWithoutEmpty<T>;
     }
