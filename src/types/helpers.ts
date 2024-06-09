@@ -16,6 +16,7 @@ export type OnlyKnownProperties<TGeneric, TKnown> = {
     [ K in keyof TGeneric]: K extends keyof TKnown ? TGeneric[K] : never
 };
 export type Pretty<T> = T extends infer U ? { [K in keyof U]: U[K] } : never;
+export type SubPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export type VoidClosure<T> = T extends (...args: infer A) => ClosureResult ? (...args: A) => void : never;
 export type Writable<T> = { -readonly [K in keyof T]: T[K]; };
 
