@@ -8,8 +8,9 @@ class RequiredHandler<Target extends object> implements ProxyHandler<Target> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public get(_: Target, property: string | symbol, receiver: any): any {
         const obj = this.getValue() ?? fail<ValueWithoutEmpty<Target>>(this.errorMessage);
+        const value = Reflect.get(obj, property, receiver);
 
-        return Reflect.get(obj, property, receiver);
+        return typeof value === 'function' ? value.bind(obj) : value;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
