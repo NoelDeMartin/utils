@@ -4,36 +4,44 @@ import type { Equals } from '@/testing/index';
 export type Obj = Record<string, unknown>;
 export type ObjectEntry<T extends Obj, K extends keyof T> = [K, T[K]];
 
-export type ValueWithoutEmpty<T> = T extends null | undefined ? never : T;
-export type ReplaceEmpty<T> = { [K in keyof T]: ValueWithoutEmpty<T[K]> };
-export type GetRequiredKeysWithoutEmpty<T, U extends Record<keyof T, unknown> = ReplaceEmpty<T>> = {
-    [K in keyof T]:
-        Record<string, never> extends Pick<T, K>
+export type ValueWithout<TValue, TExclude> = TValue extends TExclude ? never : TValue;
+export type ReplaceValues<TObj, TExclude> = { [K in keyof TObj]: ValueWithout<TObj[K], TExclude> };
+export type GetRequiredKeysWithout<
+    TObj,
+    TExclude,
+    U extends Record<keyof TObj, unknown> = ReplaceValues<TObj, TExclude>
+> = {
+    [K in keyof TObj]:
+        Record<string, never> extends Pick<TObj, K>
             ? never
             : (
                 U[K] extends never
                     ? never
-                    : (Equals<T[K], U[K]> extends true ? K : never)
+                    : (Equals<TObj[K], U[K]> extends true ? K : never)
             )
-}[keyof T];
-export type GetOptionalKeysWithoutEmpty<T, U extends Record<keyof T, unknown> = ReplaceEmpty<T>> = {
-    [K in keyof T]:
-        Record<string, never> extends Pick<T, K>
+}[keyof TObj];
+export type GetOptionalKeysWithout<
+    TObj,
+    TExclude,
+    U extends Record<keyof TObj, unknown> = ReplaceValues<TObj, TExclude>
+> = {
+    [K in keyof TObj]:
+        Record<string, never> extends Pick<TObj, K>
             ? K
             : (
                 U[K] extends never
                 ? never
-                : (Equals<T[K], U[K]> extends true ? never : K)
+                : (Equals<TObj[K], U[K]> extends true ? never : K)
             )
-}[keyof T];
+}[keyof TObj];
 
 // Given an existing bug in TypeScript, it's not possible to define optional keys using type generics without having
 // them defined as `| undefined` as well. Until that is fixed, this may cause some problems for keys that can have
 // empty values but not always do.
 // See https://github.com/microsoft/TypeScript/issues/13195
-export type ObjectWithoutEmpty<T> =
-    { [K in GetRequiredKeysWithoutEmpty<T>]: ValueWithoutEmpty<T[K]> } &
-    { [K in GetOptionalKeysWithoutEmpty<T>]?: ValueWithoutEmpty<T[K]> };
+export type ObjectWithout<TObj, TExclude> =
+    { [K in GetRequiredKeysWithout<TObj, TExclude>]: ValueWithout<TObj[K], TExclude> } &
+    { [K in GetOptionalKeysWithout<TObj, TExclude>]?: ValueWithout<TObj[K], TExclude> };
 
 export function deepEquals(a: unknown, b: unknown): boolean {
     if (a === b)
@@ -185,9 +193,35 @@ export function objectPull<T extends Obj, K extends keyof T>(obj: T, key: K): T[
     return value;
 }
 
-export function objectWithout<T extends Obj, K extends keyof T>(obj: T, keys: K | K[]): Omit<T, K> {
-    const newObject: T = { ...obj };
-    const keysArray = Array.isArray(keys) ? keys : [keys];
+type TypeGuard<T=unknown> = (item: unknown) => item is T;
+
+/* eslint-disable max-len */
+export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, keys: TKey): Omit<TObj, TKey>;
+export function objectWithout<TObj extends object, TKey extends keyof TObj>(obj: TObj, keys: TKey): Omit<TObj, TKey>;
+export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, keys: TKey[]): Omit<TObj, TKey>;
+export function objectWithout<TObj extends object, TKey extends keyof TObj>(obj: TObj, keys: TKey[]): Omit<TObj, TKey>;
+export function objectWithout<TObj extends Obj, TExclude>(obj: TObj, exclude: TypeGuard<TExclude>): ObjectWithout<TObj, TExclude>;
+export function objectWithout<TObj extends object, TExclude>(obj: TObj, exclude: TypeGuard<TExclude>): ObjectWithout<TObj, TExclude>;
+/* eslint-enable max-len */
+
+export function objectWithout(obj: Obj, keysOrExclude: string | string[] | TypeGuard): unknown {
+    if (typeof keysOrExclude === 'function') {
+        const exclude = keysOrExclude;
+        const cleanObject = {} as Record<string, unknown>;
+
+        for (const [key, value] of Object.entries(obj)) {
+            if (exclude(value)) {
+                continue;
+            }
+
+            cleanObject[key] = value;
+        }
+
+        return cleanObject;
+    }
+
+    const newObject = { ...obj };
+    const keysArray = Array.isArray(keysOrExclude) ? keysOrExclude : [keysOrExclude];
 
     for (const key of keysArray) {
         delete newObject[key];
@@ -196,19 +230,10 @@ export function objectWithout<T extends Obj, K extends keyof T>(obj: T, keys: K 
     return newObject;
 }
 
-export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithoutEmpty<T>;
-export function objectWithoutEmpty<T extends object>(obj: T): ObjectWithoutEmpty<T>;
-export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithoutEmpty<T> {
-    const cleanObject = {} as Record<string, unknown>;
-
-    for (const [key, value] of Object.entries(obj)) {
-        if (value === null || value === undefined)
-            continue;
-
-        cleanObject[key] = value;
-    }
-
-    return cleanObject as ObjectWithoutEmpty<T>;
+export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithout<T, null | undefined>;
+export function objectWithoutEmpty<T extends object>(obj: T): ObjectWithout<T, null | undefined>;
+export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithout<T, null | undefined> {
+    return objectWithout(obj, (value): value is null | undefined => value === null || value === undefined);
 }
 
 export function toString(value: unknown): string {
