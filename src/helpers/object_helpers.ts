@@ -1,4 +1,4 @@
-import type { Closure, ClosureArgs, Constructor, GetObjectMethods, KeyOf, VoidClosure } from '@/types/index';
+import type { Closure, ClosureArgs, Constructor, GetObjectMethods, KeyOf, TypeGuard, VoidClosure } from '@/types/index';
 import type { Equals } from '@/testing/index';
 
 export type Obj = Record<string, unknown>;
@@ -193,7 +193,6 @@ export function objectPull<T extends Obj, K extends keyof T>(obj: T, key: K): T[
     return value;
 }
 
-type TypeGuard<T=unknown> = (item: unknown) => item is T;
 
 /* eslint-disable max-len */
 export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, keys: TKey): Omit<TObj, TKey>;
