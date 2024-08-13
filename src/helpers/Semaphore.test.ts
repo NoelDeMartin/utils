@@ -1,5 +1,6 @@
 import Semaphore from '@/helpers/Semaphore';
 import { after } from '@/helpers/time_helpers';
+import { fail } from '@/helpers/error_helpers';
 import { range } from '@/helpers/array_helpers';
 
 describe('Semaphore', () => {
@@ -62,6 +63,24 @@ describe('Semaphore', () => {
 
         // Assert
         expect(items).toEqual(range(concurrency).map(i => `Item #${i}`));
+    });
+
+    it('Releases threads on error', async () => {
+        // Arrange
+        const lock = new Semaphore();
+        let failed = false;
+
+        // Act
+        try {
+            await lock.run(() => fail());
+        } catch (_) {
+            // Silence error.
+            failed = true;
+        }
+
+        // Assert
+        expect(lock.isAvailable()).toBe(true);
+        expect(failed).toBe(true);
     });
 
 });

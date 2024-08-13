@@ -26,17 +26,24 @@ export default class Semaphore {
         this.notifyAvailable();
     }
 
+    public isAvailable(): boolean {
+        return this.count !== 0;
+    }
+
     public async run<T>(operation: () => Promise<T>): Promise<T> {
         await this.acquire();
 
-        const result = await operation();
-        this.release();
+        try {
+            const result = await operation();
 
-        return result;
+            return result;
+        } finally {
+            this.release();
+        }
     }
 
     private async waitAvailable(): Promise<void> {
-        while (this.count === 0) {
+        while (!this.isAvailable()) {
             await new Promise(resolve => {
                 const listener = () => {
                     this.listeners.delete(listener);
