@@ -26,10 +26,10 @@ class Stub extends MagicObject {
             return;
         }
 
-        this.attributes = Object.entries(attributes).reduce((attributes, [name, value]) => {
-            attributes[stringToCamelCase(name)] = value;
+        this.attributes = Object.entries(attributes).reduce((_attributes, [name, value]) => {
+            _attributes[stringToCamelCase(name)] = value;
 
-            return attributes;
+            return _attributes;
         }, {} as Attributes);
     }
 

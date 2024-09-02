@@ -8,9 +8,9 @@ export function when<T extends object>(target: T, condition: unknown): T {
         : !!condition;
 
     return new Proxy(target, {
-        get(target, property, receiver) {
+        get(_target, property, receiver) {
             return success
-                ? Reflect.get(target, property, receiver)
+                ? Reflect.get(_target, property, receiver)
                 : () => {}; // eslint-disable-line @typescript-eslint/no-empty-function
         },
     }) as unknown as T;

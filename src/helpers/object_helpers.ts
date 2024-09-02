@@ -83,7 +83,7 @@ export function invert(map: Record<string, string>): Record<string, string> {
     }, {} as Record<string, string>);
 }
 
-export const isArray = Array.isArray.bind(Array);
+export const isArray: typeof Array.isArray = Array.isArray.bind(Array);
 
 export function isConstructor(value: object): value is Constructor {
     return 'prototype' in value;

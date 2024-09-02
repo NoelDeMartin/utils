@@ -10,14 +10,14 @@ export type Tapped<Target extends object> = {
 
 function proxyTap<Target extends object>(target: Target): Tapped<Target> {
     const proxy = new Proxy(target, {
-        get(target: object, key: PropertyKey, receiver?: unknown) {
-            const prop = Reflect.get(target, key, receiver);
+        get(_target: object, key: PropertyKey, receiver?: unknown) {
+            const prop = Reflect.get(_target, key, receiver);
 
             if (typeof prop !== 'function')
                 return prop;
 
             return (...params: any[]) => {
-                prop.call(target, ...params);
+                prop.call(_target, ...params);
 
                 return proxy;
             };

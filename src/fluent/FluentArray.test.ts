@@ -2,7 +2,7 @@ import { tt } from '@/testing/index';
 import type { Equals, Expect } from '@/testing/index';
 
 import FluentArrayDefinition from './FluentArray';
-import type { FluentArray, FluentArrayInstance } from './FluentArray';
+import type { FluentArray } from './FluentArray';
 
 describe('FluentArray', () => {
 
@@ -46,9 +46,6 @@ describe('FluentArray', () => {
     it('can be subclassed', () => {
         class SuperFluentArray<T extends { toString(): string }> extends FluentArrayDefinition<T> {
 
-            // TODO avoid doing this
-            declare public static create: <T>(value?: T[]) => FluentArrayInstance<SuperFluentArray<T>, T>;
-
             public slice(): this {
                 return this.create(this.value.reverse());
             }
@@ -62,7 +59,10 @@ describe('FluentArray', () => {
 
         expect(superFluentArray).toBeInstanceOf(SuperFluentArray);
         expect(superFluentArray.slice().toArray()).toEqual(['bar', 'foo']);
-        expect(superFluentArray.sortAlphabetically().toArray()).toEqual(['bar', 'foo']);
+
+        // TODO fix types without type assertions.
+        expect((superFluentArray as unknown as SuperFluentArray<string>).sortAlphabetically().toArray())
+            .toEqual(['bar', 'foo']);
     });
 
     it('can iterate over items', () => {

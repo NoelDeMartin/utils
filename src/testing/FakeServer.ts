@@ -105,7 +105,7 @@ export default class FakeServer {
 
     protected async matchResponse(request: FakeServerRequest): GetClosureResult<typeof fetch> {
         const responses = this.responses[request.url];
-        const response = responses?.find(response => !response.method || response.method === request.method);
+        const response = responses?.find(_response => !_response.method || _response.method === request.method);
 
         if (!responses || !response) {
             return FakeResponse.notFound();

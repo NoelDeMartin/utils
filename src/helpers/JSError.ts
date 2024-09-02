@@ -1,7 +1,7 @@
 import { runtimeGlobal } from '@/helpers/runtime_helpers';
 import type { ClosureArgs } from '@/types/index';
 
-export const RuntimeErrorClass = runtimeGlobal<typeof globalThis>().Error;
+export const RuntimeErrorClass: ErrorConstructor = runtimeGlobal<typeof globalThis>().Error;
 
 export interface JSErrorOptions {
     cause?: unknown;

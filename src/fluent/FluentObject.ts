@@ -1,8 +1,8 @@
 import type { Closure } from '@/types/index';
 
 export type Helper<Primitive=unknown> = (value: Primitive, ...args: any[]) => unknown;
-export type HelperParams<Primitive, Helper> =
-    Helper extends (value: Primitive, ...args: infer P) => unknown ? P : never;
+export type HelperParams<TPrimitive, THelper> =
+    THelper extends (value: TPrimitive, ...args: infer P) => unknown ? P : never;
 
 export type FluentPrimitiveMethods<
     FluentClass,
@@ -91,7 +91,7 @@ export default abstract class FluentObjectDefinition<Primitive> {
     protected abstract isPrimitive(value: unknown): value is Primitive;
 
     protected create(value: Primitive): this {
-        const constructor = this.constructor as unknown as { new(value: Primitive): unknown };
+        const constructor = this.constructor as unknown as { new(_value: Primitive): unknown };
 
         return new constructor(value) as this;
     }

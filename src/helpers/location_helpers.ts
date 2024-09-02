@@ -19,12 +19,12 @@ export function hasLocationQueryParameter(parameter: string): boolean {
 
 export function updateLocationQueryParameters(parameters: Record<string, string | undefined>): void {
     const url = Object.entries(parameters).reduce(
-        (url, [parameter, value]) => {
+        (_url, [parameter, value]) => {
             value
-                ? url.searchParams.set(parameter, value)
-                : url.searchParams.delete(parameter);
+                ? _url.searchParams.set(parameter, value)
+                : _url.searchParams.delete(parameter);
 
-            return url;
+            return _url;
         },
         new URL(location.href),
     );

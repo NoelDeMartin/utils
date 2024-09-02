@@ -59,12 +59,16 @@ export class MixinB<Secret, BaseSecret> implements Use<BaseSecret> {
 
 }
 
+// TODO fix types without any.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Mixed = mixed(BaseClass, [MixinAA, MixinB]) as any;
+
 export default interface TargetClass<BaseSecret, MixinSecret>
     extends
         BaseClass<BaseSecret>,
         MixinAA<BaseSecret>,
         MixinB<MixinSecret, BaseSecret> {}
-export default class TargetClass<BaseSecret, MixinSecret> extends mixed(BaseClass, [MixinAA, MixinB])<BaseSecret> {
+export default class TargetClass<BaseSecret, MixinSecret> extends Mixed {
 
     public specificId: number = 32;
 

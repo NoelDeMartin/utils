@@ -12,12 +12,12 @@ export function arrayClear(items: unknown[]): void {
 export function arrayDiff<T>(
     original: T[],
     updated: T[],
-    compare?: (a: T, b: T) => boolean,
+    diff?: (a: T, b: T) => boolean,
 ): { added: T[]; removed: T[] } {
     const removed = original.slice(0);
     const added = [];
-    const search: ((item: T, items: T[]) => number) = compare
-        ? (item, items) => items.findIndex(otherItem => compare(item, otherItem))
+    const search: ((item: T, items: T[]) => number) = diff
+        ? (item, items) => items.findIndex(otherItem => diff(item, otherItem))
         : (item, items) => items.indexOf(item);
 
     for (const updatedItem of updated) {
@@ -167,16 +167,16 @@ export function arrayReplace<T>(items: T[], original: T, replacement: T): boolea
 
 export function arraySorted<T>(items: T[]): T[];
 export function arraySorted<T>(items: T[], direction: 'asc' | 'desc'): T[];
-export function arraySorted<T>(items: T[], compare: (a: T, b: T) => number): T[];
+export function arraySorted<T>(items: T[], diff: (a: T, b: T) => number): T[];
 export function arraySorted<T>(items: T[], field: keyof T, direction?: 'asc' | 'desc'): T[];
 export function arraySorted<T>(items: T[], fields: (keyof T)[], direction?: 'asc' | 'desc'): T[];
 export function arraySorted<T>(
     items: T[],
-    compareOrFieldOrDirection?: keyof T | (keyof T)[] | ((a: T, b: T) => number) | 'asc' | 'desc',
+    diffOrFieldOrDirection?: keyof T | (keyof T)[] | ((a: T, b: T) => number) | 'asc' | 'desc',
     direction?: 'asc' | 'desc',
 ): T[] {
-    direction = compareOrFieldOrDirection === 'asc' || compareOrFieldOrDirection === 'desc'
-        ? compareOrFieldOrDirection as 'asc' | 'desc'
+    direction = diffOrFieldOrDirection === 'asc' || diffOrFieldOrDirection === 'desc'
+        ? diffOrFieldOrDirection as 'asc' | 'desc'
         : direction;
 
     const fieldDefaults: Partial<Record<keyof T, unknown>> = {};
@@ -206,19 +206,19 @@ export function arraySorted<T>(
             ? (field: keyof T) => (a: T, b: T) => compare(getFieldValue(b, field), getFieldValue(a, field))
             : (field: keyof T) => (a: T, b: T) => compare(getFieldValue(a, field), getFieldValue(b, field));
 
-        switch (typeof compareOrFieldOrDirection) {
+        switch (typeof diffOrFieldOrDirection) {
             case 'function':
-                return compareOrFieldOrDirection;
+                return diffOrFieldOrDirection;
             case 'string':
-                if (compareOrFieldOrDirection === 'asc')
+                if (diffOrFieldOrDirection === 'asc')
                     return;
 
-                if (compareOrFieldOrDirection === 'desc')
+                if (diffOrFieldOrDirection === 'desc')
                     return (a, b) => compare(b, a);
 
-                return compareItems(compareOrFieldOrDirection);
+                return compareItems(diffOrFieldOrDirection);
             case 'object': {
-                const comparisonFunctions = compareOrFieldOrDirection.map(field => compareItems(field));
+                const comparisonFunctions = diffOrFieldOrDirection.map(field => compareItems(field));
 
                 return (a: T, b: T) => {
                     for (const comparisonFunction of comparisonFunctions) {

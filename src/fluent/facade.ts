@@ -47,7 +47,7 @@ export function facade<TInstance extends object, TMock extends TInstance>(
             return mockFactory();
         }
 
-        return mock<TMock>(getClassMethods(facade.requireInstance()));
+        return mock<TMock>(getClassMethods(facadeInstance.requireInstance()));
     }
 
     function setInstance(newInstance: TInstance): TInstance {
@@ -56,7 +56,7 @@ export function facade<TInstance extends object, TMock extends TInstance>(
         return newInstance;
     }
 
-    const facade: FacadeMethods<TInstance, TMock> = {
+    const facadeInstance: FacadeMethods<TInstance, TMock> = {
         setInstance,
         setMockClass: newMockClass => mockClass = newMockClass,
         setMockFactory: newMockFactory => mockFactory = newMockFactory,
@@ -66,24 +66,26 @@ export function facade<TInstance extends object, TMock extends TInstance>(
         reset: () => setInstance(newDefaultInstance()),
     };
 
-    return new Proxy(facade, {
+    return new Proxy(facadeInstance, {
         get: (_, property, receiver) => {
-            const t = property !== 'constructor' && property in facade ? facade : facade.requireInstance();
+            const t = property !== 'constructor' && property in facadeInstance
+                ? facadeInstance
+                : facadeInstance.requireInstance();
 
             return Reflect.get(t, property, receiver);
         },
-        set: (_, property, receiver) => Reflect.set(facade.requireInstance(), property, receiver),
+        set: (_, property, receiver) => Reflect.set(facadeInstance.requireInstance(), property, receiver),
     }) as unknown as Facade<TInstance, TMock>;
 }
 
-export function isFacade(facade: unknown): facade is Facade<unknown, Constructor<object>> {
-    return typeof facade === 'object'
-        && facade !== null
-        && 'requireInstance' in facade;
+export function isFacade(value: unknown): value is Facade<unknown, Constructor<object>> {
+    return typeof value === 'object'
+        && value !== null
+        && 'requireInstance' in value;
 }
 
-export function getFacadeInstance<T>(facade: Facade<T>): T;
-export function getFacadeInstance<T>(facade: T): T;
-export function getFacadeInstance<T>(facade: T): T {
-    return isFacade(facade) ? facade.requireInstance() as T : facade;
+export function getFacadeInstance<T>(value: Facade<T>): T;
+export function getFacadeInstance<T>(value: T): T;
+export function getFacadeInstance<T>(value: T): T {
+    return isFacade(value) ? value.requireInstance() as T : value;
 }

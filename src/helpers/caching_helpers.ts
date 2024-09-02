@@ -18,22 +18,22 @@ export function memo<T>(key: string, operation: () => T): T {
 }
 
 export function once<P extends ClosureArgs, R>(operation: Closure<P, R>): Closure<P, R> {
-    const memo: { result?: R } = {};
+    const _memo: { result?: R } = {};
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (...params) => 'result' in memo ? memo.result : (memo.result = operation(...params)) as any;
+    return (...params) => 'result' in _memo ? _memo.result : (_memo.result = operation(...params)) as any;
 }
 
 export function resetAsyncMemo(key?: string): void {
     const keys = arrayFrom(key ?? Object.keys(asyncCache));
 
-    keys.forEach(key => delete asyncCache[key]);
+    keys.forEach(_key => delete asyncCache[_key]);
 }
 
 export function resetMemo(key?: string): void {
     const keys = arrayFrom(key ?? Object.keys(cache));
 
-    keys.forEach(key => delete cache[key]);
+    keys.forEach(_key => delete cache[_key]);
 }
 
 export function setAsyncMemo(key: string, value: unknown): void {
