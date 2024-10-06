@@ -26,7 +26,7 @@ class PartialTargetMock implements Pick<Target, 'foo'> {
 
 class FullTargetMock extends Target {
 
-    public foo(): void {
+    public override foo(): void {
         //
     }
 

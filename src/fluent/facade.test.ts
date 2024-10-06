@@ -56,7 +56,7 @@ describe('Facades', () => {
 
         class UsersServiceMock extends UsersService {
 
-            public getNames(): string[] {
+            public override getNames(): string[] {
                 return ['mocked'];
             }
 
@@ -87,7 +87,7 @@ describe('Facades', () => {
 
         class UsersServiceMock extends UsersService {
 
-            public getNames(): string[] {
+            public override getNames(): string[] {
                 return ['mocked'];
             }
 

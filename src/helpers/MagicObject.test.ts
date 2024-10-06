@@ -33,15 +33,15 @@ class Stub extends MagicObject {
         }, {} as Attributes);
     }
 
-    protected __get(property: string): unknown {
+    protected override __get(property: string): unknown {
         return this.attributes[property];
     }
 
-    protected __set(property: string, value: unknown): void {
+    protected override __set(property: string, value: unknown): void {
         this.attributes[property] = value;
     }
 
-    protected __delete(property: string): void {
+    protected override __delete(property: string): void {
         delete this.attributes[property];
     }
 

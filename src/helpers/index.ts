@@ -1,14 +1,9 @@
-export { default as JSError, RuntimeErrorClass, JSErrorOptions } from './JSError';
-export { default as MagicObject, MagicObjectConstructor, MagicObjectProxy } from './MagicObject';
-export { default as ObjectsMap, ObjectKeyExtractor } from './ObjectsMap';
+export { default as JSError, RuntimeErrorClass } from './JSError';
+export { default as MagicObject } from './MagicObject';
+export { default as ObjectsMap } from './ObjectsMap';
 export { default as Semaphore } from './Semaphore';
 export { default as Storage, StorageSingleton } from './Storage';
-export {
-    default as PromisedValue,
-    PromisedValueResolveListener,
-    PromisedValueRejectListener,
-    PromisedValueResetListener,
-} from './PromisedValue';
+export { default as PromisedValue } from './PromisedValue';
 export * from './array_helpers';
 export * from './boolean_helpers';
 export * from './caching_helpers';
@@ -33,3 +28,12 @@ export * from './string_helpers';
 export * from './time_helpers';
 export * from './url_helpers';
 export * from './value_helpers';
+
+export type { JSErrorOptions } from './JSError';
+export type { MagicObjectConstructor, MagicObjectProxy } from './MagicObject';
+export type { ObjectKeyExtractor } from './ObjectsMap';
+export type {
+    PromisedValueResolveListener,
+    PromisedValueRejectListener,
+    PromisedValueResetListener,
+} from './PromisedValue';

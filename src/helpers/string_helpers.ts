@@ -15,14 +15,14 @@ export function stringMatch<Length extends number, Optional extends number = num
     text: string,
     pattern: RegExp,
 ): Tuple<ArrayItem<RegExpMatchArray>, Length, Optional> | null {
-    return text.match(pattern) as Tuple<ArrayItem<RegExpMatchArray>, Length> | null;
+    return text.match(pattern) as Tuple<ArrayItem<RegExpMatchArray>, Length, Optional> | null;
 }
 
 export function stringMatchAll<Length extends number, Optional extends number = number>(
     text: string,
     pattern: RegExp,
 ): IterableIterator<Tuple<ArrayItem<RegExpMatchArray>, Length, Optional>> {
-    return text.matchAll(pattern) as IterableIterator<Tuple<ArrayItem<RegExpMatchArray>, Length>>;
+    return text.matchAll(pattern) as IterableIterator<Tuple<ArrayItem<RegExpMatchArray>, Length, Optional>>;
 }
 
 export function stringReverse(text: string): string {

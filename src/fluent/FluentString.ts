@@ -3,7 +3,7 @@ import {
     stringToCamelCase,
     stringToSlug,
     stringToStudlyCase,
-    stringToTitleCase, 
+    stringToTitleCase,
 } from '@/helpers/string_helpers';
 import type { ClassInstance } from '@/types/index';
 
@@ -36,7 +36,7 @@ class FluentStringDefinition extends FluentObjectDefinition<string> {
         return prototype.create(value);
     }
 
-    public toString(): string {
+    public override toString(): string {
         return this.value;
     }
 

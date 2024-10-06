@@ -1,7 +1,15 @@
 {
     "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
+        "target": "es2022",
+        "module": "preserve",
+        "lib": ["es2022", "dom", "dom.iterable"],
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "moduleDetection": "force",
+        "isolatedModules": true,
+        "verbatimModuleSyntax": true,
+        "noImplicitOverride": true,
+        "noEmit": true,
         "strict": true,
         "noUncheckedIndexedAccess": true,
         "esModuleInterop": true,
