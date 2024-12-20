@@ -1,5 +1,14 @@
-import type { Closure, ClosureArgs, Constructor, GetObjectMethods, KeyOf, TypeGuard, VoidClosure } from '@/types/index';
 import type { Equals } from '@/testing/index';
+import type {
+    Closure,
+    ClosureArgs,
+    Constructor,
+    GetObjectMethods,
+    KeyOf,
+    Pretty,
+    TypeGuard,
+    VoidClosure,
+} from '@/types/index';
 
 export type Obj = Record<string, unknown>;
 export type ObjectEntry<T extends Obj, K extends keyof T> = [K, T[K]];
@@ -39,9 +48,10 @@ export type GetOptionalKeysWithout<
 // them defined as `| undefined` as well. Until that is fixed, this may cause some problems for keys that can have
 // empty values but not always do.
 // See https://github.com/microsoft/TypeScript/issues/13195
-export type ObjectWithout<TObj, TExclude> =
+export type ObjectWithout<TObj, TExclude> = Pretty<
     { [K in GetRequiredKeysWithout<TObj, TExclude>]: ValueWithout<TObj[K], TExclude> } &
-    { [K in GetOptionalKeysWithout<TObj, TExclude>]?: ValueWithout<TObj[K], TExclude> };
+    { [K in GetOptionalKeysWithout<TObj, TExclude>]?: ValueWithout<TObj[K], TExclude> }
+>;
 
 export function deepEquals(a: unknown, b: unknown): boolean {
     if (a === b)

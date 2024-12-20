@@ -1,5 +1,4 @@
 import { fail } from '@/helpers/error_helpers';
-import type { ValueWithout } from '@/helpers/object_helpers';
 
 class RequiredHandler<Target extends object> implements ProxyHandler<Target> {
 
@@ -31,17 +30,17 @@ class RequiredHandler<Target extends object> implements ProxyHandler<Target> {
 export function required<T extends object | null | undefined>(
     getValue: () => T,
     errorMessage?: string
-): ValueWithout<T, null | undefined>;
-export function required<T>(value: T, errorMessage?: string): ValueWithout<T, null | undefined>;
-export function required<T>(value: (() => T) | T, errorMessage?: string): ValueWithout<T, null | undefined> {
+): NonNullable<T>;
+export function required<T>(value: T, errorMessage?: string): NonNullable<T>;
+export function required<T>(value: (() => T) | T, errorMessage?: string): NonNullable<T> {
     errorMessage ??= 'Required value is missing';
 
     if (typeof value === 'function') {
         return new Proxy(
             {},
             new RequiredHandler(errorMessage, value as unknown as () => object),
-        ) as ValueWithout<T, null | undefined>;
+        ) as NonNullable<T>;
     }
 
-    return (value ?? fail(errorMessage)) as ValueWithout<T, null | undefined>;
+    return (value ?? fail(errorMessage)) as NonNullable<T>;
 }

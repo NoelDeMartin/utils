@@ -1,7 +1,7 @@
 import type { Equals } from '@/testing/index';
 
 /**
- * @deprecated use ValueWithout<T, null | undefined> instead.
+ * @deprecated use NonNullable<T> instead.
  */
 export type ValueWithoutEmpty<T> = T extends null | undefined ? never : T;
 
