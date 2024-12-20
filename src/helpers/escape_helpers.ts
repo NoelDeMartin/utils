@@ -3,5 +3,5 @@ export function escapeHtmlEntities(text: string): string {
 }
 
 export function escapeRegexText(text: string): string {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    return text.replace(/[[\]{}()*+?.\\^$|]/g, '\\$&');
 }
