@@ -1,3 +1,11 @@
+import { after } from '@/helpers/time_helpers';
+
+async function waitUrlUpdated(url: string): Promise<void> {
+    while (location.href !== url) {
+        await after({ ms: 1 });
+    }
+}
+
 export function getLocationQueryParameter(parameter: string): string | undefined {
     return getLocationQueryParameters()[parameter];
 }
@@ -17,7 +25,7 @@ export function hasLocationQueryParameter(parameter: string): boolean {
     return url.searchParams.has(parameter);
 }
 
-export function updateLocationQueryParameters(parameters: Record<string, string | undefined>): void {
+export async function updateLocationQueryParameters(parameters: Record<string, string | undefined>): Promise<void> {
     const url = Object.entries(parameters).reduce(
         (url, [parameter, value]) => {
             value
@@ -30,4 +38,21 @@ export function updateLocationQueryParameters(parameters: Record<string, string 
     );
 
     history.pushState(null, document.title, url.href);
+
+    await waitUrlUpdated(url.href);
+}
+
+export async function deleteLocationQueryParameters(parameters: string[]): Promise<void> {
+    const url = parameters.reduce(
+        (url, parameter) => {
+            url.searchParams.delete(parameter);
+
+            return url;
+        },
+        new URL(location.href),
+    );
+
+    history.pushState(null, document.title, url.href);
+
+    await waitUrlUpdated(url.href);
 }
