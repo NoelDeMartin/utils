@@ -9,6 +9,7 @@ export interface FakeServerRequest {
     url: string;
     method: string;
     body: string;
+    headers: Record<string, string>;
     response?: Response;
 }
 
@@ -31,6 +32,7 @@ export default class FakeServer {
                 return {
                     url: input,
                     method: options?.method ?? 'GET',
+                    headers: options?.headers as Record<string, string> ?? {},
                     body: toString(options?.body ?? ''),
                 };
             }
@@ -39,6 +41,7 @@ export default class FakeServer {
                 return {
                     url: toString(input),
                     method: options?.method ?? 'GET',
+                    headers: options?.headers as Record<string, string> ?? {},
                     body: toString(options?.body ?? ''),
                 };
             }
@@ -46,6 +49,7 @@ export default class FakeServer {
             return {
                 url: input.url,
                 method: input.method,
+                headers: input?.headers as unknown as Record<string, string> ?? {},
                 body: toString(input.body),
             };
         };
