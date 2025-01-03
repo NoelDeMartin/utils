@@ -39,6 +39,10 @@ export default class FakeResponse implements Response {
         throw new Error('FakeResponse.blob() is not implemented');
     }
 
+    public async bytes(): Promise<Uint8Array> {
+        throw new Error('FakeResponse.bytes() is not implemented');
+    }
+
     public async formData(): Promise<FormData> {
         throw new Error('FakeResponse.formData() is not implemented');
     }
