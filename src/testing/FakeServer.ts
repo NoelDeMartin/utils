@@ -4,6 +4,7 @@ import { toString } from '@/helpers/object_helpers';
 import type { GetClosureArgs, GetClosureResult } from '@/types/helpers';
 
 export type FetchSpy = (request: FakeServerRequest) => unknown;
+export type ResponseHandler = (request: FakeServerRequest) => Response | Promise<Response>;
 
 export interface FakeServerRequest {
     url: string;
@@ -14,7 +15,7 @@ export interface FakeServerRequest {
 }
 
 export interface FakeServerResponse {
-    response: Response;
+    response: Response | ResponseHandler;
     method?: string;
     times?: number;
 }
@@ -98,8 +99,17 @@ export default class FakeServer {
         this.responses[url]?.push('response' in response ? response : { response });
     }
 
+    public respondWith(url: string, handler: ResponseHandler): void {
+        this.responses[url] ??= [];
+        this.responses[url]?.push({ response: handler });
+    }
+
     public respondOnce(url: string, response: Response): void {
         this.respond(url, { response, times: 1 });
+    }
+
+    public respondOnceWith(url: string, handler: ResponseHandler): void {
+        this.respond(url, { response: handler, times: 1 });
     }
 
     public reset(): void {
@@ -118,6 +128,10 @@ export default class FakeServer {
         if (response.times) {
             response.times--;
             response.times === 0 && arrayRemove(responses, response);
+        }
+
+        if (typeof response.response === 'function') {
+            return response.response(request);
         }
 
         return response.response;
