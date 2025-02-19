@@ -11,6 +11,12 @@ export type GetObjectMethods<T> = {
 export type GetOptionalKeys<T> = { [K in keyof T]-?: Record<string, never> extends Pick<T, K> ? K : never }[keyof T];
 export type GetRequiredKeys<T> = { [K in keyof T]-?: T extends Record<K, T[K]> ? K : never }[keyof T];
 export type KeyOf<Object, Values> = { [k in keyof Object]: Object[k] extends Values ? k : never; }[keyof Object];
+export type Nullable<T> = T | null | undefined;
+export type NullableOptional<T> = Pretty<
+    { [P in GetOptionalKeys<T>]?: Nullable<T[P]>; } &
+    { [P in GetRequiredKeys<T>]: T[P] }
+>;
+export type NullablePartial<T> = { [P in keyof T]?: Nullable<T[P]>; };
 export type ObjectValues<T> = T[keyof T];
 export type OnlyKnownProperties<TGeneric, TKnown> = {
     [ K in keyof TGeneric]: K extends keyof TKnown ? TGeneric[K] : never
@@ -20,6 +26,7 @@ export type SubPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export type TypeGuard<T=unknown> = (value: unknown) => value is T;
 export type VoidClosure<T> = T extends (...args: infer A) => ClosureResult ? (...args: A) => void : never;
 export type Writable<T> = { -readonly [K in keyof T]: T[K]; };
+
 
 // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/3573
 export type Use<T> = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
