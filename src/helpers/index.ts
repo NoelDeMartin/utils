@@ -1,3 +1,4 @@
+export { default as IndexedDBMap } from './IndexedDBMap';
 export { default as JSError, RuntimeErrorClass, JSErrorOptions } from './JSError';
 export { default as MagicObject, MagicObjectConstructor, MagicObjectProxy } from './MagicObject';
 export { default as ObjectsMap, ObjectKeyExtractor } from './ObjectsMap';
