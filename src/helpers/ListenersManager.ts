@@ -1,14 +1,14 @@
 import { arrayRemove } from './array_helpers';
 
-export type ListenerEvents<TListener extends object> = {
+export type ListenerEvents<TListener extends object> = Required<{
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [K in keyof TListener]: TListener[K] extends (...args: any[]) => any ? K : never;
-}[keyof TListener];
+    [K in keyof TListener]: NonNullable<TListener[K]> extends (...args: any[]) => any ? K : never;
+}>[keyof TListener];
 
-export type ListenerPayload<TListener extends object, TEvent extends keyof TListener> = {
+export type ListenerPayload<TListener extends object, TEvent extends keyof TListener> = Required<{
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [K in keyof TListener]: TListener[K] extends (...args: infer TPayload) => any ? TPayload : never;
-}[TEvent];
+    [K in keyof TListener]: NonNullable<TListener[K]> extends (...args: infer TPayload) => any ? TPayload : never;
+}>[TEvent];
 
 export interface Listeners<Listener extends object> {
     add(listener: Listener): () => void;
