@@ -1,15 +1,20 @@
 import { stringToCamelCase } from '@/helpers/string_helpers';
 
+import { tt } from '@/testing';
+import type { Equals, Expect } from '@/testing';
+
 import MagicObject from './MagicObject';
 
 type Attributes = Record<string, unknown>;
 
 class Stub extends MagicObject {
 
+    public static globalName: string;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [property: string]: any;
 
-    public constructor(attributes: Attributes) {
+    public constructor(attributes: Attributes = {}) {
         super();
 
         this.initializeAttributes(attributes);
@@ -17,6 +22,12 @@ class Stub extends MagicObject {
 
     public getAttributes(): Attributes {
         return this.attributes;
+    }
+
+    public static<T extends typeof Stub>(): T;
+    public static<T extends typeof Stub, K extends keyof T>(property: K): T[K];
+    public static<T extends typeof Stub, K extends keyof T>(property?: K): T | T[K] {
+        return super.static<T, K>(property as K);
     }
 
     protected initializeAttributes(attributes: Attributes): void {
@@ -85,5 +96,19 @@ describe('MagicObject', () => {
         expect(object['foo-bar']).toBeUndefined();
         expect(object.fooBar).toBe(true);
     });
+
+});
+
+const instance = new Stub();
+const globalName = instance.static().globalName;
+const globalNameShortcut = instance.static('globalName');
+
+describe('MagicObject types', () => {
+
+    it('has correct types', tt<
+        Expect<Equals<typeof globalName, string>> |
+        Expect<Equals<typeof globalNameShortcut, string>> |
+        true
+    >());
 
 });

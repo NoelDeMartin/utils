@@ -49,6 +49,18 @@ export default class MagicObject {
         return this._proxy.instance;
     }
 
+    public static<T extends typeof MagicObject>(): T;
+    public static<T extends typeof MagicObject, K extends keyof T>(property: K): T[K];
+    public static<T extends typeof MagicObject, K extends keyof T>(property?: K): T | T[K] {
+        const constructor = this.constructor as T;
+
+        if (!property) {
+            return constructor;
+        }
+
+        return constructor[property];
+    }
+
     protected reserveProperty(property: string): void {
         Object.assign(this, { [property]: null });
     }
@@ -56,10 +68,6 @@ export default class MagicObject {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected initialize(...args: ClosureArgs): void {
         //
-    }
-
-    protected static(): MagicObjectConstructor<this> {
-        return this.constructor as MagicObjectConstructor<this>;
     }
 
     protected __get(property: string): unknown {
