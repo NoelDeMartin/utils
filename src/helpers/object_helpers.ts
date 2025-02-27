@@ -248,3 +248,11 @@ export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithout<T, null
 export function toString(value: unknown): string {
     return String(value);
 }
+
+export function toError(value: unknown): Error {
+    if (value instanceof Error) {
+        return value;
+    }
+
+    return new Error(toString(value));
+}
