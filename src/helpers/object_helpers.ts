@@ -205,8 +205,8 @@ export function objectPull<T extends Obj, K extends keyof T>(obj: T, key: K): T[
 
 
 /* eslint-disable max-len */
-export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, keys: TKey): Omit<TObj, TKey>;
-export function objectWithout<TObj extends object, TKey extends keyof TObj>(obj: TObj, keys: TKey): Omit<TObj, TKey>;
+export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, key: TKey): Omit<TObj, TKey>;
+export function objectWithout<TObj extends object, TKey extends keyof TObj>(obj: TObj, key: TKey): Omit<TObj, TKey>;
 export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, keys: TKey[]): Omit<TObj, TKey>;
 export function objectWithout<TObj extends object, TKey extends keyof TObj>(obj: TObj, keys: TKey[]): Omit<TObj, TKey>;
 export function objectWithout<TObj extends Obj, TExclude>(obj: TObj, exclude: TypeGuard<TExclude>): ObjectWithout<TObj, TExclude>;
