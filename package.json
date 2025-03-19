@@ -3,12 +3,9 @@
     "version": "0.7.0",
     "type": "module",
     "sideEffects": false,
-    "module": "./dist/noeldemartin-utils.js",
-    "types": "./dist/noeldemartin-utils.d.ts",
     "exports": {
-        ".": {
-            "import": "./dist/noeldemartin-utils.js"
-        }
+        "types": "./dist/noeldemartin-utils.d.ts",
+        "default": "./dist/noeldemartin-utils.js"
     },
     "files": [
         "src",
@@ -16,10 +13,7 @@
     ],
     "license": "MIT",
     "author": "Noel De Martin",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/NoelDeMartin/utils.git"
-    },
+    "repository": "git+https://github.com/NoelDeMartin/utils.git",
     "scripts": {
         "build": "vite build",
         "lint": "npm run lint:eslint && npm run lint:tsc",
