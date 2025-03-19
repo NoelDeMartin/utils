@@ -1,4 +1,6 @@
-import { parseDate } from '@/helpers/date_helpers';
+import { describe, expect, it } from 'vitest';
+
+import { parseDate } from '@noeldemartin/utils/helpers/date_helpers';
 
 describe('Date helpers', () => {
 

@@ -1,4 +1,6 @@
-import { value } from '@/fluent/value';
+import { describe, expect, it } from 'vitest';
+
+import { value } from '@noeldemartin/utils/fluent/value';
 
 describe('Value helper', () => {
 

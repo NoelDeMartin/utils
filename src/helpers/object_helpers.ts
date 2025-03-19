@@ -1,14 +1,14 @@
-import type { Equals } from '@/testing/index';
 import type {
     Closure,
     ClosureArgs,
-    Constructor,
+    Equals,
     GetObjectMethods,
     KeyOf,
     Pretty,
     TypeGuard,
     VoidClosure,
-} from '@/types/index';
+} from '@noeldemartin/utils/types/helpers';
+import type { Constructor } from '@noeldemartin/utils/types/classes';
 
 export type Obj = Record<string, unknown>;
 export type ObjectEntry<T extends Obj, K extends keyof T> = [K, T[K]];
@@ -18,30 +18,28 @@ export type ReplaceValues<TObj, TExclude> = { [K in keyof TObj]: ValueWithout<TO
 export type GetRequiredKeysWithout<
     TObj,
     TExclude,
-    U extends Record<keyof TObj, unknown> = ReplaceValues<TObj, TExclude>
+    U extends Record<keyof TObj, unknown> = ReplaceValues<TObj, TExclude>,
 > = {
-    [K in keyof TObj]:
-        Record<string, never> extends Pick<TObj, K>
-            ? never
-            : (
-                U[K] extends never
-                    ? never
-                    : (Equals<TObj[K], U[K]> extends true ? K : never)
-            )
+    [K in keyof TObj]: Record<string, never> extends Pick<TObj, K>
+        ? never
+        : U[K] extends never
+          ? never
+          : Equals<TObj[K], U[K]> extends true
+            ? K
+            : never;
 }[keyof TObj];
 export type GetOptionalKeysWithout<
     TObj,
     TExclude,
-    U extends Record<keyof TObj, unknown> = ReplaceValues<TObj, TExclude>
+    U extends Record<keyof TObj, unknown> = ReplaceValues<TObj, TExclude>,
 > = {
-    [K in keyof TObj]:
-        Record<string, never> extends Pick<TObj, K>
-            ? K
-            : (
-                U[K] extends never
-                ? never
-                : (Equals<TObj[K], U[K]> extends true ? never : K)
-            )
+    [K in keyof TObj]: Record<string, never> extends Pick<TObj, K>
+        ? K
+        : U[K] extends never
+          ? never
+          : Equals<TObj[K], U[K]> extends true
+            ? never
+            : K;
 }[keyof TObj];
 
 // Given an existing bug in TypeScript, it's not possible to define optional keys using type generics without having
@@ -49,24 +47,21 @@ export type GetOptionalKeysWithout<
 // empty values but not always do.
 // See https://github.com/microsoft/TypeScript/issues/13195
 export type ObjectWithout<TObj, TExclude> = Pretty<
-    { [K in GetRequiredKeysWithout<TObj, TExclude>]: ValueWithout<TObj[K], TExclude> } &
-    { [K in GetOptionalKeysWithout<TObj, TExclude>]?: ValueWithout<TObj[K], TExclude> }
+    { [K in GetRequiredKeysWithout<TObj, TExclude>]: ValueWithout<TObj[K], TExclude> } & {
+        [K in GetOptionalKeysWithout<TObj, TExclude>]?: ValueWithout<TObj[K], TExclude>;
+    }
 >;
 
 export function deepEquals(a: unknown, b: unknown): boolean {
-    if (a === b)
-        return true;
+    if (a === b) return true;
 
-    if (!isObject(a) || !isObject(b))
-        return false;
+    if (!isObject(a) || !isObject(b)) return false;
 
-    if (a instanceof Date && b instanceof Date)
-        return a.getTime() === b.getTime();
+    if (a instanceof Date && b instanceof Date) return a.getTime() === b.getTime();
 
-    if (Object.keys(a).length !== Object.keys(b).length)
-        return false;
+    if (Object.keys(a).length !== Object.keys(b).length) return false;
 
-    return !Object.keys(a).some(key => !deepEquals(a[key], b[key]));
+    return !Object.keys(a).some((key) => !deepEquals(a[key], b[key]));
 }
 
 export function getClassMethods(target: object): string[] {
@@ -75,7 +70,7 @@ export function getClassMethods(target: object): string[] {
 
     let prototype = (classDefinition as { prototype: Constructor }).prototype;
     while (prototype.constructor !== Object) {
-        Object.getOwnPropertyNames(prototype).forEach(property => properties.add(property));
+        Object.getOwnPropertyNames(prototype).forEach((property) => properties.add(property));
 
         prototype = Object.getPrototypeOf(prototype);
     }
@@ -86,11 +81,14 @@ export function getClassMethods(target: object): string[] {
 }
 
 export function invert(map: Record<string, string>): Record<string, string> {
-    return Object.entries(map).reduce((invertedMap, [key, value]) => {
-        invertedMap[value] = key;
+    return Object.entries(map).reduce(
+        (invertedMap, [key, value]) => {
+            invertedMap[value] = key;
 
-        return invertedMap;
-    }, {} as Record<string, string>);
+            return invertedMap;
+        },
+        {} as Record<string, string>,
+    );
 }
 
 export const isArray = Array.isArray.bind(Array);
@@ -100,14 +98,11 @@ export function isConstructor(value: object): value is Constructor {
 }
 
 export function isEmpty(value: unknown): boolean {
-    if (value === null || value === undefined)
-        return true;
+    if (value === null || value === undefined) return true;
 
-    if (Array.isArray(value) || typeof value === 'string')
-        return value.length === 0;
+    if (Array.isArray(value) || typeof value === 'string') return value.length === 0;
 
-    if (typeof value === 'object')
-        return Object.keys(value as Record<string, unknown>).length === 0;
+    if (typeof value === 'object') return Object.keys(value as Record<string, unknown>).length === 0;
 
     return false;
 }
@@ -150,8 +145,7 @@ export function objectDeepClone<T extends Obj>(object: T): T {
     object = { ...object };
 
     for (const property in object) {
-        if (!objectPropertyIsObject(object, property))
-            continue;
+        if (!objectPropertyIsObject(object, property)) continue;
 
         object[property] = objectDeepClone(object[property]);
     }
@@ -166,11 +160,14 @@ export function objectHasOwnProperty(object: Obj, property: string): boolean {
 }
 
 export function objectMap<T>(items: T[], property: KeyOf<T, number | string>): Record<string, T> {
-    return items.reduce((map, item) => {
-        map[item[property] as unknown as number | string] = item;
+    return items.reduce(
+        (map, item) => {
+            map[item[property] as unknown as number | string] = item;
 
-        return map;
-    }, {} as Record<string, T>);
+            return map;
+        },
+        {} as Record<string, T>,
+    );
 }
 
 export function objectOnly<T extends object, K extends keyof T>(obj: T, keys: K | K[]): Pick<T, K> {
@@ -178,8 +175,7 @@ export function objectOnly<T extends object, K extends keyof T>(obj: T, keys: K 
     const keysArray = Array.isArray(keys) ? keys : [keys];
 
     for (const key of keysArray) {
-        if (!(key in obj))
-            continue;
+        if (!(key in obj)) continue;
 
         newObject[key] = obj[key];
     }
@@ -190,9 +186,9 @@ export function objectOnly<T extends object, K extends keyof T>(obj: T, keys: K 
 export function objectPropertyIsObject<T extends string>(object: Obj, property: T): object is { [t in T]: Obj } {
     let value;
 
-    return objectHasOwnProperty(object, property)
-        && isObject(value = object[property])
-        && value.constructor === Object;
+    return (
+        objectHasOwnProperty(object, property) && isObject((value = object[property])) && value.constructor === Object
+    );
 }
 
 export function objectPull<T extends Obj, K extends keyof T>(obj: T, key: K): T[K] {
@@ -203,14 +199,19 @@ export function objectPull<T extends Obj, K extends keyof T>(obj: T, key: K): T[
     return value;
 }
 
-
 /* eslint-disable max-len */
 export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, key: TKey): Omit<TObj, TKey>;
 export function objectWithout<TObj extends object, TKey extends keyof TObj>(obj: TObj, key: TKey): Omit<TObj, TKey>;
 export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, keys: TKey[]): Omit<TObj, TKey>;
 export function objectWithout<TObj extends object, TKey extends keyof TObj>(obj: TObj, keys: TKey[]): Omit<TObj, TKey>;
-export function objectWithout<TObj extends Obj, TExclude>(obj: TObj, exclude: TypeGuard<TExclude>): ObjectWithout<TObj, TExclude>;
-export function objectWithout<TObj extends object, TExclude>(obj: TObj, exclude: TypeGuard<TExclude>): ObjectWithout<TObj, TExclude>;
+export function objectWithout<TObj extends Obj, TExclude>(
+    obj: TObj,
+    exclude: TypeGuard<TExclude>
+): ObjectWithout<TObj, TExclude>;
+export function objectWithout<TObj extends object, TExclude>(
+    obj: TObj,
+    exclude: TypeGuard<TExclude>
+): ObjectWithout<TObj, TExclude>;
 /* eslint-enable max-len */
 
 export function objectWithout(obj: Obj, keysOrExclude: string | string[] | TypeGuard): unknown {

@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { clamp, round } from './math_helpers';
 
 describe('Math helpers', () => {

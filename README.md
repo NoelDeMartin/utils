@@ -46,7 +46,7 @@ For example, this is the kind of code I'd write often:
 ```js
 const items = ['my', 'array', 'of', 'cool', 'array', 'items'];
 
-return arrayUnique(items.filter(item => item.startsWith('a')));
+return arrayUnique(items.filter((item) => item.startsWith('a')));
 ```
 
 Where `arrayUnique` is a custom helper (which you can find in this package), and `Array.filter` is a native method. My only option was to combine method chaining with nesting function calls. And the end result wasn't too readable.
@@ -55,7 +55,7 @@ Now, with the fluent API I created in this package, I can write it like this:
 
 ```js
 return fluent(['my', 'array', 'of', 'cool', 'array', 'items']) // or, to be explicit, arr([...])
-    .filter(item => item.startsWith('a'))
+    .filter((item) => item.startsWith('a'))
     .unique()
     .toArray(); // returns ['array']
 ```
@@ -89,7 +89,7 @@ return foo;
 Like this:
 
 ```js
-return tap(new Foo(), foo => {
+return tap(new Foo(), (foo) => {
     foo.bar = 'bar';
 });
 ```
@@ -120,10 +120,4 @@ export default facade(new UsersService());
 import Users from './Users';
 
 const users = await Users.all();
-
-// In your tests...
-import Users from './Users';
-import UsersServiceMock from './UsersServiceMock';
-
-Users.setInstance(new UsersServiceMock());
 ```

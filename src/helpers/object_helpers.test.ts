@@ -1,6 +1,8 @@
-import { tt } from '@/testing/index';
-import type { Equals, Expect } from '@/testing/index';
-import type { GetOptionalKeys, GetRequiredKeys } from '@/types/index';
+import { describe, expect, it, vi } from 'vitest';
+import { tt } from '@noeldemartin/testing';
+import type { Expect } from '@noeldemartin/testing';
+
+import type { Equals, GetOptionalKeys, GetRequiredKeys } from '@noeldemartin/utils/types/helpers';
 
 import {
     getClassMethods,
@@ -20,7 +22,7 @@ describe('Object helpers', () => {
             public hello(): void {
                 //
             }
-
+        
         }
 
         class Bar extends Foo {
@@ -28,12 +30,12 @@ describe('Object helpers', () => {
             public goodbye(): void {
                 //
             }
-
+        
         }
 
         // Act
         const classMethods = getClassMethods(Bar);
-        const instanceMethods = getClassMethods(new Bar);
+        const instanceMethods = getClassMethods(new Bar());
 
         // Assert
         expect(classMethods).toHaveLength(2);
@@ -53,11 +55,11 @@ describe('Object helpers', () => {
 
                 return 42;
             }
-
+        
         }
 
         const computer = new Computer();
-        const callback = jest.fn();
+        const callback = vi.fn();
 
         monkeyPatch(computer, 'run', (question) => callback(`Question: ${question}`));
 
@@ -94,7 +96,7 @@ describe('Object helpers', () => {
 
             public foo = true;
             public bar = false;
-
+        
         }
 
         expect(objectOnly({ foo: true, bar: false }, 'foo')).toEqual({ foo: true });
@@ -121,13 +123,16 @@ const originalWithoutEmpty = objectWithoutEmpty(original);
 
 describe('Object helpers types', () => {
 
-    it('has correct types', tt<
-        Expect<Equals<OriginalWithoutEmpty['foo'], boolean>> |
-        Expect<Equals<keyof OriginalWithoutEmpty, 'foo' | 'qux'>> |
-        Expect<Equals<GetRequiredKeys<OriginalWithoutEmpty>, 'foo'>> |
-        Expect<Equals<GetOptionalKeys<OriginalWithoutEmpty>, 'qux'>> |
-        Expect<Equals<OriginalWithoutFoo, Omit<Original, 'foo'>>> |
-        true
-    >());
+    it(
+        'has correct types',
+        tt<
+            | Expect<Equals<OriginalWithoutEmpty['foo'], boolean>>
+            | Expect<Equals<keyof OriginalWithoutEmpty, 'foo' | 'qux'>>
+            | Expect<Equals<GetRequiredKeys<OriginalWithoutEmpty>, 'foo'>>
+            | Expect<Equals<GetOptionalKeys<OriginalWithoutEmpty>, 'qux'>>
+            | Expect<Equals<OriginalWithoutFoo, Omit<Original, 'foo'>>>
+            | true
+        >(),
+    );
 
 });

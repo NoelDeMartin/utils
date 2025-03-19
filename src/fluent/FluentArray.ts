@@ -17,13 +17,10 @@ import {
     arrayWhere,
     arrayWithout,
     arrayWithoutIndexes,
-} from '@/helpers/array_helpers';
-import type { Falsy } from '@/types/index';
+} from '@noeldemartin/utils/helpers/array_helpers';
+import type { Falsy } from '@noeldemartin/utils/types/helpers';
 
-import FluentObjectDefinition, {
-    addHelperMethodsToPrototype,
-    addPrimitiveMethodsToPrototype,
-} from './FluentObject';
+import FluentObjectDefinition, { addHelperMethodsToPrototype, addPrimitiveMethodsToPrototype } from './FluentObject';
 import type { FluentInstance } from './FluentObject';
 
 const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
@@ -69,8 +66,12 @@ export type FluentArrayHelpers<T> = {
     withoutIndexes(items: T[], indexes: number[]): T[];
 };
 
-export type FluentArrayInstance<FluentClass, Item> =
-    FluentInstance<FluentClass, Item[], keyof Item[], FluentArrayHelpers<Item>>;
+export type FluentArrayInstance<FluentClass, Item> = FluentInstance<
+    FluentClass,
+    Item[],
+    keyof Item[],
+    FluentArrayHelpers<Item>
+>;
 
 export type FluentArray<T> = FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
@@ -88,16 +89,20 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
         yield* this.value;
     }
 
-    declare public flatMap: <T>(callback: (item: Item, index: number) => T[])
-        => FluentArrayInstance<FluentArrayDefinition<T>, T>;
+    declare public flatMap: <T>(
+        callback: (item: Item, index: number) => T[]
+    ) => FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
-    declare public map: <T>(callback: (item: Item, index: number) => T)
-        => FluentArrayInstance<FluentArrayDefinition<T>, T>;
+    declare public map: <T>(
+        callback: (item: Item, index: number) => T
+    ) => FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
     declare public project: <K extends keyof Item>(key: K) => Item[K][];
 
-    declare public where: <K extends keyof Item>(key: K, value?: Item[K]) =>
-        FluentArrayInstance<FluentArrayDefinition<Item>, Item>;
+    declare public where: <K extends keyof Item>(
+        key: K,
+        value?: Item[K]
+    ) => FluentArrayInstance<FluentArrayDefinition<Item>, Item>;
 
     public get(index: number): Item | undefined {
         return this.value[index];

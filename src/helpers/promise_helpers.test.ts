@@ -1,4 +1,6 @@
-import { range } from '@/helpers/array_helpers';
+import { describe, expect, it } from 'vitest';
+
+import { range } from '@noeldemartin/utils/helpers/array_helpers';
 
 import { asyncFirst } from './promise_helpers';
 

@@ -1,7 +1,9 @@
-import Semaphore from '@/helpers/Semaphore';
-import { after } from '@/helpers/time_helpers';
-import { fail } from '@/helpers/error_helpers';
-import { range } from '@/helpers/array_helpers';
+import { describe, expect, it } from 'vitest';
+
+import Semaphore from '@noeldemartin/utils/helpers/Semaphore';
+import { after } from '@noeldemartin/utils/helpers/time_helpers';
+import { fail } from '@noeldemartin/utils/helpers/error_helpers';
+import { range } from '@noeldemartin/utils/helpers/array_helpers';
 
 describe('Semaphore', () => {
 
@@ -20,19 +22,18 @@ describe('Semaphore', () => {
             }
 
             public releasePen(): void {
-                if (!this.pen)
-                    return;
+                if (!this.pen) return;
 
                 lock.release();
 
                 delete this.pen;
             }
-
+        
         }
 
         const items: string[] = [];
-        const lock = new Semaphore;
-        const writers: [Writer, Writer] = [new Writer, new Writer];
+        const lock = new Semaphore();
+        const writers: [Writer, Writer] = [new Writer(), new Writer()];
 
         // Act
         const promises: Promise<void>[] = [];
@@ -55,14 +56,17 @@ describe('Semaphore', () => {
         const concurrency = 100;
 
         // Act
-        await Promise.all(range(concurrency).map((i) => lock.run(async () => {
-            await after({ ms: Math.floor(Math.random() * 10) });
+        await Promise.all(
+            range(concurrency).map((i) =>
+                lock.run(async () => {
+                    await after({ ms: Math.floor(Math.random() * 10) });
 
-            items.push(`Item #${i}`);
-        })));
+                    items.push(`Item #${i}`);
+                })),
+        );
 
         // Assert
-        expect(items).toEqual(range(concurrency).map(i => `Item #${i}`));
+        expect(items).toEqual(range(concurrency).map((i) => `Item #${i}`));
     });
 
     it('Releases threads on error', async () => {

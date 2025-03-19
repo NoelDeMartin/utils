@@ -1,6 +1,6 @@
-import PromisedValue from '@/helpers/PromisedValue';
-import { arrayFrom } from '@/helpers/array_helpers';
-import type { Closure, ClosureArgs } from '@/types/index';
+import PromisedValue from '@noeldemartin/utils/helpers/PromisedValue';
+import { arrayFrom } from '@noeldemartin/utils/helpers/array_helpers';
+import type { Closure, ClosureArgs } from '@noeldemartin/utils/types';
 
 const cache: Record<string, unknown> = {};
 const asyncCache: Record<string, PromisedValue> = {};
@@ -18,22 +18,22 @@ export function memo<T>(key: string, operation: () => T): T {
 }
 
 export function once<P extends ClosureArgs, R>(operation: Closure<P, R>): Closure<P, R> {
-    const memo: { result?: R } = {};
+    const memory: { result?: R } = {};
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (...params) => 'result' in memo ? memo.result : (memo.result = operation(...params)) as any;
+    return (...params) => ('result' in memory ? memory.result : ((memory.result = operation(...params)) as any));
 }
 
 export function resetAsyncMemo(key?: string): void {
     const keys = arrayFrom(key ?? Object.keys(asyncCache));
 
-    keys.forEach(key => delete asyncCache[key]);
+    keys.forEach((k) => delete asyncCache[k]);
 }
 
 export function resetMemo(key?: string): void {
     const keys = arrayFrom(key ?? Object.keys(cache));
 
-    keys.forEach(key => delete cache[key]);
+    keys.forEach((k) => delete cache[k]);
 }
 
 export function setAsyncMemo(key: string, value: unknown): void {

@@ -1,5 +1,6 @@
-import { tt } from '@/testing/index';
-import type { Equals, Expect } from '@/testing/index';
+import { describe, expect, it } from 'vitest';
+import { tt } from '@noeldemartin/testing';
+import type { Equals, Expect } from '@noeldemartin/testing';
 
 import FluentStringDefinition from './FluentString';
 import type { FluentString, FluentStringInstance } from './FluentString';
@@ -62,11 +63,14 @@ const superFluentString = SuperFluentString.create();
 
 describe('FluentString types', () => {
 
-    it('has correct types', tt<
-        Expect<Equals<typeof fluentString.toUpperCase, () => FluentString>> |
-        Expect<Equals<typeof fluentString.toSlug, (v?: string) => FluentString>> |
-        Expect<Equals<typeof superFluentString.powerUp, () => FluentStringInstance<SuperFluentString>>> |
-        true
-    >());
+    it(
+        'has correct types',
+        tt<
+            | Expect<Equals<typeof fluentString.toUpperCase, () => FluentString>>
+            | Expect<Equals<typeof fluentString.toSlug, (v?: string) => FluentString>>
+            | Expect<Equals<typeof superFluentString.powerUp, () => FluentStringInstance<SuperFluentString>>>
+            | true
+        >(),
+    );
 
 });

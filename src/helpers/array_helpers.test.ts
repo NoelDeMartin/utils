@@ -1,6 +1,8 @@
-import { tt } from '@/testing/index';
-import { toString } from '@/helpers/object_helpers';
-import type { Equals, Expect } from '@/testing/index';
+import { describe, expect, it } from 'vitest';
+import { tt } from '@noeldemartin/testing';
+import type { Equals, Expect } from '@noeldemartin/testing';
+
+import { toString } from '@noeldemartin/utils/helpers/object_helpers';
 
 import {
     arrayDiff,
@@ -46,8 +48,8 @@ describe('Array helpers', () => {
     });
 
     it('finds item matching filter', () => {
-        expect(arrayFirst([0, 10, 42], n => n > 10)).toBe(42);
-        expect(arrayFirst([0, 10, 42], n => n > 100)).toBeNull();
+        expect(arrayFirst([0, 10, 42], (n) => n > 10)).toBe(42);
+        expect(arrayFirst([0, 10, 42], (n) => n > 100)).toBeNull();
     });
 
     it('gets random items', () => {
@@ -81,8 +83,8 @@ describe('Array helpers', () => {
 
         expect(arrayUnique(items)).toEqual(['foo', 'bar', 'baz']);
         expect(items).toEqual(['foo', 'bar', 'baz', 'foo', 'bar']);
-        expect(arrayUnique([4,1,2,1,3,4,2])).toEqual([4,1,2,3]);
-        expect(arrayUnique([4,1,2,1,3,4,2], n => toString(n % 2))).toEqual([4,1]);
+        expect(arrayUnique([4, 1, 2, 1, 3, 4, 2])).toEqual([4, 1, 2, 3]);
+        expect(arrayUnique([4, 1, 2, 1, 3, 4, 2], (n) => toString(n % 2))).toEqual([4, 1]);
     });
 
     it('sorts items', () => {
@@ -94,17 +96,17 @@ describe('Array helpers', () => {
     it('sorts items by field', () => {
         const items = [{ name: 'Son Goku' }, { name: 'Astroboy' }, { name: 'Zetman' }];
 
-        expect(arraySorted(items, 'name').map(item => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
-        expect(arraySorted(items, 'name', 'asc').map(item => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
-        expect(arraySorted(items, 'name', 'desc').map(item => item.name)).toEqual(['Zetman', 'Son Goku', 'Astroboy']);
+        expect(arraySorted(items, 'name').map((item) => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
+        expect(arraySorted(items, 'name', 'asc').map((item) => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
+        expect(arraySorted(items, 'name', 'desc').map((item) => item.name)).toEqual(['Zetman', 'Son Goku', 'Astroboy']);
     });
 
     it('sorts items by field with undefined value', () => {
-        const items = [{ completed: true }, { completed: undefined },{ completed: true }];
+        const items = [{ completed: true }, { completed: undefined }, { completed: true }];
 
-        expect(arraySorted(items, 'completed').map(item => item.completed)).toEqual([undefined, true, true]);
-        expect(arraySorted(items, 'completed', 'asc').map(item => item.completed)).toEqual([undefined, true, true]);
-        expect(arraySorted(items, 'completed', 'desc').map(item => item.completed)).toEqual([true, true, undefined]);
+        expect(arraySorted(items, 'completed').map((item) => item.completed)).toEqual([undefined, true, true]);
+        expect(arraySorted(items, 'completed', 'asc').map((item) => item.completed)).toEqual([undefined, true, true]);
+        expect(arraySorted(items, 'completed', 'desc').map((item) => item.completed)).toEqual([true, true, undefined]);
     });
 
     it('sorts items by multiple fields', () => {
@@ -144,7 +146,7 @@ describe('Array helpers', () => {
             ],
         });
 
-        expect(arrayGroupBy(pirates, pirate => pirate.band === 'mugiwara' ? 'good' : 'bad')).toEqual({
+        expect(arrayGroupBy(pirates, (pirate) => (pirate.band === 'mugiwara' ? 'good' : 'bad'))).toEqual({
             good: [
                 { name: 'Monkey D. Luffy', band: 'mugiwara' },
                 { name: 'Roronoa Zoro', band: 'mugiwara' },
@@ -184,7 +186,7 @@ describe('Array helpers', () => {
             public isAdmin(): boolean {
                 return this.role === 'admin';
             }
-
+        
         }
 
         const admin = new User('admin');
@@ -203,7 +205,7 @@ describe('Array helpers', () => {
             public isAdmin(): boolean {
                 return this.role === 'admin';
             }
-
+        
         }
 
         const admin = new User('admin');
@@ -215,7 +217,11 @@ describe('Array helpers', () => {
     });
 
     it('zips arrays', () => {
-        expect(arrayZip([1, 2, 3], [4, 5, 6])).toEqual([[1, 4], [2, 5], [3, 6]]);
+        expect(arrayZip([1, 2, 3], [4, 5, 6])).toEqual([
+            [1, 4],
+            [2, 5],
+            [3, 6],
+        ]);
     });
 
     it('creates arrays from values', () => {
@@ -241,21 +247,24 @@ const arrayFromSet = arrayFrom(new Set(['foo']));
 const arrayFromArray = arrayFrom([new Date()]);
 const arrayFromConditional = arrayFrom(Date.now() ? 42 : [42]);
 const groupedByKey = arrayGroupBy([{ id: 'Foo Bar' }], 'id');
-const groupedByFunction = arrayGroupBy([{ id: 'Foo Bar' }], item => item.id ? 'one' : 'two');
+const groupedByFunction = arrayGroupBy([{ id: 'Foo Bar' }], (item) => (item.id ? 'one' : 'two'));
 
 describe('Array helpers types', () => {
 
-    it('has correct types', tt<
-        Expect<Equals<typeof filteredItems, string[]>> |
-        Expect<Equals<typeof filteredConditionalItems, string[]>> |
-        Expect<Equals<typeof filteredConstItems, ('foo' | 'bar')[]>> |
-        Expect<Equals<typeof arrayFromNumber, number[]>> |
-        Expect<Equals<typeof arrayFromSet, string[]>> |
-        Expect<Equals<typeof arrayFromArray, Date[]>> |
-        Expect<Equals<typeof arrayFromConditional, number[]>> |
-        Expect<Equals<keyof typeof groupedByKey, string>> |
-        Expect<Equals<keyof typeof groupedByFunction, 'one' | 'two'>> |
-        true
-    >());
+    it(
+        'has correct types',
+        tt<
+            | Expect<Equals<typeof filteredItems, string[]>>
+            | Expect<Equals<typeof filteredConditionalItems, string[]>>
+            | Expect<Equals<typeof filteredConstItems, ('foo' | 'bar')[]>>
+            | Expect<Equals<typeof arrayFromNumber, number[]>>
+            | Expect<Equals<typeof arrayFromSet, string[]>>
+            | Expect<Equals<typeof arrayFromArray, Date[]>>
+            | Expect<Equals<typeof arrayFromConditional, number[]>>
+            | Expect<Equals<keyof typeof groupedByKey, string>>
+            | Expect<Equals<keyof typeof groupedByFunction, 'one' | 'two'>>
+            | true
+        >(),
+    );
 
 });

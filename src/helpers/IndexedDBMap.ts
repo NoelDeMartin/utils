@@ -1,4 +1,4 @@
-import { fail } from '@/helpers/error_helpers';
+import { fail } from '@noeldemartin/utils/helpers/error_helpers';
 import { openDB } from 'idb';
 import type { DBSchema, IDBPDatabase } from 'idb';
 
@@ -31,6 +31,12 @@ export default class IndexedDBMap<TItem> {
         const db = await this.getConnection();
 
         return db.get(ITEMS_COLLECTION, key);
+    }
+
+    public async require(key: string): Promise<TItem> {
+        const value = await this.get(key);
+
+        return value ?? fail(`Missing required '${key}' IndexedDBMap value`);
     }
 
     public async set(key: string, value: TItem): Promise<void> {

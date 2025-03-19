@@ -1,7 +1,8 @@
-import { stringToCamelCase } from '@/helpers/string_helpers';
+import { describe, expect, it } from 'vitest';
+import { tt } from '@noeldemartin/testing';
+import type { Equals, Expect } from '@noeldemartin/testing';
 
-import { tt } from '@/testing';
-import type { Equals, Expect } from '@/testing';
+import { stringToCamelCase } from '@noeldemartin/utils/helpers/string_helpers';
 
 import MagicObject from './MagicObject';
 
@@ -37,10 +38,10 @@ class Stub extends MagicObject {
             return;
         }
 
-        this.attributes = Object.entries(attributes).reduce((attributes, [name, value]) => {
-            attributes[stringToCamelCase(name)] = value;
+        this.attributes = Object.entries(attributes).reduce((_attributes, [name, value]) => {
+            _attributes[stringToCamelCase(name)] = value;
 
-            return attributes;
+            return _attributes;
         }, {} as Attributes);
     }
 
@@ -105,10 +106,9 @@ const globalNameShortcut = instance.static('globalName');
 
 describe('MagicObject types', () => {
 
-    it('has correct types', tt<
-        Expect<Equals<typeof globalName, string>> |
-        Expect<Equals<typeof globalNameShortcut, string>> |
-        true
-    >());
+    it(
+        'has correct types',
+        tt<Expect<Equals<typeof globalName, string>> | Expect<Equals<typeof globalNameShortcut, string>> | true>(),
+    );
 
 });

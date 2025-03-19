@@ -1,8 +1,9 @@
-import type { Closure } from '@/types/index';
+import type { Closure } from '@noeldemartin/utils/types/helpers';
 
-export type Helper<Primitive=unknown> = (value: Primitive, ...args: any[]) => unknown;
-export type HelperParams<Primitive, Helper> =
-    Helper extends (value: Primitive, ...args: infer P) => unknown ? P : never;
+export type Helper<Primitive = unknown> = (value: Primitive, ...args: any[]) => unknown;
+export type HelperParams<TPrimitive, THelper> = THelper extends (value: TPrimitive, ...args: infer P) => unknown
+    ? P
+    : never;
 
 export type FluentPrimitiveMethods<
     FluentClass,
@@ -22,9 +23,10 @@ export type FluentHelperMethods<
     Helpers extends Record<string, Helper<Primitive>>,
 > = {
     [K in keyof Helpers]: Helpers extends Record<K, (value: Primitive, ...args: any[]) => Primitive>
-        ? (...args: HelperParams<Primitive, Helpers[K]>) =>
-            FluentInstance<FluentClass, Primitive, PrimitiveKey, Helpers>
-        : (...args: HelperParams<Primitive, Helpers[K]>) => ReturnType<Helpers[K]>
+        ? (
+              ...args: HelperParams<Primitive, Helpers[K]>
+          ) => FluentInstance<FluentClass, Primitive, PrimitiveKey, Helpers>
+        : (...args: HelperParams<Primitive, Helpers[K]>) => ReturnType<Helpers[K]>;
 };
 
 export type FluentInstance<
@@ -59,8 +61,7 @@ export function addPrimitiveMethodsToPrototype(
     const descriptors = Object.getOwnPropertyDescriptors(primitiveClass.prototype);
 
     for (const [name, descriptor] of Object.entries(descriptors)) {
-        if (name in prototype)
-            continue;
+        if (name in prototype) continue;
 
         if (typeof descriptor.value !== 'function') {
             Object.defineProperty(prototype, name, {
@@ -91,7 +92,7 @@ export default abstract class FluentObjectDefinition<Primitive> {
     protected abstract isPrimitive(value: unknown): value is Primitive;
 
     protected create(value: Primitive): this {
-        const constructor = this.constructor as unknown as { new(value: Primitive): unknown };
+        const constructor = this.constructor as unknown as { new (v: Primitive): unknown };
 
         return new constructor(value) as this;
     }

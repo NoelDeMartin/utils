@@ -1,10 +1,12 @@
+import { describe, expect, it } from 'vitest';
+
 import {
     stringExcerpt,
     stringReverse,
     stringToCamelCase,
     stringToSlug,
     stringToStudlyCase,
-    stringToTitleCase, 
+    stringToTitleCase,
 } from './string_helpers';
 
 describe('String helpers', () => {
@@ -28,7 +30,9 @@ describe('String helpers', () => {
         expect(stringToSlug('Not clean: [/\\?!] end')).toEqual('not-clean-end');
         expect(stringToSlug('土豆')).toEqual('土豆');
         expect(stringToSlug('ラーメン')).toEqual('ラーメン');
-        expect(stringToSlug('【試食系列(1)－鰻魚啫喱Jellied Eels (內有短片)】')).toEqual('試食系列-1-鰻魚啫喱jellied-eels-內有短片');
+        expect(stringToSlug('【試食系列(1)－鰻魚啫喱Jellied Eels (內有短片)】')).toEqual(
+            '試食系列-1-鰻魚啫喱jellied-eels-內有短片',
+        );
     });
 
     it('converts strings to StudlyCase', () => {
@@ -46,10 +50,10 @@ describe('String helpers', () => {
     });
 
     it('returns string excerpts', () => {
-        expect(stringExcerpt('We suffer more in imagination than in reality', 23))
-            .toEqual('We suffer more in im...');
-        expect(stringExcerpt('Your external self will seldom surpass your personal self', 42, ' [...]'))
-            .toEqual('Your external self will seldom surpa [...]');
+        expect(stringExcerpt('We suffer more in imagination than in reality', 23)).toEqual('We suffer more in im...');
+        expect(stringExcerpt('Your external self will seldom surpass your personal self', 42, ' [...]')).toEqual(
+            'Your external self will seldom surpa [...]',
+        );
     });
 
 });

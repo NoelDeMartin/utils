@@ -1,4 +1,4 @@
-import type { ClosureArgs } from '@/types/index';
+import type { ClosureArgs } from '@noeldemartin/utils/types';
 
 export interface DebouncedFunction<Args extends ClosureArgs> {
     (...args: Args): void;
@@ -14,15 +14,14 @@ export function after(
     }> = {},
 ): Promise<void> {
     const getTimeInMilliseconds = () => {
-        return (time.milliseconds || time.ms || 0)
-            + (time.seconds || 0) * 1000;
+        return (time.milliseconds || time.ms || 0) + (time.seconds || 0) * 1000;
     };
 
-    return new Promise(resolve => setTimeout(resolve, getTimeInMilliseconds()));
+    return new Promise((resolve) => setTimeout(resolve, getTimeInMilliseconds()));
 }
 
 export function afterAnimationFrame(): Promise<void> {
-    return new Promise(resolve => requestAnimationFrame(() => resolve()));
+    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 }
 
 export function debounce<Args extends ClosureArgs>(
@@ -48,8 +47,7 @@ export async function forever(): Promise<void> {
 }
 
 export function isValidDateString(value: string): boolean {
-    if (typeof value !== 'string')
-        return false;
+    if (typeof value !== 'string') return false;
 
     const date = new Date(value);
 

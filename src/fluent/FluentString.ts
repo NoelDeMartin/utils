@@ -3,14 +3,11 @@ import {
     stringToCamelCase,
     stringToSlug,
     stringToStudlyCase,
-    stringToTitleCase, 
-} from '@/helpers/string_helpers';
-import type { ClassInstance } from '@/types/index';
+    stringToTitleCase,
+} from '@noeldemartin/utils/helpers/string_helpers';
+import type { ClassInstance } from '@noeldemartin/utils/types/helpers';
 
-import FluentObjectDefinition, {
-    addHelperMethodsToPrototype,
-    addPrimitiveMethodsToPrototype,
-} from './FluentObject';
+import FluentObjectDefinition, { addHelperMethodsToPrototype, addPrimitiveMethodsToPrototype } from './FluentObject';
 import type { FluentInstance } from './FluentObject';
 
 export const fluentStringHelpers = {
@@ -21,8 +18,12 @@ export const fluentStringHelpers = {
     toTitleCase: stringToTitleCase,
 };
 
-export type FluentStringInstance<FluentClass> =
-    FluentInstance<FluentClass, string, keyof string, typeof fluentStringHelpers>;
+export type FluentStringInstance<FluentClass> = FluentInstance<
+    FluentClass,
+    string,
+    keyof string,
+    typeof fluentStringHelpers
+>;
 
 export type FluentString = FluentStringInstance<FluentStringDefinition>;
 

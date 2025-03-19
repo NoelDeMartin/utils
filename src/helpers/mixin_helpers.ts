@@ -1,4 +1,4 @@
-import type { Constructor } from '@/types/index';
+import type { Constructor } from '@noeldemartin/utils/types';
 
 import { objectWithout } from './object_helpers';
 
@@ -20,7 +20,7 @@ function createMixedClass(baseClass: Constructor, mixinClasses: Constructor[]): 
 
             return this;
         }
-
+    
     }
 
     applyMixins(MixedClass, mixinClasses);
@@ -29,16 +29,14 @@ function createMixedClass(baseClass: Constructor, mixinClasses: Constructor[]): 
 }
 
 function extendPrototype(mixedClass: Constructor, mixinClass: Constructor): void {
-    if (mixinClass === Object)
-        return;
+    if (mixinClass === Object) return;
 
     let parentMixin = mixinClass;
 
     do {
-        const mixinDescriptors = objectWithout(
-            Object.getOwnPropertyDescriptors(parentMixin.prototype),
-            ['constructor'],
-        );
+        const mixinDescriptors = objectWithout(Object.getOwnPropertyDescriptors(parentMixin.prototype), [
+            'constructor',
+        ]);
 
         for (const [propertyName, propertyDescriptor] of Object.entries(mixinDescriptors)) {
             Object.defineProperty(mixedClass.prototype, propertyName, propertyDescriptor);
@@ -64,10 +62,22 @@ export function mixed<A, B, C, D>(mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>]): Cr<A & 
 export function mixed<Base, A>(baseClass: Base, mixins: [Cr<A>]): Base & Cr<A>;
 export function mixed<Base, A, B>(baseClass: Base, mixins: [Cr<A>, Cr<B>]): Base & Cr<A & B>;
 export function mixed<Base, A, B, C>(baseClass: Base, mixins: [Cr<A>, Cr<B>, Cr<C>]): Base & Cr<A & B & C>;
-export function mixed<Base, A, B, C, D>(baseClass: Base, mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>]): Base & Cr<A & B & C & D>;
-export function mixed<Base, A, B, C, D, E>(baseClass: Base, mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>]): Base & Cr<A & B & C & D & E>;
-export function mixed<Base, A, B, C, D, E, F>(baseClass: Base, mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>, Cr<F>]): Base & Cr<A & B & C & D & E & F>;
-export function mixed<Base, A, B, C, D, E, F, G>(baseClass: Base, mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>, Cr<F>, Cr<G>]): Base & Cr<A & B & C & D & E & F & G>;
+export function mixed<Base, A, B, C, D>(
+    baseClass: Base,
+    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>]
+): Base & Cr<A & B & C & D>;
+export function mixed<Base, A, B, C, D, E>(
+    baseClass: Base,
+    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>]
+): Base & Cr<A & B & C & D & E>;
+export function mixed<Base, A, B, C, D, E, F>(
+    baseClass: Base,
+    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>, Cr<F>]
+): Base & Cr<A & B & C & D & E & F>;
+export function mixed<Base, A, B, C, D, E, F, G>(
+    baseClass: Base,
+    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>, Cr<F>, Cr<G>]
+): Base & Cr<A & B & C & D & E & F & G>;
 /* eslint-enable max-len */
 
 export function mixed(

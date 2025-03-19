@@ -1,5 +1,5 @@
-import { mixed } from '@/helpers/mixin_helpers';
-import type { Use } from '@/types/index';
+import { mixed } from '@noeldemartin/utils/helpers/mixin_helpers';
+import type { Use } from '@noeldemartin/utils/types';
 
 export abstract class BaseClass<Secret> {
 
@@ -59,12 +59,13 @@ export class MixinB<Secret, BaseSecret> implements Use<BaseSecret> {
 
 }
 
+export const TargetMixedBase = mixed(BaseClass, [MixinAA, MixinB]) as typeof BaseClass;
+
 export default interface TargetClass<BaseSecret, MixinSecret>
-    extends
-        BaseClass<BaseSecret>,
+    extends BaseClass<BaseSecret>,
         MixinAA<BaseSecret>,
         MixinB<MixinSecret, BaseSecret> {}
-export default class TargetClass<BaseSecret, MixinSecret> extends mixed(BaseClass, [MixinAA, MixinB])<BaseSecret> {
+export default class TargetClass<BaseSecret, MixinSecret> extends TargetMixedBase<BaseSecret> {
 
     public specificId: number = 32;
 

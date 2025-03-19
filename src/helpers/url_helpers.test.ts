@@ -1,4 +1,6 @@
-import { arrayChunk } from '@/helpers/array_helpers';
+import { describe, expect, it } from 'vitest';
+
+import { arrayChunk } from '@noeldemartin/utils/helpers/array_helpers';
 import {
     requireUrlDirectoryName,
     urlClean,
@@ -13,18 +15,22 @@ import {
 describe('Url helper', () => {
 
     it('uses root when resolving absolute paths', () => {
-        expect(urlResolve('http://example.com/something/else', '/foobar'))
-            .toEqual('http://example.com/foobar');
+        expect(urlResolve('http://example.com/something/else', '/foobar')).toEqual('http://example.com/foobar');
     });
 
     it('uses new domains when resolving different domains', () => {
-        expect(urlResolve('http://example.com', 'http://somethingelse.com/foobar'))
-            .toEqual('http://somethingelse.com/foobar');
+        expect(urlResolve('http://example.com', 'http://somethingelse.com/foobar')).toEqual(
+            'http://somethingelse.com/foobar',
+        );
     });
 
     it('splits arrays into chunks', () => {
         expect(arrayChunk([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
-        expect(arrayChunk([1, 2, 3, 4, 5, 6], 2)).toEqual([[1, 2], [3, 4], [5, 6]]);
+        expect(arrayChunk([1, 2, 3, 4, 5, 6], 2)).toEqual([
+            [1, 2],
+            [3, 4],
+            [5, 6],
+        ]);
         expect(arrayChunk([1, 2, 3, 4, 5, 6], 10)).toEqual([[1, 2, 3, 4, 5, 6]]);
     });
 
@@ -44,8 +50,9 @@ describe('Url helper', () => {
 
     it('resolves urls with non-standard protocols', () => {
         expect(urlResolve('storage://local/path/', 'file')).toEqual('storage://local/path/file');
-        expect(urlResolve('storage://local/path/', 'storage://local/another/path/file'))
-            .toEqual('storage://local/another/path/file');
+        expect(urlResolve('storage://local/path/', 'storage://local/another/path/file')).toEqual(
+            'storage://local/another/path/file',
+        );
     });
 
     it('gets directory names', () => {
@@ -89,15 +96,11 @@ describe('Url helper', () => {
 
     it('cleans parts', () => {
         expect(
-            urlClean(
-                'http://example.com/path/?query=search#myhash',
-                {
-                    path: false,
-                    fragment: false,
-                },
-            ),
-        )
-            .toEqual('http://example.com?query=search');
+            urlClean('http://example.com/path/?query=search#myhash', {
+                path: false,
+                fragment: false,
+            }),
+        ).toEqual('http://example.com?query=search');
     });
 
     it('requires urls', () => {

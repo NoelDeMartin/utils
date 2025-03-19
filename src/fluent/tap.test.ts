@@ -1,14 +1,16 @@
-import { after } from '@/helpers/time_helpers';
-import { noop } from '@/fluent/noop';
-import { tt } from '@/testing/index';
-import type { Equals, Expect } from '@/testing/index';
+import { describe, expect, it } from 'vitest';
+import { tt } from '@noeldemartin/testing';
+import type { Equals, Expect } from '@noeldemartin/testing';
+
+import { after } from '@noeldemartin/utils/helpers/time_helpers';
+import { noop } from '@noeldemartin/utils/fluent/noop';
 
 import { tap } from './tap';
 
 describe('tap helper', () => {
 
     it('taps using callbacks', () => {
-        expect(tap({ foo: 'foo' }, o => o.foo += 'bar').foo).toBe('foobar');
+        expect(tap({ foo: 'foo' }, (o) => (o.foo += 'bar')).foo).toBe('foobar');
     });
 
     it('taps using asynchronous callbacks', async () => {
@@ -34,7 +36,7 @@ describe('tap helper', () => {
             public getTheMeaningOfLife(): number {
                 return this.theMeaningOfLife;
             }
-
+        
         }
 
         const computer = new Computer();
@@ -49,18 +51,20 @@ describe('tap helper', () => {
 
 });
 
-
 const numberResult = tap(42, noop);
 const stringResult = tap('42', noop);
 const promisedNumberResult = tap(42, () => Promise.resolve());
 
 describe('tap helper types', () => {
 
-    it('has correct types', tt<
-        Expect<Equals<typeof numberResult, 42>> |
-        Expect<Equals<typeof stringResult, '42'>> |
-        Expect<Equals<typeof promisedNumberResult, Promise<number>>> |
-        true
-    >());
+    it(
+        'has correct types',
+        tt<
+            | Expect<Equals<typeof numberResult, 42>>
+            | Expect<Equals<typeof stringResult, '42'>>
+            | Expect<Equals<typeof promisedNumberResult, Promise<number>>>
+            | true
+        >(),
+    );
 
 });

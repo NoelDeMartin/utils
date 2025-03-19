@@ -1,4 +1,6 @@
-import JSError from '@/helpers/JSError';
+import { describe, expect, it } from 'vitest';
+
+import JSError from '@noeldemartin/utils/helpers/JSError';
 
 import { catchError, fail } from './error_helpers';
 

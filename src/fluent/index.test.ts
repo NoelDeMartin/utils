@@ -1,5 +1,6 @@
-import { tt } from '@/testing/index';
-import type { Equals, Expect } from '@/testing/index';
+import { describe, expect, it } from 'vitest';
+import { tt } from '@noeldemartin/testing';
+import type { Equals, Expect } from '@noeldemartin/testing';
 
 import { arr, fluent, pull, str } from './index';
 import FluentArrayDefinition from './FluentArray';
@@ -25,11 +26,11 @@ describe('Fluency types', () => {
         const objectValue = pull({ foo: 'bar' }, 'foo');
 
         tt<
-            Expect<Equals<typeof fluentStringArray, FluentArray<string>>> |
-            Expect<Equals<typeof fluentNumbersArray, FluentArray<number>>> |
-            Expect<Equals<typeof fluentString, FluentString>> |
-            Expect<Equals<typeof objectValue, string>> |
-            true
+            | Expect<Equals<typeof fluentStringArray, FluentArray<string>>>
+            | Expect<Equals<typeof fluentNumbersArray, FluentArray<number>>>
+            | Expect<Equals<typeof fluentString, FluentString>>
+            | Expect<Equals<typeof objectValue, string>>
+            | true
         >();
     });
 

@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { shortId, uuid } from './identity_helpers';
 
 describe('Identity helpers', () => {

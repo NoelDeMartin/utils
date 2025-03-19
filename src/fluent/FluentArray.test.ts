@@ -1,5 +1,8 @@
-import { tt } from '@/testing/index';
-import type { Equals, Expect } from '@/testing/index';
+import { describe, expect, it } from 'vitest';
+import { tt } from '@noeldemartin/testing';
+import type { Equals, Expect } from '@noeldemartin/testing';
+
+import { toString } from '@noeldemartin/utils/helpers';
 
 import FluentArrayDefinition from './FluentArray';
 import type { FluentArray, FluentArrayInstance } from './FluentArray';
@@ -27,7 +30,12 @@ describe('FluentArray', () => {
         expect(fluentArray.concat(['baz']).concat(['qux'])).toBeInstanceOf(FluentArrayDefinition);
         expect(fluentArray.concat(['baz']).concat(['qux']).toArray()).toEqual(['foo', 'bar', 'baz', 'qux']);
         expect(fluentArray.concat(['baz']).remove('baz')).toBe(true);
-        expect(fluentArray.flatMap(() => [42, 42, 23]).unique().toArray()).toEqual([42, 23]);
+        expect(
+            fluentArray
+                .flatMap(() => [42, 42, 23])
+                .unique()
+                .toArray(),
+        ).toEqual([42, 23]);
         expect(fluentArray.diff(['foo', 'baz'])).toEqual({ added: ['baz'], removed: ['bar'] });
     });
 
@@ -35,7 +43,7 @@ describe('FluentArray', () => {
         const fluentArray = FluentArrayDefinition.create(['foo', 'bar', null]);
 
         expect(fluentArray.filter().toArray()).toEqual(['foo', 'bar']);
-        expect(fluentArray.filter(item => !!item).toArray()).toEqual(['foo', 'bar']);
+        expect(fluentArray.filter((item) => !!item).toArray()).toEqual(['foo', 'bar']);
     });
 
     it('infers item types', () => {
@@ -44,19 +52,21 @@ describe('FluentArray', () => {
     });
 
     it('can be subclassed', () => {
-        class SuperFluentArray<T extends { toString(): string }> extends FluentArrayDefinition<T> {
+        class SuperFluentArray<T> extends FluentArrayDefinition<T> {
 
             // TODO avoid doing this
-            declare public static create: <T>(value?: T[]) => FluentArrayInstance<SuperFluentArray<T>, T>;
+            declare public static create: <TItem>(
+                value?: TItem[]
+            ) => FluentArrayInstance<SuperFluentArray<TItem>, TItem>;
 
             public slice(): this {
                 return this.create(this.value.reverse());
             }
 
             public sortAlphabetically(): this {
-                return this.create(this.value.slice(0).sort((a, b) => a.toString() > b.toString() ? 1 : -1));
+                return this.create(this.value.slice(0).sort((a, b) => (toString(a) > toString(b) ? 1 : -1)));
             }
-
+        
         }
         const superFluentArray = SuperFluentArray.create(['foo', 'bar']);
 
@@ -91,16 +101,19 @@ const ages = fluentUsersArray.project('age');
 
 describe('FluentArray types', () => {
 
-    it('has correct types', tt<
-        Expect<Equals<typeof fluentStringsArray.slice, (s?: number, e?: number) => FluentArray<string>>> |
-        Expect<Equals<typeof fluentNumbersArray.slice, (s?: number, e?: number) => FluentArray<number>>> |
-        Expect<Equals<typeof fluentStringsArray.remove, (i: string) => boolean>> |
-        Expect<Equals<typeof fluentNumbersArray.remove, (i: number) => boolean>> |
-        Expect<Equals<typeof flatStringsArray, FluentArray<string>>> |
-        Expect<Equals<typeof filteredStringsArray, FluentArray<string>>> |
-        Expect<Equals<typeof names, string[]>> |
-        Expect<Equals<typeof ages, number[]>> |
-        true
-    >());
+    it(
+        'has correct types',
+        tt<
+            | Expect<Equals<typeof fluentStringsArray.slice, (s?: number, e?: number) => FluentArray<string>>>
+            | Expect<Equals<typeof fluentNumbersArray.slice, (s?: number, e?: number) => FluentArray<number>>>
+            | Expect<Equals<typeof fluentStringsArray.remove, (i: string) => boolean>>
+            | Expect<Equals<typeof fluentNumbersArray.remove, (i: number) => boolean>>
+            | Expect<Equals<typeof flatStringsArray, FluentArray<string>>>
+            | Expect<Equals<typeof filteredStringsArray, FluentArray<string>>>
+            | Expect<Equals<typeof names, string[]>>
+            | Expect<Equals<typeof ages, number[]>>
+            | true
+        >(),
+    );
 
 });

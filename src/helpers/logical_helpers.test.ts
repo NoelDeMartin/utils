@@ -1,4 +1,6 @@
-import { compare } from '@/main';
+import { describe, expect, it } from 'vitest';
+
+import { compare } from './logical_helpers';
 
 describe('Logical helpers', () => {
 

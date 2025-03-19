@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { formatCodeBlock } from './format_helpers';
 
 describe('Format helpers', () => {

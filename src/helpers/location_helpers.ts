@@ -1,4 +1,4 @@
-import { after } from '@/helpers/time_helpers';
+import { after } from '@noeldemartin/utils/helpers/time_helpers';
 
 async function waitUrlUpdated(url: string): Promise<void> {
     while (location.href !== url) {
@@ -26,16 +26,11 @@ export function hasLocationQueryParameter(parameter: string): boolean {
 }
 
 export async function updateLocationQueryParameters(parameters: Record<string, string | undefined>): Promise<void> {
-    const url = Object.entries(parameters).reduce(
-        (url, [parameter, value]) => {
-            value
-                ? url.searchParams.set(parameter, value)
-                : url.searchParams.delete(parameter);
+    const url = Object.entries(parameters).reduce((_url, [parameter, value]) => {
+        value ? _url.searchParams.set(parameter, value) : _url.searchParams.delete(parameter);
 
-            return url;
-        },
-        new URL(location.href),
-    );
+        return _url;
+    }, new URL(location.href));
 
     history.pushState(null, document.title, url.href);
 
@@ -43,14 +38,11 @@ export async function updateLocationQueryParameters(parameters: Record<string, s
 }
 
 export async function deleteLocationQueryParameters(parameters: string[]): Promise<void> {
-    const url = parameters.reduce(
-        (url, parameter) => {
-            url.searchParams.delete(parameter);
+    const url = parameters.reduce((_url, parameter) => {
+        _url.searchParams.delete(parameter);
 
-            return url;
-        },
-        new URL(location.href),
-    );
+        return _url;
+    }, new URL(location.href));
 
     history.pushState(null, document.title, url.href);
 

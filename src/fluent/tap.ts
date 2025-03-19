@@ -10,14 +10,13 @@ export type Tapped<Target extends object> = {
 
 function proxyTap<Target extends object>(target: Target): Tapped<Target> {
     const proxy = new Proxy(target, {
-        get(target: object, key: PropertyKey, receiver?: unknown) {
-            const prop = Reflect.get(target, key, receiver);
+        get(_target: object, key: PropertyKey, receiver?: unknown) {
+            const prop = Reflect.get(_target, key, receiver);
 
-            if (typeof prop !== 'function')
-                return prop;
+            if (typeof prop !== 'function') return prop;
 
             return (...params: any[]) => {
-                prop.call(target, ...params);
+                prop.call(_target, ...params);
 
                 return proxy;
             };
@@ -31,14 +30,14 @@ function proxyTap<Target extends object>(target: Target): Tapped<Target> {
 export function tap<Target extends object>(target: Target): Tapped<Target>;
 export function tap<Target>(target: Target, callback: (target: Target) => Promise<unknown>): Promise<Target>;
 export function tap<Target>(target: Target, callback: (target: Target) => unknown): Target;
-export function tap<Target extends object>(target: Target, callback?: (target: Target) => unknown | Promise<unknown>): Target | Tapped<Target> | Promise<Target> {
-    if (!callback)
-        return proxyTap(target);
+export function tap<Target extends object>(
+    target: Target,
+    callback?: (target: Target) => unknown | Promise<unknown>,
+): Target | Tapped<Target> | Promise<Target> {
+    if (!callback) return proxyTap(target);
 
     const result = callback(target);
 
-    return result instanceof Promise
-        ? result.then(() => target)
-        : target;
+    return result instanceof Promise ? result.then(() => target) : target;
 }
 /* eslint-enable max-len */

@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { asyncMemo, memo, once, setAsyncMemo } from './caching_helpers';
 
 describe('Cache helpers', () => {
@@ -18,7 +20,7 @@ describe('Cache helpers', () => {
         // Assert
         expect(calls).toBe(1);
 
-        results.forEach(actualResult => expect(actualResult).toEqual(result));
+        results.forEach((actualResult) => expect(actualResult).toEqual(result));
     });
 
     it('caches async results', async () => {
@@ -38,7 +40,7 @@ describe('Cache helpers', () => {
         // Assert
         expect(calls).toBe(1);
 
-        results.forEach(actualResult => expect(actualResult).toEqual(result));
+        results.forEach((actualResult) => expect(actualResult).toEqual(result));
     });
 
     it('sets cached async results', async () => {
@@ -61,7 +63,7 @@ describe('Cache helpers', () => {
         // Assert
         expect(calls).toBe(0);
 
-        results.forEach(actualResult => expect(actualResult).toEqual(eagerResult));
+        results.forEach((actualResult) => expect(actualResult).toEqual(eagerResult));
     });
 
     it('caches results using once', () => {

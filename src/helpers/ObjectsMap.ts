@@ -1,4 +1,4 @@
-import { fail } from '@/helpers/error_helpers';
+import { fail } from '@noeldemartin/utils/helpers/error_helpers';
 
 import { toString } from './object_helpers';
 
@@ -7,7 +7,11 @@ export type ObjectKeyExtractor<T> = (item: T) => string;
 export default class ObjectsMap<Item extends object> {
 
     /* eslint-disable max-len */
-    public static createFromArray<T extends object>(items: Iterable<T>, keyExtractor?: ObjectKeyExtractor<T>): ObjectsMap<T>;
+    public static createFromArray<T extends object>(
+        items: Iterable<T>,
+        keyExtractor?: ObjectKeyExtractor<T>
+    ): ObjectsMap<T>;
+
     public static createFromArray<T extends object, S extends keyof T>(items: Iterable<T>, key: S): ObjectsMap<T>;
     /* eslint-enable max-len */
 
@@ -15,9 +19,7 @@ export default class ObjectsMap<Item extends object> {
         items: Iterable<T>,
         key?: S | ObjectKeyExtractor<T>,
     ): ObjectsMap<T> {
-        const keyExtractor = typeof key === 'string'
-            ? (item: T) => item[key]
-            : key;
+        const keyExtractor = typeof key === 'string' ? (item: T) => item[key] : key;
 
         const map = new ObjectsMap(keyExtractor as ObjectKeyExtractor<T>);
 
@@ -34,8 +36,8 @@ export default class ObjectsMap<Item extends object> {
 
     constructor(keyExtractor?: ObjectKeyExtractor<Item>) {
         this.keysToItems = new Map();
-        this.itemsToKeys = new WeakMap;
-        this.getKey = keyExtractor ?? (item => toString(item));
+        this.itemsToKeys = new WeakMap();
+        this.getKey = keyExtractor ?? ((item) => toString(item));
     }
 
     public *[Symbol.iterator](): Iterator<[string, Item]> {
@@ -92,8 +94,7 @@ export default class ObjectsMap<Item extends object> {
     public delete(item: Item): void {
         const key = this.itemsToKeys.get(item);
 
-        if (!key)
-            return;
+        if (!key) return;
 
         this.itemsToKeys.delete(item);
         this.keysToItems.delete(key);

@@ -1,62 +1,56 @@
 {
-  "name": "@noeldemartin/utils",
-  "version": "0.6.0",
-  "description": "My JavaScript utilities",
-  "main": "dist/noeldemartin-utils.cjs.js",
-  "module": "dist/noeldemartin-utils.esm.js",
-  "browser": "dist/noeldemartin-utils.umd.js",
-  "types": "dist/noeldemartin-utils.d.ts",
-  "sideEffects": false,
-  "scripts": {
-    "build": "rm -rf dist && npm run build:js && npm run build:types",
-    "build:js": "noeldemartin-build-javascript",
-    "build:types": "noeldemartin-build-types && ./scripts/fix-types.sh",
-    "lint": "noeldemartin-lint src",
-    "publish-next": "noeldemartin-publish-next",
-    "test": "jest --verbose",
-    "test:summary": "jest --reporters jest-summary-reporter || exit 0",
-    "test:coverage": "jest --coverage"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/noeldemartin/utils.git"
-  },
-  "engines": {
-    "node": ">=14.x"
-  },
-  "author": "Noel De Martin",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/noeldemartin/utils/issues"
-  },
-  "homepage": "https://github.com/noeldemartin/utils",
-  "dependencies": {
-    "@babel/runtime": "^7.12.18",
-    "core-js": "^3.9.0",
-    "idb": "^8.0.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/plugin-proposal-class-properties": "^7.12.13",
-    "@babel/plugin-transform-runtime": "^7.12.15",
-    "@babel/preset-env": "^7.12.16",
-    "@babel/preset-typescript": "^7.12.16",
-    "@microsoft/api-extractor": "^7.12.0",
-    "@noeldemartin/eslint-config-typescript": "^0.1.1",
-    "@noeldemartin/scripts": "^0.2.0",
-    "@rollup/plugin-alias": "^3.1.2",
-    "@rollup/plugin-babel": "^5.2.3",
-    "@rollup/plugin-commonjs": "^17.1.0",
-    "@rollup/plugin-node-resolve": "^11.1.1",
-    "@rollup/plugin-typescript": "^8.1.1",
-    "@types/jest": "^27.0.3",
-    "babel-plugin-transform-remove-imports": "^1.5.2",
-    "eslint": "^7.13.0",
-    "jest": "^26.6.3",
-    "jest-summary-reporter": "^0.0.2",
-    "rollup": "^2.33.3",
-    "rollup-plugin-terser": "^7.0.2",
-    "ts-jest": "^26.4.4",
-    "typescript": "^4.0.5"
-  }
+    "name": "@noeldemartin/utils",
+    "version": "0.7.0",
+    "type": "module",
+    "sideEffects": false,
+    "module": "./dist/noeldemartin-utils.js",
+    "types": "./dist/noeldemartin-utils.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/noeldemartin-utils.js"
+        }
+    },
+    "files": [
+        "src",
+        "dist"
+    ],
+    "license": "MIT",
+    "author": "Noel De Martin",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/NoelDeMartin/utils.git"
+    },
+    "scripts": {
+        "build": "vite build",
+        "lint": "npm run lint:eslint && npm run lint:tsc",
+        "lint:eslint": "eslint src",
+        "lint:tsc": "tsc --noEmit",
+        "test": "vitest --run",
+        "test:ci": "vitest --run --reporter verbose"
+    },
+    "dependencies": {
+        "idb": "^8.0.2"
+    },
+    "devDependencies": {
+        "@noeldemartin/eslint-config-typescript": "^0.1.2",
+        "@noeldemartin/scripts": "0.3.0-next.ca0967ffc83290299ffdf6d53d1cfc3a20dfbe61",
+        "@noeldemartin/testing": "0.0.0-next.efb40f78dc24d19867051438ccc3815166f6e5de",
+        "@tsconfig/node22": "^22.0.0",
+        "@types/node": "^22.13.10",
+        "eslint": "^8.57.1",
+        "prettier": "^3.5.3",
+        "prettier-eslint-cli": "^8.0.1",
+        "typescript": "^5.8.2",
+        "vite": "^6.2.2",
+        "vite-plugin-dts": "^4.5.3",
+        "vitest": "^3.0.9"
+    },
+    "eslintConfig": {
+        "extends": [
+            "@noeldemartin/eslint-config-typescript"
+        ]
+    },
+    "prettier": {
+        "printWidth": 120
+    }
 }

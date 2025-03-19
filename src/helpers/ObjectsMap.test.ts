@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import ObjectsMap from './ObjectsMap';
 
 describe('ObjectsMap', () => {
@@ -21,35 +23,29 @@ describe('ObjectsMap', () => {
         }
     });
 
-    it('filters items by key', () => expectUsersFilter(
-        [
-            { name: 'John' },
-            { name: 'Amy' },
-            { name: 'Bob' },
-        ],
-        (_, name) => name !== 'Amy',
-        [
+    it('filters items by key', () =>
+        expectUsersFilter([{ name: 'John' }, { name: 'Amy' }, { name: 'Bob' }], (_, name) => name !== 'Amy', [
             { name: 'John' },
             { name: 'Bob' },
-        ],
-    ));
+        ]));
 
-    it('filters items by value', () => expectUsersFilter(
-        [
-            { name: 'John', age: 12 },
-            { name: 'Amy', age: 18 },
-            { name: 'Bob', age: 23 },
-        ],
-        ({ age }) => age >= 18,
-        [
-            { name: 'Amy', age: 18 },
-            { name: 'Bob', age: 23 },
-        ],
-    ));
+    it('filters items by value', () =>
+        expectUsersFilter(
+            [
+                { name: 'John', age: 12 },
+                { name: 'Amy', age: 18 },
+                { name: 'Bob', age: 23 },
+            ],
+            ({ age }) => age >= 18,
+            [
+                { name: 'Amy', age: 18 },
+                { name: 'Bob', age: 23 },
+            ],
+        ));
 
     it('clones itself', () => {
         // Arrange
-        const original = new ObjectsMap<{ name: string; age: number }>(item => item.name);
+        const original = new ObjectsMap<{ name: string; age: number }>((item) => item.name);
 
         original.add({ name: 'Alice', age: 18 });
 
@@ -85,9 +81,7 @@ function expectUsersFilter<T extends { name: string }>(
     condition: (item: T, name: string) => boolean,
     expected: T[],
 ) {
-    const filtered = ObjectsMap.createFromArray(initial, 'name')
-        .filter(condition)
-        .getItems();
+    const filtered = ObjectsMap.createFromArray(initial, 'name').filter(condition).getItems();
 
     expect(filtered).toEqual(expected);
 }

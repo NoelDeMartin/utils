@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-    ci:
+    tests:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -14,3 +14,17 @@ jobs:
             - run: npm run build
             - run: npm run lint
             - run: npm run test
+    publish:
+        if: github.ref == 'refs/heads/main'
+        needs: tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  registry-url: 'https://registry.npmjs.org'
+            - run: npm ci
+            - run: npx noeldemartin-publish-next
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
