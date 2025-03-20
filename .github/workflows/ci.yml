@@ -13,7 +13,7 @@ jobs:
             - run: npm ci
             - run: npm run build
             - run: npm run lint
-            - run: npm run test
+            - run: npm run test:ci
     publish:
         if: github.ref == 'refs/heads/main'
         needs: tests
