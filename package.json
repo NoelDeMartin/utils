@@ -16,9 +16,7 @@
     "repository": "github:NoelDeMartin/utils",
     "scripts": {
         "build": "vite build",
-        "lint": "npm run lint:eslint && npm run lint:tsc",
-        "lint:eslint": "eslint src",
-        "lint:tsc": "tsc --noEmit",
+        "lint": "noeldemartin-lint",
         "test": "vitest --run",
         "test:ci": "vitest --run --reporter verbose"
     },
