@@ -1,8 +1,9 @@
 import type { Constructor } from '@noeldemartin/utils/types/classes';
 
 export type FacadeMethods<TInstance> = {
-    setInstance(instance: TInstance): TInstance;
+    newInstance(): TInstance;
     requireInstance(): TInstance;
+    setInstance(instance: TInstance): TInstance;
     reset(): TInstance;
 };
 
@@ -13,7 +14,7 @@ export function facade<TInstance extends object>(
 ): Facade<TInstance> {
     let instance: TInstance | null = null;
 
-    function newDefaultInstance(): TInstance {
+    function newInstance(): TInstance {
         try {
             return (defaultClassOrFactory as () => TInstance)();
         } catch (error) {
@@ -21,16 +22,17 @@ export function facade<TInstance extends object>(
         }
     }
 
-    function setInstance(newInstance: TInstance): TInstance {
-        instance = newInstance;
+    function setInstance(_instance: TInstance): TInstance {
+        instance = _instance;
 
-        return newInstance;
+        return _instance;
     }
 
     const facadeInstance: FacadeMethods<TInstance> = {
         setInstance,
-        requireInstance: () => instance ?? setInstance(newDefaultInstance()),
-        reset: () => setInstance(newDefaultInstance()),
+        newInstance,
+        requireInstance: () => instance ?? setInstance(newInstance()),
+        reset: () => setInstance(newInstance()),
     };
 
     return new Proxy(facadeInstance, {
