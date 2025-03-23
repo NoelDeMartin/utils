@@ -11,7 +11,7 @@ export type MagicObjectConstructor<T extends MagicObject = MagicObject> = Constr
 export default class MagicObject {
 
     private static __conjuring: boolean;
-    private static __reservedProperties: WeakMap<typeof MagicObject, Set<string>> = new WeakMap;
+    private static __reservedProperties: WeakMap<typeof MagicObject, Set<string>> = new WeakMap();
 
     protected static isConjuring(): boolean {
         return this.__conjuring;
@@ -23,7 +23,7 @@ export default class MagicObject {
 
     private static prepareMagic(): void {
         this.__conjuring = true;
-        this.__reservedProperties.set(this, new Set(Object.getOwnPropertyNames(new this)));
+        this.__reservedProperties.set(this, new Set(Object.getOwnPropertyNames(new this())));
         this.__conjuring = false;
     }
 

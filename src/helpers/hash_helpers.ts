@@ -96,11 +96,11 @@ function cmn(q: any, a: any, b: any, x: any, s: any, t: any) {
 }
 
 function ff(a: any, b: any, c: any, d: any, x: any, s: any, t: any) {
-    return cmn((b & c) | ((~b) & d), a, b, x, s, t);
+    return cmn((b & c) | (~b & d), a, b, x, s, t);
 }
 
 function gg(a: any, b: any, c: any, d: any, x: any, s: any, t: any) {
-    return cmn((b & d) | (c & (~d)), a, b, x, s, t);
+    return cmn((b & d) | (c & ~d), a, b, x, s, t);
 }
 
 function hh(a: any, b: any, c: any, d: any, x: any, s: any, t: any) {
@@ -108,7 +108,7 @@ function hh(a: any, b: any, c: any, d: any, x: any, s: any, t: any) {
 }
 
 function ii(a: any, b: any, c: any, d: any, x: any, s: any, t: any) {
-    return cmn(c ^ (b | (~d)), a, b, x, s, t);
+    return cmn(c ^ (b | ~d), a, b, x, s, t);
 }
 
 function md51(s: any) {
@@ -122,9 +122,8 @@ function md51(s: any) {
     }
     s = s.substring(i - 64);
     const tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    for (i = 0; i < s.length; i++)
-        tail[i >> 2] |= s.charCodeAt(i) << ((i % 4) << 3);
-    tail[i >> 2] |= 0x80 << ((i % 4) << 3);
+    for (i = 0; i < s.length; i++) tail[i >> 2] |= s.charCodeAt(i) << (i % 4 << 3);
+    tail[i >> 2] |= 0x80 << (i % 4 << 3);
     if (i > 55) {
         md5cycle(state, tail);
         for (i = 0; i < 16; i++) tail[i] = 0;
@@ -139,8 +138,8 @@ function md5blk(s: any) {
     const md5blks = [];
 
     for (i = 0; i < 64; i += 4) {
-        md5blks[i >> 2] = s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) +
-            (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24);
+        md5blks[i >> 2] =
+            s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) + (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24);
     }
 
     return md5blks;
@@ -151,19 +150,17 @@ const hex_chr = '0123456789abcdef'.split('');
 function rhex(n: any) {
     let s = '',
         j = 0;
-    for (; j < 4; j++)
-        s += hex_chr[(n >> (j * 8 + 4)) & 0x0F] as string + hex_chr[(n >> (j * 8)) & 0x0F];
+    for (; j < 4; j++) s += (hex_chr[(n >> (j * 8 + 4)) & 0x0f] as string) + hex_chr[(n >> (j * 8)) & 0x0f];
     return s;
 }
 
 function hex(x: any) {
-    for (let i = 0; i < x.length; i++)
-        x[i] = rhex(x[i]);
+    for (let i = 0; i < x.length; i++) x[i] = rhex(x[i]);
     return x.join('');
 }
 
 function add32(a: any, b: any) {
-    return (a + b) & 0xFFFFFFFF;
+    return (a + b) & 0xffffffff;
 }
 
 function _md5(s: any) {

@@ -44,7 +44,7 @@ export default class Semaphore {
 
     private async waitAvailable(): Promise<void> {
         while (!this.isAvailable()) {
-            await new Promise(resolve => {
+            await new Promise((resolve) => {
                 const listener = () => {
                     this.listeners.delete(listener);
 
@@ -57,7 +57,7 @@ export default class Semaphore {
     }
 
     private notifyAvailable(): void {
-        this.listeners.forEach(listener => listener());
+        this.listeners.forEach((listener) => listener());
     }
 
 }

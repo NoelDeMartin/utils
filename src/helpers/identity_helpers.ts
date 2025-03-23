@@ -2,7 +2,7 @@
 function randomHexadecimalDigit(seed: string): string {
     const s = seed as unknown as number;
 
-    return (s ^ Math.random() * 16 >> s / 4).toString(16);
+    return (s ^ ((Math.random() * 16) >> (s / 4))).toString(16);
 }
 
 export function shortId(length: number = 9): string {

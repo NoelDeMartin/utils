@@ -9,9 +9,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     public static from<T>(promise: Promise<T>): PromisedValue<T> {
         const promisedValue = new PromisedValue<T>();
 
-        promise
-            .then(promisedValue.resolve.bind(promisedValue))
-            .catch(promisedValue.reject.bind(promisedValue));
+        promise.then(promisedValue.resolve.bind(promisedValue)).catch(promisedValue.reject.bind(promisedValue));
 
         return promisedValue;
     }
@@ -64,7 +62,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
         this._value = value;
         this._resolve(value);
 
-        this.resolveListeners.forEach(listener => listener(value));
+        this.resolveListeners.forEach((listener) => listener(value));
     }
 
     public reject(reason?: Error): void {
@@ -75,7 +73,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
         delete this._value;
         this._reject(reason);
 
-        this.rejectListeners.forEach(listener => listener(reason));
+        this.rejectListeners.forEach((listener) => listener(reason));
     }
 
     public onResolve(listener: PromisedValueResolveListener<T>): () => void {
@@ -99,7 +97,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     public reset(): void {
         this.setPromiseValues();
 
-        this.rejectListeners.forEach(listener => listener());
+        this.rejectListeners.forEach((listener) => listener());
     }
 
     private setPromiseValues(): void {

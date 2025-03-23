@@ -44,24 +44,20 @@ export function urlResolve(...parts: string[]): string {
 export function urlResolveDirectory(...parts: string[]): string {
     const url = urlResolve(...parts);
 
-    return url.endsWith('/') ? url : (url + '/');
+    return url.endsWith('/') ? url : url + '/';
 }
 
 export function urlRoot(url: string): string {
     const protocolIndex = url.indexOf('://') + 3;
     const pathIndex = url.substr(protocolIndex).indexOf('/');
 
-    return pathIndex !== -1
-        ? url.substring(0, protocolIndex + pathIndex)
-        : url;
+    return pathIndex !== -1 ? url.substring(0, protocolIndex + pathIndex) : url;
 }
 
 export function urlParentDirectory(url: string): string | null {
-    if (url.endsWith('/'))
-        url = url.substring(0, url.length - 1);
+    if (url.endsWith('/')) url = url.substring(0, url.length - 1);
 
-    if (urlRoot(url) === url)
-        return null;
+    if (urlRoot(url) === url) return null;
 
     const pathIndex = url.lastIndexOf('/');
 
@@ -69,13 +65,11 @@ export function urlParentDirectory(url: string): string | null {
 }
 
 export function urlDirectoryName(url: string): string | null {
-    if (!url.endsWith('/'))
-        url = urlParentDirectory(url) ?? url + '/';
+    if (!url.endsWith('/')) url = urlParentDirectory(url) ?? url + '/';
 
     const rootPathUrl = url.slice(0, -1);
 
-    if (urlRoot(url) === rootPathUrl)
-        return null;
+    if (urlRoot(url) === rootPathUrl) return null;
 
     return urlFileName(rootPathUrl);
 }
@@ -89,8 +83,7 @@ export function urlFileName(url: string): string {
 export function urlParse(url: string): UrlParts | null {
     const match = url.trim().match(/^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/);
 
-    if (!match)
-        return null;
+    if (!match) return null;
 
     const host = match[4] || '';
     const [domain, port]: string[] = host.indexOf(':') === -1 ? [host] : host.split(':');
@@ -108,8 +101,7 @@ export function urlParse(url: string): UrlParts | null {
 export function urlClean(url: string, includedParts: { [part in keyof UrlParts]?: boolean }): string {
     const parts = urlParse(url);
 
-    if (!parts)
-        return url;
+    if (!parts) return url;
 
     for (const [part, value] of Object.entries(parts) as [keyof UrlParts, string?][]) {
         parts[part] = includedParts[part] !== false ? value || '' : '';
