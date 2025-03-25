@@ -1,13 +1,17 @@
 import type { Constructor } from '@noeldemartin/utils/types/classes';
 
-export type FacadeMethods<TInstance> = {
+const extensions: FacadeExtension[] = [];
+
+export type FacadeExtension = (facadeInstance: FacadeMethods) => void;
+
+export interface FacadeMethods<TInstance extends object = object> {
     newInstance(): TInstance;
     requireInstance(): TInstance;
     setInstance(instance: TInstance): TInstance;
     reset(): TInstance;
-};
+}
 
-export type Facade<TInstance> = TInstance & FacadeMethods<TInstance>;
+export type Facade<TInstance extends object = object> = TInstance & FacadeMethods<TInstance>;
 
 export function facade<TInstance extends object>(
     defaultClassOrFactory: (() => TInstance) | Constructor<TInstance>,
@@ -35,6 +39,8 @@ export function facade<TInstance extends object>(
         reset: () => setInstance(newInstance()),
     };
 
+    extensions.forEach((extension) => extension(facadeInstance));
+
     return new Proxy(facadeInstance, {
         get: (_, property, receiver) => {
             const t =
@@ -48,11 +54,15 @@ export function facade<TInstance extends object>(
     }) as unknown as Facade<TInstance>;
 }
 
-export function isFacade(value: unknown): value is Facade<unknown> {
+export function extendFacadeMethods(extension: FacadeExtension): void {
+    extensions.push(extension);
+}
+
+export function isFacade(value: unknown): value is Facade {
     return typeof value === 'object' && value !== null && 'requireInstance' in value;
 }
 
-export function getFacadeInstance<T>(value: Facade<T>): T;
+export function getFacadeInstance<T extends object>(value: Facade<T>): T;
 export function getFacadeInstance<T>(value: T): T;
 export function getFacadeInstance<T>(value: T): T {
     return isFacade(value) ? (value.requireInstance() as T) : value;

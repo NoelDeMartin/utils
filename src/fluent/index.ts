@@ -57,7 +57,7 @@ export function fluent(value: unknown): unknown {
     return fluentClass ? (fluentClass as { create(v: unknown): unknown }).create(value) : null;
 }
 
-export { facade } from './facade';
+export * from './facade';
 export type { Facade, FacadeMethods } from './facade';
 
 export { tap } from './tap';
