@@ -1,8 +1,14 @@
 let forcedEnv: string | null = null;
 
 function getTestingType(): 'unit' | 'e2e' | null {
-    if (typeof globalThis === 'object' && 'Cypress' in globalThis) {
-        return 'e2e';
+    if (typeof globalThis === 'object') {
+        if ('Cypress' in globalThis) {
+            return 'e2e';
+        }
+
+        if (typeof globalThis.top === 'object' && globalThis.top && 'Cypress' in globalThis.top) {
+            return 'e2e';
+        }
     }
 
     if (typeof process === 'object' && process.env.VITEST) {
@@ -21,7 +27,7 @@ export function getEnv(): string | null {
         return forcedEnv;
     }
 
-    if (typeof globalThis === 'object' && 'Cypress' in globalThis) {
+    if (getTestingType()) {
         return 'testing';
     }
 
@@ -29,14 +35,8 @@ export function getEnv(): string | null {
         return window.$app.environment;
     }
 
-    if (typeof process === 'object' && process.env) {
-        if (process.env.VITEST) {
-            return 'testing';
-        }
-
-        if (process.env.NODE_ENV) {
-            return process.env.NODE_ENV;
-        }
+    if (typeof process === 'object' && process.env?.NODE_ENV) {
+        return process.env.NODE_ENV;
     }
 
     return null;
