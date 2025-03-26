@@ -12,6 +12,7 @@ export * from './caching_helpers';
 export * from './chaos_helpers';
 export * from './date_helpers';
 export * from './deprecated';
+export * from './env';
 export * from './error_helpers';
 export * from './escape_helpers';
 export * from './file_helpers';
