@@ -30,6 +30,18 @@ export function getEnv(): string | null {
     return null;
 }
 
+export function isDevelopment(): boolean {
+    return getEnv() === 'development';
+}
+
+export function isTesting(): boolean {
+    return getEnv() === 'testing';
+}
+
+export function isProduction(): boolean {
+    return getEnv() === 'production';
+}
+
 export function applyStrictChecks(): boolean {
     const env = getEnv();
 
