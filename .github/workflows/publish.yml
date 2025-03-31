@@ -14,7 +14,6 @@ jobs:
                   registry-url: 'https://registry.npmjs.org'
             - run: npm ci
             - run: npm run build
-            - name: Publish package
-              run: npx noeldemartin-publish-package --latest
+            - run: npx noeldemartin-publish-package --latest
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
