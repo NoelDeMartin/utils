@@ -1,8 +1,6 @@
 export {};
 
 declare global {
-    interface Window {
-        // Available in Aerogel apps.
-        $app?: { environment?: string };
-    }
+    // Available in Aerogel apps.
+    const __AEROGEL_ENV__: string | undefined;
 }

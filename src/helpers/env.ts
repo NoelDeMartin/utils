@@ -31,15 +31,15 @@ export function getEnv(): string | null {
         return 'testing';
     }
 
-    if (typeof window === 'object' && '$app' in window && !!window.$app?.environment) {
-        return window.$app.environment;
-    }
-
     if (typeof process === 'object' && process.env?.NODE_ENV) {
         return process.env.NODE_ENV;
     }
 
-    return null;
+    try {
+        return __AEROGEL_ENV__ ?? null;
+    } catch (error) {
+        return null;
+    }
 }
 
 export function isDevelopment(): boolean {
