@@ -8,11 +8,11 @@ import type { DeepKeyOf, DeepValue } from './objects';
 interface Post {
     id: number;
     title: string;
-    body: string;
     author: {
         id: number;
         name: string;
     };
+    related: Post[];
 }
 
 describe('Object types', () => {
@@ -20,9 +20,10 @@ describe('Object types', () => {
     it(
         'Has correct types',
         tt<
-            | Expect<Equals<DeepKeyOf<Post>, 'id' | 'title' | 'body' | 'author' | 'author.id' | 'author.name'>>
+            | Expect<Equals<DeepKeyOf<Post>, 'id' | 'title' | 'author' | 'author.id' | 'author.name' | 'related'>>
             | Expect<Equals<DeepValue<Post, 'author'>, { id: number; name: string }>>
             | Expect<Equals<DeepValue<Post, 'author.name'>, string>>
+            | Expect<Equals<DeepValue<Post, 'related'>, Post[]>>
             | true
         >(),
     );

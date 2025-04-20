@@ -27,6 +27,8 @@ export type _TupleRecursion<
       : _TupleRecursion<Tuple, Optional, [Tuple[Rest['length']], ...Rest]>;
 
 // External
+export type ArrayDeepItem<Array> = Array extends (infer TItem)[] ? ArrayDeepItem<TItem> : Array;
+export type ArrayIncludes<Array extends unknown[], Item> = Item extends Array[number] ? true : false;
 export type ArrayItem<Array> = Array extends (infer Item)[] ? Item : never;
 export type Tuple<Item, Length extends number, Optional extends number = number> = CollapseTupleUnion<
     _TupleRecursion<RequiredTuple<Item, Length>, Optional, []>
