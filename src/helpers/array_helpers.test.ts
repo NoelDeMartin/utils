@@ -101,6 +101,25 @@ describe('Array helpers', () => {
         expect(arraySorted(items, 'name', 'desc').map((item) => item.name)).toEqual(['Zetman', 'Son Goku', 'Astroboy']);
     });
 
+    it('sorts items by nested field', () => {
+        const items = [
+            { author: { name: 'Brandom Sanderson' } },
+            { author: { name: 'Arthur Conan Doyle' } },
+            { author: { name: 'J.R.R. Tolkien' } },
+        ];
+
+        expect(arraySorted(items, 'author.name').map((item) => item.author.name)).toEqual([
+            'Arthur Conan Doyle',
+            'Brandom Sanderson',
+            'J.R.R. Tolkien',
+        ]);
+        expect(arraySorted(items, 'author.name', 'desc').map((item) => item.author.name)).toEqual([
+            'J.R.R. Tolkien',
+            'Brandom Sanderson',
+            'Arthur Conan Doyle',
+        ]);
+    });
+
     it('sorts items by field with undefined value', () => {
         const items = [{ completed: true }, { completed: undefined }, { completed: true }];
 

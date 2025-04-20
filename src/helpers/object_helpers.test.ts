@@ -8,6 +8,7 @@ import {
     getClassMethods,
     monkeyPatch,
     objectDeepClone,
+    objectDeepValue,
     objectOnly,
     objectWithout,
     objectWithoutEmpty,
@@ -103,6 +104,20 @@ describe('Object helpers', () => {
         expect(objectOnly({ foo: true, bar: false }, ['foo'])).toEqual({ foo: true });
         expect(objectOnly(new Stub(), 'foo')).toEqual({ foo: true });
         expect(objectOnly(new Stub(), ['foo'])).toEqual({ foo: true });
+    });
+
+    it('gets deep value', () => {
+        const post = {
+            id: 42,
+            title: 'Hello, world!',
+            author: {
+                id: 1,
+                name: 'John Doe',
+            },
+        };
+
+        expect(objectDeepValue(post, 'author')).toEqual({ id: 1, name: 'John Doe' });
+        expect(objectDeepValue(post, 'author.name')).toEqual('John Doe');
     });
 
 });

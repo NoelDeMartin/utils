@@ -1,7 +1,8 @@
 import type { Closure, Falsy } from '@noeldemartin/utils/types/helpers';
+import type { DeepKeyOf } from '@noeldemartin/utils/types/objects';
 
 import { compare } from './logical_helpers';
-import { isIterable, isString, toString } from './object_helpers';
+import { isIterable, isString, objectDeepValue, toString } from './object_helpers';
 
 export type ArrayFrom<T> = T extends Iterable<infer TItem> ? TItem[] : T[];
 
@@ -154,11 +155,11 @@ export function arrayReplace<T>(items: T[], original: T, replacement: T): boolea
 export function arraySorted<T>(items: T[]): T[];
 export function arraySorted<T>(items: T[], direction: 'asc' | 'desc'): T[];
 export function arraySorted<T>(items: T[], compareValues: (a: T, b: T) => number): T[];
-export function arraySorted<T>(items: T[], field: keyof T, direction?: 'asc' | 'desc'): T[];
-export function arraySorted<T>(items: T[], fields: (keyof T)[], direction?: 'asc' | 'desc'): T[];
+export function arraySorted<T>(items: T[], field: DeepKeyOf<T>, direction?: 'asc' | 'desc'): T[];
+export function arraySorted<T>(items: T[], fields: DeepKeyOf<T>[], direction?: 'asc' | 'desc'): T[];
 export function arraySorted<T>(
     items: T[],
-    compareOrFieldOrDirection?: keyof T | (keyof T)[] | ((a: T, b: T) => number) | 'asc' | 'desc',
+    compareOrFieldOrDirection?: DeepKeyOf<T> | DeepKeyOf<T>[] | ((a: T, b: T) => number) | 'asc' | 'desc',
     direction?: 'asc' | 'desc',
 ): T[] {
     direction =
@@ -166,7 +167,7 @@ export function arraySorted<T>(
             ? (compareOrFieldOrDirection as 'asc' | 'desc')
             : direction;
 
-    const fieldDefaults: Partial<Record<keyof T, unknown>> = {};
+    const fieldDefaults: Partial<Record<DeepKeyOf<T>, unknown>> = {};
     const getDefaultValue = (sample: unknown): unknown => {
         switch (typeof sample) {
             case 'string':
@@ -179,20 +180,27 @@ export function arraySorted<T>(
                 return null;
         }
     };
-    const getFieldValue = (object: T, field: keyof T): unknown => {
+    const getFieldValue = (object: T, field: DeepKeyOf<T>): unknown => {
         if (!(field in fieldDefaults)) {
-            const sampleValue = items.find((item) => item[field] !== undefined && item[field] !== null)?.[field];
+            const sampleValue = objectDeepValue(
+                items.find(
+                    (item) =>
+                        objectDeepValue(item as object, field as never) !== undefined &&
+                        objectDeepValue(item as object, field as never) !== null,
+                ) as object,
+                field as never,
+            );
 
             fieldDefaults[field] = getDefaultValue(sampleValue);
         }
 
-        return object[field] ?? fieldDefaults[field];
+        return objectDeepValue(object as object, field as never) ?? fieldDefaults[field];
     };
     const getComparisonFunction = (): Closure<[T, T], number> | undefined => {
         const compareItems =
             direction === 'desc'
-                ? (field: keyof T) => (a: T, b: T) => compare(getFieldValue(b, field), getFieldValue(a, field))
-                : (field: keyof T) => (a: T, b: T) => compare(getFieldValue(a, field), getFieldValue(b, field));
+                ? (field: DeepKeyOf<T>) => (a: T, b: T) => compare(getFieldValue(b, field), getFieldValue(a, field))
+                : (field: DeepKeyOf<T>) => (a: T, b: T) => compare(getFieldValue(a, field), getFieldValue(b, field));
 
         switch (typeof compareOrFieldOrDirection) {
             case 'function':

@@ -9,6 +9,7 @@ import type {
     VoidClosure,
 } from '@noeldemartin/utils/types/helpers';
 import type { Constructor } from '@noeldemartin/utils/types/classes';
+import type { DeepKeyOf, DeepValue } from '@noeldemartin/utils/types';
 
 export type Obj = Record<string, unknown>;
 export type ObjectEntry<T extends Obj, K extends keyof T> = [K, T[K]];
@@ -151,6 +152,21 @@ export function objectDeepClone<T extends Obj>(object: T): T {
     }
 
     return object;
+}
+
+export function objectDeepValue<T extends object, K extends DeepKeyOf<T>>(object: T, key: K): DeepValue<T, K> {
+    let value = object as object;
+    const keys = key.split('.');
+
+    for (const deepKey of keys) {
+        if (!isObject(value)) {
+            return undefined as DeepValue<T, K>;
+        }
+
+        value = value[deepKey] as object;
+    }
+
+    return value as DeepValue<T, K>;
 }
 
 export const objectEntries = Object.entries.bind(Object) as <T extends Obj>(obj: T) => ObjectEntry<T, keyof T>[];
