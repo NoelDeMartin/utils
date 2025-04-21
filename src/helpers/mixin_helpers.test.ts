@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
-
 import { tt } from '@noeldemartin/testing';
-import type { Equals, Expect } from '@noeldemartin/testing';
+import type { Expect } from '@noeldemartin/testing';
+
+import type { Equals } from '@noeldemartin/utils/types';
 
 import TargetClass, { BaseClass, MixinAA } from './mixin_helpers.stubs';
 import { usesMixin } from './mixin_helpers';

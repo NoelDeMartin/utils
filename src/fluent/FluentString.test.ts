@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
-import type { Equals, Expect } from '@noeldemartin/testing';
+import type { Expect } from '@noeldemartin/testing';
+
+import type { Equals } from '@noeldemartin/utils/types';
 
 import FluentStringDefinition from './FluentString';
 import type { FluentString, FluentStringInstance } from './FluentString';

@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
-import type { Equals, Expect } from '@noeldemartin/testing';
+import type { Expect } from '@noeldemartin/testing';
 
 import { after } from '@noeldemartin/utils/helpers/time_helpers';
 import { noop } from '@noeldemartin/utils/fluent/noop';
+import type { Equals } from '@noeldemartin/utils/types';
 
 import { tap } from './tap';
 
@@ -36,7 +37,7 @@ describe('tap helper', () => {
             public getTheMeaningOfLife(): number {
                 return this.theMeaningOfLife;
             }
-        
+
         }
 
         const computer = new Computer();

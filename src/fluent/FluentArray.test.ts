@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
-import type { Equals, Expect } from '@noeldemartin/testing';
+import type { Expect } from '@noeldemartin/testing';
 
 import { toString } from '@noeldemartin/utils/helpers';
+import type { Equals } from '@noeldemartin/utils/types';
 
 import FluentArrayDefinition from './FluentArray';
 import type { FluentArray, FluentArrayInstance } from './FluentArray';
@@ -66,7 +67,7 @@ describe('FluentArray', () => {
             public sortAlphabetically(): this {
                 return this.create(this.value.slice(0).sort((a, b) => (toString(a) > toString(b) ? 1 : -1)));
             }
-        
+
         }
         const superFluentArray = SuperFluentArray.create(['foo', 'bar']);
 

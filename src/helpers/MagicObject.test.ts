@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
-import type { Equals, Expect } from '@noeldemartin/testing';
+import type { Expect } from '@noeldemartin/testing';
 
 import { stringToCamelCase } from '@noeldemartin/utils/helpers/string_helpers';
+import type { Equals } from '@noeldemartin/utils/types';
 
 import MagicObject from './MagicObject';
 

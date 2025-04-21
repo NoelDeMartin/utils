@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
-import type { Equals, Expect } from '@noeldemartin/testing';
+import type { Expect } from '@noeldemartin/testing';
 
 import { toString } from '@noeldemartin/utils/helpers/object_helpers';
+import type { Equals } from '@noeldemartin/utils/types';
 
 import {
     arrayDiff,
@@ -205,7 +206,7 @@ describe('Array helpers', () => {
             public isAdmin(): boolean {
                 return this.role === 'admin';
             }
-        
+
         }
 
         const admin = new User('admin');
@@ -224,7 +225,7 @@ describe('Array helpers', () => {
             public isAdmin(): boolean {
                 return this.role === 'admin';
             }
-        
+
         }
 
         const admin = new User('admin');
