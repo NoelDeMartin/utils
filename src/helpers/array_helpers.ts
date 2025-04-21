@@ -212,7 +212,8 @@ export function arraySorted<T>(
 
                 return compareItems(compareOrFieldOrDirection);
             case 'object': {
-                const comparisonFunctions = compareOrFieldOrDirection.map((field) => compareItems(field));
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const comparisonFunctions = compareOrFieldOrDirection.map((field: any) => compareItems(field));
 
                 return (a: T, b: T) => {
                     for (const comparisonFunction of comparisonFunctions) {

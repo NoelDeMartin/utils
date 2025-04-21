@@ -9,10 +9,11 @@ export type DeepKeyOf<T, P extends unknown[] = [], Depth extends number = 2> = N
                   [K in keyof T]: T[K] extends Closure
                       ? never
                       : NonNullable<T[K]> extends Array<unknown>
-                        ? Exclude<K, symbol>
+                        ? `${Exclude<K, symbol>}`
                         : Depth extends -1
                           ? never
-                          : `${Exclude<K, symbol>}${'' | `.${DeepKeyOf<T[K], [...P, T], [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9][Depth]>}`}`;
+                          : // eslint-disable-next-line max-len
+                            `${Exclude<K, symbol>}${'' | `.${DeepKeyOf<T[K], [...P, T], [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9][Depth]>}`}`;
               }[keyof T]
         : never
 >;
