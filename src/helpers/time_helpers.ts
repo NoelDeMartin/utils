@@ -5,19 +5,22 @@ export interface DebouncedFunction<Args extends ClosureArgs> {
     cancel(): void;
 }
 
-export function after(
-    time: Partial<{
-        ms: number;
-        milliseconds: number;
-        s: number;
-        seconds: number;
-    }> = {},
-): Promise<void> {
-    const getTimeInMilliseconds = () => {
-        return (time.milliseconds || time.ms || 0) + (time.seconds || 0) * 1000;
-    };
+export interface AfterOptions {
+    ms?: number;
+    milliseconds?: number;
+    s?: number;
+    seconds?: number;
+}
 
-    return new Promise((resolve) => setTimeout(resolve, getTimeInMilliseconds()));
+export function after(ms: number): Promise<void>;
+export function after(options?: AfterOptions): Promise<void>;
+export function after(msOrOptions: number | AfterOptions = {}): Promise<void> {
+    const time =
+        typeof msOrOptions === 'number'
+            ? msOrOptions
+            : (msOrOptions.milliseconds || msOrOptions.ms || 0) + (msOrOptions.seconds || 0) * 1000;
+
+    return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 export function afterAnimationFrame(): Promise<void> {
