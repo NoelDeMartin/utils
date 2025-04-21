@@ -1,33 +1,41 @@
-import type { Closure } from '@noeldemartin/utils/types/helpers';
+export type DeepRequired<T> = T extends object
+    ? {
+          [K in keyof T]-?: NonNullable<T[K]> extends Function
+              ? NonNullable<T[K]>
+              : NonNullable<T[K]> extends object
+                ? DeepRequired<NonNullable<T[K]>>
+                : NonNullable<T[K]>;
+      }
+    : T;
 
 /* eslint-disable max-len */
-export type DeepKeyOf<T> = NonNullable<
-    T extends object
+export type DeepKeyOf<T, TRequired extends DeepRequired<T> = DeepRequired<T>> = NonNullable<
+    TRequired extends object
         ? {
-              [K in keyof T]: T[K] extends Closure
+              [K in keyof TRequired]: TRequired[K] extends Function
                   ? never
-                  : NonNullable<T[K]> extends Array<unknown>
+                  : TRequired[K] extends Array<unknown>
                     ? `${Exclude<K, symbol>}`
-                    : T[K] extends object
+                    : TRequired[K] extends object
                       ?
                             | {
-                                  [KK in keyof T[K]]: T[K][KK] extends Closure
+                                  [KK in keyof TRequired[K]]: TRequired[K][KK] extends Function
                                       ? never
-                                      : NonNullable<T[K][KK]> extends Array<unknown>
+                                      : TRequired[K][KK] extends Array<unknown>
                                         ? `${Exclude<K, symbol>}.${Exclude<KK, symbol>}`
-                                        : T[K][KK] extends object
+                                        : TRequired[K][KK] extends object
                                           ?
                                                 | {
-                                                      [KKK in keyof T[K][KK]]: T[K][KK][KKK] extends Closure
+                                                      [KKK in keyof TRequired[K][KK]]: TRequired[K][KK][KKK] extends Function
                                                           ? never
                                                           : `${Exclude<K, symbol>}.${Exclude<KK, symbol>}.${Exclude<KKK, symbol>}`;
-                                                  }[keyof T[K][KK]]
+                                                  }[keyof TRequired[K][KK]]
                                                 | `${Exclude<K, symbol>}.${Exclude<KK, symbol>}`
                                           : `${Exclude<K, symbol>}.${Exclude<KK, symbol>}`;
-                              }[keyof T[K]]
+                              }[keyof TRequired[K]]
                             | `${Exclude<K, symbol>}`
                       : `${Exclude<K, symbol>}`;
-          }[keyof T]
+          }[keyof TRequired]
         : never
 >;
 /* eslint-enable max-len */

@@ -14,7 +14,7 @@ interface Post {
         id: number;
         name: string;
     };
-    related: Post;
+    related?: Post;
     categories?: { id: string }[];
     deep: {
         one: {
@@ -69,7 +69,7 @@ describe('Object types', () => {
               >
             | Expect<Equals<DeepValue<Post, 'author'>, { id: number; name: string }>>
             | Expect<Equals<DeepValue<Post, 'author.name'>, string>>
-            | Expect<Equals<DeepValue<Post, 'related'>, Post>>
+            | Expect<Equals<DeepValue<Post, 'related'>, Post | undefined>>
             | Expect<Equals<DeepValue<Post, 'categories'>, { id: string }[] | undefined>>
             | Expect<Equals<typeof sortedFields, Post[]>>
             | true
