@@ -29,3 +29,27 @@ export type Writable<T> = { -readonly [K in keyof T]: T[K] };
 
 // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/3573
 export type Use<T> = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
+
+export type Decrement<N extends number> = N extends 0
+    ? -1
+    : N extends 1
+      ? 0
+      : N extends 2
+        ? 1
+        : N extends 3
+          ? 2
+          : N extends 4
+            ? 3
+            : N extends 5
+              ? 4
+              : N extends 6
+                ? 5
+                : N extends 7
+                  ? 6
+                  : N extends 8
+                    ? 7
+                    : N extends 9
+                      ? 8
+                      : N extends 10
+                        ? 9
+                        : number;

@@ -1,19 +1,19 @@
 import type { ArrayDeepItem, ArrayIncludes } from '@noeldemartin/utils/types/arrays';
-import type { Closure } from '@noeldemartin/utils/types/helpers';
+import type { Closure, Decrement } from '@noeldemartin/utils/types/helpers';
 
-export type DeepKeyOf<T, P extends unknown[] = [], Depth extends number = 2> = NonNullable<
+export type DeepKeyOf<T, Circular extends unknown[] = [], Depth extends number = 3> = NonNullable<
     T extends object
-        ? ArrayIncludes<P, ArrayDeepItem<T>> extends true
+        ? ArrayIncludes<Circular, ArrayDeepItem<T>> extends true
             ? never
             : {
                   [K in keyof T]: T[K] extends Closure
                       ? never
                       : NonNullable<T[K]> extends Array<unknown>
                         ? `${Exclude<K, symbol>}`
-                        : Depth extends -1
+                        : Depth extends 0
                           ? never
                           : // eslint-disable-next-line max-len
-                            `${Exclude<K, symbol>}${'' | `.${DeepKeyOf<T[K], [...P, T], [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9][Depth]>}`}`;
+                            `${Exclude<K, symbol>}${'' | `.${DeepKeyOf<T[K], [...Circular, T], Decrement<Depth>>}`}`;
               }[keyof T]
         : never
 >;
