@@ -76,8 +76,9 @@ export function urlDirectoryName(url: string): string | null {
 
 export function urlFileName(url: string): string {
     const pathIndex = url.lastIndexOf('/');
+    const fileName = pathIndex !== -1 ? url.slice(pathIndex + 1) : '';
 
-    return pathIndex !== -1 ? url.substr(pathIndex + 1) : '';
+    return fileName.replace(/#.*$/, '').replace(/\?.*$/, '');
 }
 
 export function urlParse(url: string): UrlParts | null {

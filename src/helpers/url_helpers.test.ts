@@ -5,6 +5,7 @@ import {
     requireUrlDirectoryName,
     urlClean,
     urlDirectoryName,
+    urlFileName,
     urlParentDirectory,
     urlParse,
     urlResolve,
@@ -106,6 +107,13 @@ describe('Url helper', () => {
     it('requires urls', () => {
         expect(() => requireUrlDirectoryName('https://example.org')).toThrowError();
         expect(requireUrlDirectoryName('https://example.org/foobar/')).toEqual('foobar');
+    });
+
+    it('gets file names', () => {
+        expect(urlFileName('https://example.com/path/to/file.txt')).toEqual('file.txt');
+        expect(urlFileName('https://example.com/foobar')).toEqual('foobar');
+        expect(urlFileName('https://example.com/foobar#it')).toEqual('foobar');
+        expect(urlFileName('https://example.com/foobar?ignore')).toEqual('foobar');
     });
 
 });
