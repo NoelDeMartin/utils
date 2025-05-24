@@ -73,7 +73,7 @@ export function setMemo(key: string, value: unknown): void {
 }
 
 export function setWeakMemo(name: string, key: object, value: unknown): void {
-    const memo = (weakCache[name] ??= new WeakMap());
+    const itemCache = (weakCache[name] ??= new WeakMap());
 
-    memo.set(key, value);
+    itemCache.set(key, value);
 }

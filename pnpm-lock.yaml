@@ -18,6 +18,9 @@ importers:
       '@noeldemartin/eslint-config-typescript':
         specifier: ^0.1.2
         version: 0.1.2(eslint@8.57.1)(typescript@5.8.3)
+      '@noeldemartin/eslint-plugin':
+        specifier: ^0.1.0
+        version: 0.1.0(eslint@8.57.1)(typescript@5.8.3)
       '@noeldemartin/scripts':
         specifier: next
         version: 0.3.0-next.88fb0ff21ba1f9015dab043ded20be9518e51248(prettier-eslint@16.4.1(typescript@5.8.3))(typescript@5.8.3)
@@ -30,6 +33,9 @@ importers:
       '@types/node':
         specifier: ^22.13.10
         version: 22.14.1
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^5.6.0
+        version: 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1)(typescript@5.8.3)
       eslint:
         specifier: ^8.57.1
         version: 8.57.1
