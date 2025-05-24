@@ -262,6 +262,14 @@ export function objectWithoutEmpty<T extends Obj>(obj: T): ObjectWithout<T, null
     return objectWithout(obj, (value): value is null | undefined => value === null || value === undefined);
 }
 
+export function overridePrototypeMethod<T, K extends GetObjectMethods<T>>(
+    target: Constructor<T>,
+    method: K,
+    implementation: T[K],
+): void {
+    target.prototype[method] = implementation;
+}
+
 export function toString(value: unknown): string {
     return String(value);
 }
