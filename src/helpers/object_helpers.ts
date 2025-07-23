@@ -2,6 +2,7 @@ import type {
     Closure,
     ClosureArgs,
     Equals,
+    GetClosureArgs,
     GetObjectMethods,
     KeyOf,
     Pretty,
@@ -12,7 +13,12 @@ import type { Constructor } from '@noeldemartin/utils/types/classes';
 import type { DeepKeyOf, DeepValue } from '@noeldemartin/utils/types';
 
 export type Obj = Record<string, unknown>;
-export type ObjectEntry<T extends Obj, K extends keyof T> = [K, T[K]];
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type GetObjectKeys<T> = T extends Record<infer Key, any> ? Key : keyof T;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type GetObjectValues<T> = T extends Record<any, infer Value> ? Value : never;
 
 export type ValueWithout<TValue, TExclude> = TValue extends TExclude ? never : TValue;
 export type ReplaceValues<TObj, TExclude> = { [K in keyof TObj]: ValueWithout<TObj[K], TExclude> };
@@ -169,7 +175,9 @@ export function objectDeepValue<T extends object, K extends DeepKeyOf<T>>(object
     return value as DeepValue<T, K>;
 }
 
-export const objectEntries = Object.entries.bind(Object) as <T extends Obj>(obj: T) => ObjectEntry<T, keyof T>[];
+export const objectEntries = Object.entries.bind(Object) as <T extends GetClosureArgs<typeof Object.entries>[0]>(
+    obj: T
+) => [GetObjectKeys<T>, GetObjectValues<T>][];
 
 export function objectHasOwnProperty(object: Obj, property: string): boolean {
     return Object.prototype.hasOwnProperty.call(object, property);

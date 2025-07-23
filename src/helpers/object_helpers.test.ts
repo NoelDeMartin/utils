@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
 
@@ -9,6 +9,7 @@ import {
     monkeyPatch,
     objectDeepClone,
     objectDeepValue,
+    objectEntries,
     objectOnly,
     objectWithout,
     objectWithoutEmpty,
@@ -137,6 +138,18 @@ const originalWithoutFoo = objectWithout(original, ['foo']);
 const originalWithoutEmpty = objectWithoutEmpty(original);
 
 describe('Object helpers types', () => {
+
+    it('gets typed entries', () => {
+        const partialObject = {} as Partial<Record<'a' | 'b', number>>;
+        const objectWithUndefined = {} as Record<'a' | 'b', number | undefined>;
+        const objectWithOptional = {} as { a?: number; b: number };
+        const objectWithOptionalAndRequired = {} as { a?: number; b: number | undefined };
+
+        expectTypeOf(objectEntries(partialObject)).toEqualTypeOf<['a' | 'b', number][]>();
+        expectTypeOf(objectEntries(objectWithUndefined)).toEqualTypeOf<['a' | 'b', number | undefined][]>();
+        expectTypeOf(objectEntries(objectWithOptional)).toEqualTypeOf<['a' | 'b', number][]>();
+        expectTypeOf(objectEntries(objectWithOptionalAndRequired)).toEqualTypeOf<['a' | 'b', number | undefined][]>();
+    });
 
     it(
         'has correct types',
