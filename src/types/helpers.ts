@@ -26,6 +26,7 @@ export type SubPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export type TypeGuard<T = unknown> = (value: unknown) => value is T;
 export type VoidClosure<T> = T extends (...args: infer A) => ClosureResult ? (...args: A) => void : never;
 export type Writable<T> = { -readonly [K in keyof T]: T[K] };
+export type IsAny<T> = { __: 'never' } extends T ? true : false;
 
 // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/3573
 export type Use<T> = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
