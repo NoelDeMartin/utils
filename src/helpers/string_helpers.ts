@@ -1,4 +1,6 @@
-import type { ArrayItem, Tuple } from '@noeldemartin/utils/types';
+import type { ArrayItem, Branded, Tuple } from '@noeldemartin/utils/types';
+
+export type Slug = Branded<string, 'slug'>;
 
 export function stringCapitalize(text: string): string {
     return text[0]?.toUpperCase() + text.slice(1);
@@ -41,7 +43,7 @@ export function stringToCamelCase(text: string): string {
     );
 }
 
-export function stringToSlug(text: string, separator: string = '-'): string {
+export function stringToSlug(text: string, separator: string = '-'): Slug {
     text = text
         .normalize('NFD')
         .replace(/[֊־᐀‐‑‒–—―⸗⸚⸺⸻~〜〰゠︱︲﹘﹣－(){}><[\]]/g, ' ')

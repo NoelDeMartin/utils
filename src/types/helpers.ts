@@ -1,7 +1,9 @@
+export const __brand = Symbol('__brand');
 export type ClassInstance<Class> = Class extends { new (...args: any[]): infer T } ? T : never;
 export type Closure<Args extends ClosureArgs = ClosureArgs, Result = unknown> = (...args: Args) => Result;
 export type ClosureArgs = any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
 export type ClosureResult = any; // eslint-disable-line @typescript-eslint/no-explicit-any
+export type Branded<T, Brand> = T & { [__brand]: Brand };
 export type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? true : false;
 export type Falsy = null | undefined | false | 0;
 export type GetClosureArgs<T extends Closure> = T extends (...args: infer Args) => ClosureResult ? Args : never;
