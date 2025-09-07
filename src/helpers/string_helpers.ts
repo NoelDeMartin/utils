@@ -58,7 +58,7 @@ export function stringToSlug(text: string, separator: string = '-'): Slug {
         text = text.replace(new RegExp(`${separator}+`, 'g'), separator);
     }
 
-    return text;
+    return text as Slug;
 }
 
 export function stringToStudlyCase(text: string): string {
