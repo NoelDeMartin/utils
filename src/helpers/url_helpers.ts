@@ -128,3 +128,11 @@ export function urlRoute(url: string): string {
         fragment: false,
     });
 }
+
+export function validUrl(url: string): string | null {
+    try {
+        return new URL(url.trim()).toString();
+    } catch (error) {
+        return null;
+    }
+}
