@@ -23,6 +23,7 @@ export type ObjectValues<T> = T[keyof T];
 export type OnlyKnownProperties<TGeneric, TKnown> = {
     [K in keyof TGeneric]: K extends keyof TKnown ? TGeneric[K] : never;
 };
+export type Override<T, TOverrides> = Omit<T, keyof TOverrides> & TOverrides;
 export type Pretty<T> = T extends infer U ? { [K in keyof U]: U[K] } : never;
 export type SubPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export type TypeGuard<T = unknown> = (value: unknown) => value is T;

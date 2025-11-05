@@ -76,3 +76,5 @@ export type { FluentArray, FluentArrayHelpers, FluentArrayInstance } from './Flu
 
 export { default as FluentStringDefinition, fluentStringHelpers } from './FluentString';
 export type { FluentString, FluentStringInstance } from './FluentString';
+
+export * from './invade';
