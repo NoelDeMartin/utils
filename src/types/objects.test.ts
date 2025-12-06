@@ -46,6 +46,8 @@ describe('Object types', () => {
                       | 'author.id'
                       | 'author.name'
                       | 'categories'
+                      | `categories.${number}`
+                      | `categories.${number}.id`
                       | 'deep'
                       | 'deep.one'
                       | 'deep.one.two'

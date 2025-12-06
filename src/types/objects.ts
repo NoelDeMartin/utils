@@ -15,7 +15,10 @@ export type DeepKeyOf<T, TRequired extends DeepRequired<T> = DeepRequired<T>> = 
               [K in keyof TRequired]: TRequired[K] extends Function
                   ? never
                   : TRequired[K] extends Array<infer TItem>
-                    ? `${Exclude<K, symbol>}.${number}.${DeepKeyOf<TItem>}`
+                    ?
+                          | `${Exclude<K, symbol>}`
+                          | `${Exclude<K, symbol>}.${number}`
+                          | `${Exclude<K, symbol>}.${number}.${DeepKeyOf<TItem>}`
                     : TRequired[K] extends object
                       ?
                             | {
