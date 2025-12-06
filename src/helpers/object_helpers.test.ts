@@ -5,10 +5,11 @@ import type { Expect } from '@noeldemartin/testing';
 import type { Equals, GetOptionalKeys, GetRequiredKeys } from '@noeldemartin/utils/types/helpers';
 
 import {
+    deepGet,
+    deepSet,
     getClassMethods,
     monkeyPatch,
     objectDeepClone,
-    objectDeepValue,
     objectEntries,
     objectOnly,
     objectWithout,
@@ -107,7 +108,39 @@ describe('Object helpers', () => {
         expect(objectOnly(new Stub(), ['foo'])).toEqual({ foo: true });
     });
 
+    it('gets typed entries', () => {
+        const partialObject = {} as Partial<Record<'a' | 'b', number>>;
+        const objectWithUndefined = {} as Record<'a' | 'b', number | undefined>;
+        const objectWithOptional = {} as { a?: number; b: number };
+        const objectWithOptionalAndRequired = {} as { a?: number; b: number | undefined };
+
+        expectTypeOf(objectEntries(partialObject)).toEqualTypeOf<['a' | 'b', number][]>();
+        expectTypeOf(objectEntries(objectWithUndefined)).toEqualTypeOf<['a' | 'b', number | undefined][]>();
+        expectTypeOf(objectEntries(objectWithOptional)).toEqualTypeOf<['a' | 'b', number][]>();
+        expectTypeOf(objectEntries(objectWithOptionalAndRequired)).toEqualTypeOf<['a' | 'b', number | undefined][]>();
+    });
+
     it('gets deep value', () => {
+        const post = {
+            id: 42,
+            title: 'Hello, world!',
+            author: {
+                id: 1,
+                name: 'John Doe',
+            },
+            friends: [
+                { id: 2, name: 'Jane Doe' },
+                { id: 3, name: 'Jim Doe' },
+            ],
+        };
+
+        expect(deepGet(post, 'author')).toEqual({ id: 1, name: 'John Doe' });
+        expect(deepGet(post, 'author.name')).toEqual('John Doe');
+        expect(deepGet(post, 'friends.0.name')).toEqual('Jane Doe');
+        expect(deepGet(post, 'friends.1.name')).toEqual('Jim Doe');
+    });
+
+    it('sets deep value', () => {
         const post = {
             id: 42,
             title: 'Hello, world!',
@@ -117,8 +150,13 @@ describe('Object helpers', () => {
             },
         };
 
-        expect(objectDeepValue(post, 'author')).toEqual({ id: 1, name: 'John Doe' });
-        expect(objectDeepValue(post, 'author.name')).toEqual('John Doe');
+        deepSet(post, 'author.name', 'Jane Doe');
+
+        expect(post).toEqual({
+            id: 42,
+            title: 'Hello, world!',
+            author: { id: 1, name: 'Jane Doe' },
+        });
     });
 
 });

@@ -2,7 +2,7 @@ import type { Closure, Falsy } from '@noeldemartin/utils/types/helpers';
 import type { DeepKeyOf } from '@noeldemartin/utils/types/objects';
 
 import { compare } from './logical_helpers';
-import { isIterable, isString, objectDeepValue, toString } from './object_helpers';
+import { deepGet, isIterable, isString, toString } from './object_helpers';
 
 export type ArrayFrom<T> = T extends Iterable<infer TItem> ? TItem[] : T[];
 
@@ -182,11 +182,11 @@ export function arraySorted<T>(
     };
     const getFieldValue = (object: T, field: DeepKeyOf<T>): unknown => {
         if (!(field in fieldDefaults)) {
-            const sampleValue = objectDeepValue(
+            const sampleValue = deepGet(
                 items.find(
                     (item) =>
-                        objectDeepValue(item as object, field as never) !== undefined &&
-                        objectDeepValue(item as object, field as never) !== null,
+                        deepGet(item as object, field as never) !== undefined &&
+                        deepGet(item as object, field as never) !== null,
                 ) as object,
                 field as never,
             );
@@ -194,7 +194,7 @@ export function arraySorted<T>(
             fieldDefaults[field] = getDefaultValue(sampleValue);
         }
 
-        return objectDeepValue(object as object, field as never) ?? fieldDefaults[field];
+        return deepGet(object as object, field as never) ?? fieldDefaults[field];
     };
     const getComparisonFunction = (): Closure<[T, T], number> | undefined => {
         const compareItems =

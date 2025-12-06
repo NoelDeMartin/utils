@@ -2,7 +2,6 @@ import type {
     Closure,
     ClosureArgs,
     Equals,
-    GetClosureArgs,
     GetObjectMethods,
     KeyOf,
     Pretty,
@@ -69,6 +68,78 @@ export function deepEquals(a: unknown, b: unknown): boolean {
     if (Object.keys(a).length !== Object.keys(b).length) return false;
 
     return !Object.keys(a).some((key) => !deepEquals(a[key], b[key]));
+}
+
+export function deepAssign<T extends object>(target: T, ...sources: T[]): T {
+    const [source, ...otherSources] = sources;
+
+    if (!source) {
+        return target;
+    }
+
+    if (isObject(target) && isObject(source)) {
+        for (const key of objectKeys(source)) {
+            if (!isObject(source[key])) {
+                Object.assign(target, { [key]: source[key] });
+
+                continue;
+            }
+
+            (target as Record<string, unknown>)[key] ??= {};
+
+            if (!isObject(target[key])) {
+                continue;
+            }
+
+            deepAssign(target[key], source[key]);
+        }
+    }
+
+    return deepAssign(target, ...otherSources);
+}
+
+export function deepGet<T extends object, K extends DeepKeyOf<T>>(object: T, key: K): DeepValue<T, K> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+    let value = object as any;
+    const objectKeys = key.split('.');
+
+    for (const deepKey of objectKeys) {
+        if (Array.isArray(value)) {
+            value = value[Number(deepKey)];
+
+            continue;
+        }
+
+        if (!isObject(value)) {
+            return undefined as DeepValue<T, K>;
+        }
+
+        value = value[deepKey];
+    }
+
+    return value as DeepValue<T, K>;
+}
+
+export function deepSet<T extends object, K extends DeepKeyOf<T>>(object: T, key: K, value: DeepValue<T, K>): void {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+    let wrapper = object as any;
+    const objectKeys = key.split('.');
+    const lastKey = objectKeys.pop();
+
+    if (!lastKey) {
+        return;
+    }
+
+    for (const deepKey of objectKeys) {
+        if (!isObject(wrapper)) {
+            return;
+        }
+
+        wrapper = wrapper[deepKey];
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    wrapper[lastKey] = value;
 }
 
 export function getClassMethods(target: object): string[] {
@@ -160,24 +231,23 @@ export function objectDeepClone<T extends Obj>(object: T): T {
     return object;
 }
 
-export function objectDeepValue<T extends object, K extends DeepKeyOf<T>>(object: T, key: K): DeepValue<T, K> {
-    let value = object as object;
-    const keys = key.split('.');
-
-    for (const deepKey of keys) {
-        if (!isObject(value)) {
-            return undefined as DeepValue<T, K>;
-        }
-
-        value = value[deepKey] as object;
-    }
-
-    return value as DeepValue<T, K>;
-}
-
-export const objectEntries = Object.entries.bind(Object) as <T extends GetClosureArgs<typeof Object.entries>[0]>(
+export const objectEntries = Object.entries.bind(Object) as <T extends Parameters<typeof Object.entries>[0]>(
     obj: T
 ) => [GetObjectKeys<T>, GetObjectValues<T>][];
+
+export const objectFromEntries = Object.fromEntries.bind(Object) as <K extends string | number | symbol, V>(
+    value: Iterable<readonly [K, V]>
+) => Record<K, V>;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const objectValues = Object.values.bind(Object) as <T extends { [k: string]: any } | ArrayLike<any>>(
+    object: T
+) => GetObjectValues<T>[];
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const objectKeys = Object.keys.bind(Object) as <T extends { [k: string]: any } | ArrayLike<any>>(
+    object: T
+) => GetObjectKeys<T>[];
 
 export function objectHasOwnProperty(object: Obj, property: string): boolean {
     return Object.prototype.hasOwnProperty.call(object, property);
