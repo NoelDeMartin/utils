@@ -1,3 +1,7 @@
+import type { Equals } from '@noeldemartin/utils/types/helpers';
+
+export type _Decrement<N extends number> = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10][N];
+
 export type DeepRequired<T> = T extends object
     ? {
           [K in keyof T]-?: NonNullable<T[K]> extends Function
@@ -9,7 +13,7 @@ export type DeepRequired<T> = T extends object
     : T;
 
 /* eslint-disable max-len */
-export type DeepKeyOf<T, TRequired extends DeepRequired<T> = DeepRequired<T>> = NonNullable<
+export type DeepKeyOf<T, TDepth extends number = 5, TRequired extends DeepRequired<T> = DeepRequired<T>> = NonNullable<
     TRequired extends object
         ? {
               [K in keyof TRequired]: TRequired[K] extends Function
@@ -18,7 +22,9 @@ export type DeepKeyOf<T, TRequired extends DeepRequired<T> = DeepRequired<T>> = 
                     ?
                           | `${Exclude<K, symbol>}`
                           | `${Exclude<K, symbol>}.${number}`
-                          | `${Exclude<K, symbol>}.${number}.${DeepKeyOf<TItem>}`
+                          | (Equals<0, TDepth> extends true
+                                ? never
+                                : `${Exclude<K, symbol>}.${number}.${DeepKeyOf<TItem, _Decrement<TDepth>, DeepRequired<TItem>>}`)
                     : TRequired[K] extends object
                       ?
                             | {
