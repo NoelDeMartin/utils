@@ -27,17 +27,23 @@ describe('Error helpers', () => {
 
         expect(error).not.toBeNull();
         expect(error).toBeInstanceOf(StubError);
-        expect((error as Error).message).toBe('');
+        expect((error as Error).message).toBe('Custom message: 500');
     });
 
     it('throws an error class with parameters', () => {
-        const error = catchError(() => fail(StubError, 'foobar'));
+        const error = catchError(() => fail(StubError, 404));
 
         expect(error).not.toBeNull();
         expect(error).toBeInstanceOf(StubError);
-        expect((error as StubError).message).toBe('foobar');
+        expect((error as StubError).message).toBe('Custom message: 404');
     });
 
 });
 
-class StubError extends JSError {}
+class StubError extends JSError {
+
+    constructor(errorCode: number = 500) {
+        super(`Custom message: ${errorCode}`);
+    }
+
+}

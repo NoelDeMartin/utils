@@ -32,13 +32,13 @@ export function catchError(callback: () => unknown): Error | null {
 
 /* eslint-disable @typescript-eslint/no-explicit-any, max-len */
 export function fail<T = any>(message?: string): T;
-export function fail<T = any, E extends Error = Error>(
-    errorClass?: Constructor<E>,
-    ...params: ConstructorParameters<Constructor<E>>
+export function fail<T = any, E extends Constructor<Error> = Constructor<Error>>(
+    errorClass?: E,
+    ...params: ConstructorParameters<E>
 ): T;
-export function fail<T = any, E extends JSError = JSError>(
-    errorClass?: Constructor<E>,
-    ...params: ConstructorParameters<Constructor<E>>
+export function fail<T = any, E extends Constructor<JSError> = Constructor<JSError>>(
+    errorClass?: E,
+    ...params: ConstructorParameters<E>
 ): T;
 export function fail(messageOrClass: string | Constructor<Error> = 'Something went wrong', ...params: any[]): any {
     const errorClass = typeof messageOrClass === 'string' ? Error : messageOrClass;
