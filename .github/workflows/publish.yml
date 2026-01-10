@@ -19,6 +19,5 @@ jobs:
                   node-version-file: '.nvmrc'
                   registry-url: 'https://registry.npmjs.org'
                   cache: 'pnpm'
-            - run: pnpm install --frozen-lockfile
-            - run: npm run build
-            - run: npx noeldemartin-publish-package --latest
+            - run: pnpm install
+            - run: pnpm exec noeldemartin-publish-package --latest
