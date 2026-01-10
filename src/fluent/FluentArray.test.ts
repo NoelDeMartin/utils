@@ -67,7 +67,7 @@ describe('FluentArray', () => {
             public sortAlphabetically(): this {
                 return this.create(this.value.slice(0).sort((a, b) => (toString(a) > toString(b) ? 1 : -1)));
             }
-
+        
         }
         const superFluentArray = SuperFluentArray.create(['foo', 'bar']);
 

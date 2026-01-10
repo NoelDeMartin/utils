@@ -206,7 +206,7 @@ describe('Array helpers', () => {
             public isAdmin(): boolean {
                 return this.role === 'admin';
             }
-
+        
         }
 
         const admin = new User('admin');
@@ -225,7 +225,7 @@ describe('Array helpers', () => {
             public isAdmin(): boolean {
                 return this.role === 'admin';
             }
-
+        
         }
 
         const admin = new User('admin');

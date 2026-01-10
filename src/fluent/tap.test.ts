@@ -37,7 +37,7 @@ describe('tap helper', () => {
             public getTheMeaningOfLife(): number {
                 return this.theMeaningOfLife;
             }
-
+        
         }
 
         const computer = new Computer();

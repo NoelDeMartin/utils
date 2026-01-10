@@ -3,7 +3,7 @@
         "commands": [
             {
                 "match": ".*",
-                "cmd": "npx prettier-eslint ${file} --write"
+                "cmd": "pnpm exec prettier-eslint ${file} --write"
             }
         ]
     }
