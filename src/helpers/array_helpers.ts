@@ -315,19 +315,19 @@ export function reduceBy<TItem, TKey extends keyof TItem, TProjection>(
     items: TItem[],
     key: TKey,
     project: (item: TItem) => TProjection
-): Partial<Record<string, TProjection>>;
-export function reduceBy<TItem, TKey extends keyof TItem>(items: TItem[], key: TKey): Partial<Record<string, TItem>>;
+): Record<string, TProjection>;
+export function reduceBy<TItem, TKey extends keyof TItem>(items: TItem[], key: TKey): Record<string, TItem>;
 export function reduceBy<TItem, TKey extends keyof TItem, TProjection>(
     items: TItem[],
     key: TKey,
     project?: (item: TItem) => TProjection,
-): Partial<Record<string, TProjection>> {
+): Record<string, TProjection> {
     return items.reduce(
         (acc, item) => {
             acc[toString(item[key])] = project ? project(item) : (item as unknown as TProjection);
 
             return acc;
         },
-        {} as Partial<Record<string, TProjection>>,
+        {} as Record<string, TProjection>,
     );
 }
