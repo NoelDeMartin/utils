@@ -22,6 +22,7 @@ import {
     arrayWithout,
     arrayWithoutIndexes,
     arrayZip,
+    reduceBy,
 } from './array_helpers';
 
 describe('Array helpers', () => {
@@ -254,6 +255,34 @@ describe('Array helpers', () => {
         expect(arrayFrom(new Set(['foo', 'bar']))).toEqual(['foo', 'bar']);
         expect(arrayFrom(null)).toEqual([null]);
         expect(arrayFrom(null, true)).toEqual([]);
+    });
+
+    it('reduces by key', () => {
+        const items = [
+            { id: '1', name: 'Alice' },
+            { id: '2', name: 'Bob' },
+        ];
+
+        const result = reduceBy(items, 'id');
+
+        expect(result).toEqual({
+            1: { id: '1', name: 'Alice' },
+            2: { id: '2', name: 'Bob' },
+        });
+    });
+
+    it('reduces by key with projection', () => {
+        const items = [
+            { id: '1', name: 'Alice' },
+            { id: '2', name: 'Bob' },
+        ];
+
+        const result = reduceBy(items, 'id', (item) => item.name);
+
+        expect(result).toEqual({
+            1: 'Alice',
+            2: 'Bob',
+        });
     });
 
 });

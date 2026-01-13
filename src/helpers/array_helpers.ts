@@ -310,3 +310,24 @@ export function arrayFrom<T>(value: T, ignoreEmptyValues: boolean = false): Arra
 export function range(length: number): number[] {
     return Array.from({ length }, (_, item) => item);
 }
+
+export function reduceBy<TItem, TKey extends keyof TItem, TProjection>(
+    items: TItem[],
+    key: TKey,
+    project: (item: TItem) => TProjection
+): Partial<Record<string, TProjection>>;
+export function reduceBy<TItem, TKey extends keyof TItem>(items: TItem[], key: TKey): Partial<Record<string, TItem>>;
+export function reduceBy<TItem, TKey extends keyof TItem, TProjection>(
+    items: TItem[],
+    key: TKey,
+    project?: (item: TItem) => TProjection,
+): Partial<Record<string, TProjection>> {
+    return items.reduce(
+        (acc, item) => {
+            acc[toString(item[key])] = project ? project(item) : (item as unknown as TProjection);
+
+            return acc;
+        },
+        {} as Partial<Record<string, TProjection>>,
+    );
+}
