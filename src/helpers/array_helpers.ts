@@ -307,6 +307,10 @@ export function arrayFrom<T>(value: T, ignoreEmptyValues: boolean = false): Arra
     return items as ArrayFrom<T>;
 }
 
+export function hasItems<T>(array: T[]): array is [T, ...T[]] {
+    return array.length > 0;
+}
+
 export function range(length: number): number[] {
     return Array.from({ length }, (_, item) => item);
 }
