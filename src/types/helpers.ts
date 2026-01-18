@@ -6,6 +6,7 @@ export type ClosureResult = any; // eslint-disable-line @typescript-eslint/no-ex
 export type Branded<T, Brand> = T & { [__brand]: Brand };
 export type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? true : false;
 export type Falsy = null | undefined | false | 0;
+export type Truthy<T> = Exclude<T, Falsy>;
 export type GetObjectMethods<T> = {
     [K in keyof T]: T[K] extends (...args: ClosureArgs) => ClosureResult ? K : never;
 }[keyof T];
