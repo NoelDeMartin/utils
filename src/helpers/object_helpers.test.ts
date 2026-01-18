@@ -8,6 +8,7 @@ import {
     deepGet,
     deepSet,
     getClassMethods,
+    isSubclassOf,
     monkeyPatch,
     objectDeepClone,
     objectEntries,
@@ -187,6 +188,19 @@ describe('Object helpers types', () => {
         expectTypeOf(objectEntries(objectWithUndefined)).toEqualTypeOf<['a' | 'b', number | undefined][]>();
         expectTypeOf(objectEntries(objectWithOptional)).toEqualTypeOf<['a' | 'b', number][]>();
         expectTypeOf(objectEntries(objectWithOptionalAndRequired)).toEqualTypeOf<['a' | 'b', number | undefined][]>();
+    });
+
+    it('checks subclasses', () => {
+        class A {}
+        class B extends A {}
+        class C extends B {}
+
+        expect(isSubclassOf(B, A)).toBe(true);
+        expect(isSubclassOf(C, A)).toBe(true);
+        expect(isSubclassOf(C, B)).toBe(true);
+        expect(isSubclassOf(A, A)).toBe(false);
+        expect(isSubclassOf(A, B)).toBe(false);
+        expect(isSubclassOf(A, C)).toBe(false);
     });
 
     it(

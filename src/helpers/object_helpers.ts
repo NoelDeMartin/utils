@@ -209,6 +209,20 @@ export function isNullable(value: unknown): value is undefined | null {
     return typeof value === 'undefined' || value === null;
 }
 
+export function isSubclassOf(value: Constructor, baseClass: Constructor): boolean {
+    let prototype = Object.getPrototypeOf(value);
+
+    while (prototype !== null && prototype !== Object) {
+        if (prototype === baseClass) {
+            return true;
+        }
+
+        prototype = Object.getPrototypeOf(prototype);
+    }
+
+    return false;
+}
+
 export function monkeyPatch<T, K extends GetObjectMethods<T>>(object: T, method: K, callback: VoidClosure<T[K]>): void {
     const originalMethod = object[method] as unknown as Closure;
 
