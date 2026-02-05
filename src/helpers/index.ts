@@ -32,6 +32,7 @@ export * from './object_helpers';
 export * from './ObjectsMap';
 export * from './promise_helpers';
 export * from './PromisedValue';
+export * from './replacements';
 export * from './runtime_helpers';
 export * from './Semaphore';
 export * from './Storage';
