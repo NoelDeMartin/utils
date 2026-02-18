@@ -23,6 +23,12 @@ export function after(msOrOptions: number | AfterOptions = {}): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+export function sleep(ms: number): Promise<void>;
+export function sleep(options?: AfterOptions): Promise<void>;
+export function sleep(msOrOptions: number | AfterOptions = {}): Promise<void> {
+    return after(msOrOptions as number);
+}
+
 export function afterAnimationFrame(): Promise<void> {
     return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 }
