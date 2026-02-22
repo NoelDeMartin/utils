@@ -288,8 +288,8 @@ describe('Array helpers', () => {
 });
 
 let enabled: boolean | undefined;
-const filteredItems = arrayFilter(['foo', null, 'bar', undefined]);
-const filteredConditionalItems = arrayFilter(['foo', null, enabled && 'bar', undefined]);
+const filteredItems = arrayFilter(['foo' as string, null, 'bar', undefined]);
+const filteredConditionalItems = arrayFilter(['foo' as string, null, enabled && 'bar', undefined]);
 const filteredConstItems = arrayFilter(['foo' as const, null, enabled && 'bar', undefined]);
 const arrayFromNumber = arrayFrom(42);
 const arrayFromSet = arrayFrom(new Set(['foo']));
