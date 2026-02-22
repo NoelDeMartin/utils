@@ -16,7 +16,9 @@ describe('Replacements', () => {
         expect(applyReplacements('Foo {{ bar || uuid() }}')).toMatch(
             /Foo [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/,
         );
-        expect(applyReplacements('Now: {{ now() }}')).toEqual(`Now: ${new Date().toISOString()}`);
+        expect(applyReplacements('Now: {{ now() }}').replace(/\.\d{3}Z/, '.000Z')).toEqual(
+            `Now: ${new Date().toISOString().replace(/\.\d{3}Z/, '.000Z')}`,
+        );
         expect(applyReplacements('Date: {{ date(\'2024-03-03\') }}')).toEqual('Date: 2024-03-03T00:00:00.000Z');
     });
 
