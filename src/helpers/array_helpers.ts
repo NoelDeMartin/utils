@@ -296,11 +296,11 @@ export function arrayZip<T>(...arrays: T[][]): T[][] {
     return zippedArrays;
 }
 
-export function arrayFrom<T>(value: T, ignoreEmptyValues: boolean = false): ArrayFrom<T> {
+export function arrayFrom<T>(value: T, options: { ignoreEmptyValues?: boolean } = {}): ArrayFrom<T> {
     const items =
         Array.isArray(value) || (isIterable(value) && !isString(value))
             ? Array.from(value)
-            : ignoreEmptyValues && (value === null || value === undefined)
+            : options.ignoreEmptyValues && (value === null || value === undefined)
                 ? []
                 : [value];
 

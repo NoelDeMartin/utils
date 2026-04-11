@@ -254,7 +254,7 @@ describe('Array helpers', () => {
         expect(arrayFrom(['foo', 'bar'])).toEqual(['foo', 'bar']);
         expect(arrayFrom(new Set(['foo', 'bar']))).toEqual(['foo', 'bar']);
         expect(arrayFrom(null)).toEqual([null]);
-        expect(arrayFrom(null, true)).toEqual([]);
+        expect(arrayFrom(null, { ignoreEmptyValues: true })).toEqual([]);
     });
 
     it('reduces by key', () => {
