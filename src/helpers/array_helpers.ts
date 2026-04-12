@@ -296,15 +296,19 @@ export function arrayZip<T>(...arrays: T[][]): T[][] {
     return zippedArrays;
 }
 
-export function arrayFrom<T>(value: T, options: { ignoreEmptyValues?: boolean } = {}): ArrayFrom<T> {
+export function arrayFrom<TValue, TOptions extends { ignoreEmptyValues?: boolean }>(
+    value: TValue,
+    options?: TOptions,
+): TOptions extends { ignoreEmptyValues: true } ? ArrayFrom<NonNullable<TValue>> : ArrayFrom<TValue> {
+    const ignoreEmptyValues = options?.ignoreEmptyValues ?? false;
     const items =
         Array.isArray(value) || (isIterable(value) && !isString(value))
             ? Array.from(value)
-            : options.ignoreEmptyValues && (value === null || value === undefined)
+            : ignoreEmptyValues && (value === null || value === undefined)
                 ? []
                 : [value];
 
-    return items as ArrayFrom<T>;
+    return items as TOptions extends { ignoreEmptyValues: true } ? ArrayFrom<NonNullable<TValue>> : ArrayFrom<TValue>;
 }
 
 export function hasItems<T>(array: T[]): array is [T, ...T[]] {
