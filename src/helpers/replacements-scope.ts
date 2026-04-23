@@ -1,4 +1,4 @@
-import { uuid as generateUUID } from '@noeldemartin/utils';
+import { uuid as generateUUID } from '@noeldemartin/utils/helpers/identity_helpers';
 
 export interface ReplacementsScope {}
 

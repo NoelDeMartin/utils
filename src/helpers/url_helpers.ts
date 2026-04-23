@@ -22,20 +22,14 @@ export function requireUrlParse(url: string): UrlParts {
 }
 
 export function urlResolve(...parts: string[]): string {
-    let url = parts.shift() as string;
+    if (parts.length === 0) {
+        return '';
+    }
 
-    while (parts.length > 0) {
-        const fragment = parts.shift() as string;
+    let url = parts[0];
 
-        if (fragment.startsWith('/')) {
-            url = urlRoot(url) + fragment;
-        } else if (fragment.match(/^[\w-]+:\/\//)) {
-            url = fragment;
-        } else if (url.endsWith('/')) {
-            url += fragment;
-        } else {
-            url += '/' + fragment;
-        }
+    for (const part of parts.slice(1)) {
+        url = new URL(part, url).toString();
     }
 
     return url;

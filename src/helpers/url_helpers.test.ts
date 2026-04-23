@@ -25,6 +25,16 @@ describe('Url helper', () => {
         );
     });
 
+    it('resolves relative paths', () => {
+        expect(urlResolve('http://example.com/something/else', 'foobar')).toEqual(
+            'http://example.com/something/foobar',
+        );
+        expect(urlResolve('http://example.com/something/else', './foobar')).toEqual(
+            'http://example.com/something/foobar',
+        );
+        expect(urlResolve('http://example.com/something/else', '../foobar')).toEqual('http://example.com/foobar');
+    });
+
     it('splits arrays into chunks', () => {
         expect(arrayChunk([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
         expect(arrayChunk([1, 2, 3, 4, 5, 6], 2)).toEqual([
