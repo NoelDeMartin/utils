@@ -40,6 +40,6 @@ export function tap<Target extends object>(
 
     const result = callback(target);
 
-    return isPromiseLike(result) ? result.then(() => target) as unknown as Promise<Target> : target;
+    return isPromiseLike(result) ? (result.then(() => target) as unknown as Promise<Target>) : target;
 }
 /* eslint-enable max-len */

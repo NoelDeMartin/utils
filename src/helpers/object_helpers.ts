@@ -210,6 +210,7 @@ export function isNullable(value: unknown): value is undefined | null {
 }
 
 export function isPromiseLike(value: unknown): value is PromiseLike<unknown> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (isObject(value) || typeof value === 'function') && typeof (value as any)?.then === 'function';
 }
 
