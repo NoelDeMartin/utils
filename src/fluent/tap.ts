@@ -1,3 +1,5 @@
+import { isPromiseLike } from '@noeldemartin/utils/helpers/object_helpers';
+
 // Typescript equivalent of Laravel's tap helper method
 // @see https://medium.com/@taylorotwell/tap-tap-tap-1fc6fc1f93a6
 // @see https://github.com/laravel/framework/blob/v7.8.0/src/Illuminate/Support/helpers.php#L422..L431
@@ -38,6 +40,6 @@ export function tap<Target extends object>(
 
     const result = callback(target);
 
-    return result instanceof Promise ? result.then(() => target) : target;
+    return isPromiseLike(result) ? result.then(() => target) as unknown as Promise<Target> : target;
 }
 /* eslint-enable max-len */

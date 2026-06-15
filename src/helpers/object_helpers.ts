@@ -209,6 +209,10 @@ export function isNullable(value: unknown): value is undefined | null {
     return typeof value === 'undefined' || value === null;
 }
 
+export function isPromiseLike(value: unknown): value is PromiseLike<unknown> {
+    return (isObject(value) || typeof value === 'function') && typeof (value as any)?.then === 'function';
+}
+
 export function isSubclassOf(value: Constructor, baseClass: Constructor): boolean {
     let prototype = Object.getPrototypeOf(value);
 
