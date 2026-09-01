@@ -15,6 +15,10 @@ function getTestingType(): 'unit' | 'e2e' | null {
         return 'unit';
     }
 
+    if (__AEROGEL_E2E__) {
+        return 'e2e';
+    }
+
     return null;
 }
 
