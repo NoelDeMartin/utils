@@ -15,7 +15,7 @@ function getTestingType(): 'unit' | 'e2e' | null {
         return 'unit';
     }
 
-    if (__AEROGEL_E2E__) {
+    if ('__AEROGEL_E2E__' in globalThis) {
         return 'e2e';
     }
 
