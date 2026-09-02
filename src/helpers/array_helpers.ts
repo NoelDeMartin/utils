@@ -152,6 +152,14 @@ export function arrayReplace<T>(items: T[], original: T, replacement: T): boolea
     return true;
 }
 
+export function arrayReversed<T>(items: T[]): T[] {
+    const reversed = items.slice(0);
+
+    reversed.reverse();
+
+    return reversed;
+}
+
 export function arraySorted<T>(items: T[]): T[];
 export function arraySorted<T>(items: T[], direction: 'asc' | 'desc'): T[];
 export function arraySorted<T>(items: T[], compareValues: (a: T, b: T) => number): T[];
