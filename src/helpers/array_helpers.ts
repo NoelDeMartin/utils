@@ -5,6 +5,9 @@ import { compare } from './logical_helpers';
 import { deepGet, isIterable, isString, toString } from './object_helpers';
 
 export type ArrayFrom<T> = T extends Iterable<infer TItem> ? TItem[] : T[];
+export type ArraySortDirection = 'asc' | 'desc';
+export type ArraySortFieldDirection<T> = [DeepKeyOf<T>, ArraySortDirection];
+export type ArraySortCompare<T> = (a: T, b: T) => number;
 
 export function arrayClear(items: unknown[]): void {
     items.splice(0, items.length);
@@ -161,18 +164,24 @@ export function arrayReversed<T>(items: T[]): T[] {
 }
 
 export function arraySorted<T>(items: T[]): T[];
-export function arraySorted<T>(items: T[], direction: 'asc' | 'desc'): T[];
-export function arraySorted<T>(items: T[], compareValues: (a: T, b: T) => number): T[];
-export function arraySorted<T>(items: T[], field: DeepKeyOf<T>, direction?: 'asc' | 'desc'): T[];
-export function arraySorted<T>(items: T[], fields: DeepKeyOf<T>[], direction?: 'asc' | 'desc'): T[];
+export function arraySorted<T>(items: T[], direction: ArraySortDirection): T[];
+export function arraySorted<T>(items: T[], compareValues: ArraySortCompare<T>): T[];
+export function arraySorted<T>(items: T[], field: DeepKeyOf<T>, direction?: ArraySortDirection): T[];
+export function arraySorted<T>(items: T[], fields: DeepKeyOf<T>[], direction?: ArraySortDirection): T[];
+export function arraySorted<T>(items: T[], fields: ArraySortFieldDirection<T>[]): T[];
 export function arraySorted<T>(
     items: T[],
-    compareOrFieldOrDirection?: DeepKeyOf<T> | DeepKeyOf<T>[] | ((a: T, b: T) => number) | 'asc' | 'desc',
-    direction?: 'asc' | 'desc',
+    compareOrFieldOrDirection?:
+        | ArraySortDirection
+        | ArraySortCompare<T>
+        | DeepKeyOf<T>
+        | DeepKeyOf<T>[]
+        | ArraySortFieldDirection<T>[],
+    direction?: ArraySortDirection,
 ): T[] {
     direction =
         compareOrFieldOrDirection === 'asc' || compareOrFieldOrDirection === 'desc'
-            ? (compareOrFieldOrDirection as 'asc' | 'desc')
+            ? (compareOrFieldOrDirection as ArraySortDirection)
             : direction;
 
     const fieldDefaults: Partial<Record<DeepKeyOf<T>, unknown>> = {};
@@ -204,12 +213,11 @@ export function arraySorted<T>(
 
         return deepGet(object as object, field as never) ?? fieldDefaults[field];
     };
+    const compareByField = (field: DeepKeyOf<T>, fieldDirection: ArraySortDirection = 'asc') =>
+        fieldDirection === 'desc'
+            ? (a: T, b: T) => compare(getFieldValue(b, field), getFieldValue(a, field))
+            : (a: T, b: T) => compare(getFieldValue(a, field), getFieldValue(b, field));
     const getComparisonFunction = (): Closure<[T, T], number> | undefined => {
-        const compareItems =
-            direction === 'desc'
-                ? (field: DeepKeyOf<T>) => (a: T, b: T) => compare(getFieldValue(b, field), getFieldValue(a, field))
-                : (field: DeepKeyOf<T>) => (a: T, b: T) => compare(getFieldValue(a, field), getFieldValue(b, field));
-
         switch (typeof compareOrFieldOrDirection) {
             case 'function':
                 return compareOrFieldOrDirection;
@@ -218,10 +226,11 @@ export function arraySorted<T>(
 
                 if (compareOrFieldOrDirection === 'desc') return (a, b) => compare(b, a);
 
-                return compareItems(compareOrFieldOrDirection);
+                return compareByField(compareOrFieldOrDirection, direction ?? 'asc');
             case 'object': {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const comparisonFunctions = compareOrFieldOrDirection.map((field: any) => compareItems(field));
+                const comparisonFunctions = compareOrFieldOrDirection.map((field) => {
+                    return Array.isArray(field) ? compareByField(...field) : compareByField(field, direction ?? 'asc');
+                });
 
                 return (a: T, b: T) => {
                     for (const comparisonFunction of comparisonFunctions) {

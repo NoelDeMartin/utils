@@ -3,8 +3,9 @@ import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
 
 import { toString } from '@noeldemartin/utils/helpers/object_helpers';
-import type { Equals } from '@noeldemartin/utils/types';
+import type { DeepKeyOf, Equals } from '@noeldemartin/utils/types';
 
+import type { ArraySortDirection, ArraySortFieldDirection } from './array_helpers';
 import {
     arrayDiff,
     arrayEquals,
@@ -96,11 +97,21 @@ describe('Array helpers', () => {
     });
 
     it('sorts items by field', () => {
-        const items = [{ name: 'Son Goku' }, { name: 'Astroboy' }, { name: 'Zetman' }];
+        const items = [
+            { name: 'Son Goku' },
+            { name: 'Astroboy' },
+            { name: 'Guts' },
+            { name: 'Griffith' },
+            { name: 'Zetman' },
+        ];
 
-        expect(arraySorted(items, 'name').map((item) => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
-        expect(arraySorted(items, 'name', 'asc').map((item) => item.name)).toEqual(['Astroboy', 'Son Goku', 'Zetman']);
-        expect(arraySorted(items, 'name', 'desc').map((item) => item.name)).toEqual(['Zetman', 'Son Goku', 'Astroboy']);
+        const expectSorted = (field: DeepKeyOf<(typeof items)[number]>, direction?: ArraySortDirection) => {
+            return expect(arraySorted(items, field, direction).map(({ name }) => name));
+        };
+
+        expectSorted('name').toEqual(['Astroboy', 'Griffith', 'Guts', 'Son Goku', 'Zetman']);
+        expectSorted('name', 'asc').toEqual(['Astroboy', 'Griffith', 'Guts', 'Son Goku', 'Zetman']);
+        expectSorted('name', 'desc').toEqual(['Zetman', 'Son Goku', 'Guts', 'Griffith', 'Astroboy']);
     });
 
     it('sorts items by nested field', () => {
@@ -110,16 +121,12 @@ describe('Array helpers', () => {
             { author: { name: 'J.R.R. Tolkien' } },
         ];
 
-        expect(arraySorted(items, 'author.name').map((item) => item.author.name)).toEqual([
-            'Arthur Conan Doyle',
-            'Brandom Sanderson',
-            'J.R.R. Tolkien',
-        ]);
-        expect(arraySorted(items, 'author.name', 'desc').map((item) => item.author.name)).toEqual([
-            'J.R.R. Tolkien',
-            'Brandom Sanderson',
-            'Arthur Conan Doyle',
-        ]);
+        const expectSorted = (field: DeepKeyOf<(typeof items)[number]>, direction?: ArraySortDirection) => {
+            return expect(arraySorted(items, field, direction).map(({ author }) => author.name));
+        };
+
+        expectSorted('author.name').toEqual(['Arthur Conan Doyle', 'Brandom Sanderson', 'J.R.R. Tolkien']);
+        expectSorted('author.name', 'desc').toEqual(['J.R.R. Tolkien', 'Brandom Sanderson', 'Arthur Conan Doyle']);
     });
 
     it('sorts items by field with undefined value', () => {
@@ -131,17 +138,46 @@ describe('Array helpers', () => {
     });
 
     it('sorts items by multiple fields', () => {
-        const sonGokuKid = { name: 'Son Goku', age: 11 };
-        const sonGokuAdult = { name: 'Son Goku', age: 31 };
-        const astroboy = { name: 'Astroboy', age: 18 };
-        const zetman = { name: 'Zetman', age: 16 };
-        const items = [sonGokuAdult, sonGokuKid, astroboy, zetman];
+        const items = [
+            { name: 'Son Goku', age: 31 },
+            { name: 'Son Goku', age: 11 },
+            { name: 'Astroboy', age: 18 },
+            { name: 'Zetman', age: 16 },
+        ];
 
-        expect(arraySorted(items, ['name'])).toEqual([astroboy, sonGokuAdult, sonGokuKid, zetman]);
-        expect(arraySorted(items, ['name'], 'desc')).toEqual([zetman, sonGokuAdult, sonGokuKid, astroboy]);
-        expect(arraySorted(items, ['name', 'age'])).toEqual([astroboy, sonGokuKid, sonGokuAdult, zetman]);
-        expect(arraySorted(items, ['name', 'age'], 'desc')).toEqual([zetman, sonGokuAdult, sonGokuKid, astroboy]);
-        expect(arraySorted(items, ['age'])).toEqual([sonGokuKid, zetman, astroboy, sonGokuAdult]);
+        const expectSorted = (fields: DeepKeyOf<(typeof items)[number]>[], direction?: ArraySortDirection) => {
+            return expect(arraySorted(items, fields, direction).map(({ name, age }) => `${name}:${age}`));
+        };
+
+        expectSorted(['name']).toEqual(['Astroboy:18', 'Son Goku:31', 'Son Goku:11', 'Zetman:16']);
+        expectSorted(['name'], 'desc').toEqual(['Zetman:16', 'Son Goku:31', 'Son Goku:11', 'Astroboy:18']);
+        expectSorted(['name', 'age']).toEqual(['Astroboy:18', 'Son Goku:11', 'Son Goku:31', 'Zetman:16']);
+        expectSorted(['name', 'age'], 'desc').toEqual(['Zetman:16', 'Son Goku:31', 'Son Goku:11', 'Astroboy:18']);
+        expectSorted(['age']).toEqual(['Son Goku:11', 'Zetman:16', 'Astroboy:18', 'Son Goku:31']);
+    });
+
+    it('sorts items by multiple fields and directions', () => {
+        const items = [
+            { title: 'Happy', score: 7 },
+            { title: 'Monster', score: 10 },
+            { title: 'Pluto', score: 9 },
+            { title: 'Billy Bat', score: 9 },
+            { title: 'Billy Bat', score: 8 },
+        ];
+
+        const expectSorted = (fields: ArraySortFieldDirection<(typeof items)[number]>[]) => {
+            return expect(arraySorted(items, fields).map(({ title, score }) => `${title}:${score}`));
+        };
+
+        expectSorted([
+            ['title', 'asc'],
+            ['score', 'desc'],
+        ]).toEqual(['Billy Bat:9', 'Billy Bat:8', 'Happy:7', 'Monster:10', 'Pluto:9']);
+
+        expectSorted([
+            ['score', 'desc'],
+            ['title', 'asc'],
+        ]).toEqual(['Monster:10', 'Billy Bat:9', 'Pluto:9', 'Billy Bat:8', 'Happy:7']);
     });
 
     it('groups items', () => {
