@@ -6,7 +6,7 @@ import { deepGet, isIterable, isString, toString } from './object_helpers';
 
 export type ArrayFrom<T> = T extends Iterable<infer TItem> ? TItem[] : T[];
 export type ArraySortDirection = 'asc' | 'desc';
-export type ArraySortFieldDirection<T> = [DeepKeyOf<T>, ArraySortDirection];
+export type ArraySortFieldDirection<T> = readonly [DeepKeyOf<T>, ArraySortDirection];
 export type ArraySortCompare<T> = (a: T, b: T) => number;
 
 export function arrayClear(items: unknown[]): void {
@@ -229,7 +229,9 @@ export function arraySorted<T>(
                 return compareByField(compareOrFieldOrDirection, direction ?? 'asc');
             case 'object': {
                 const comparisonFunctions = compareOrFieldOrDirection.map((field) => {
-                    return Array.isArray(field) ? compareByField(...field) : compareByField(field, direction ?? 'asc');
+                    return typeof field === 'string'
+                        ? compareByField(field, direction ?? 'asc')
+                        : compareByField(field[0], field[1]);
                 });
 
                 return (a: T, b: T) => {

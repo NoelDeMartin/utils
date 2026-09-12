@@ -324,6 +324,7 @@ describe('Array helpers', () => {
 });
 
 let enabled: boolean | undefined;
+const sorting: { field: 'id'; direction: ArraySortDirection }[] = [];
 const filteredItems = arrayFilter(['foo' as string, null, 'bar', undefined]);
 const filteredConditionalItems = arrayFilter(['foo' as string, null, enabled && 'bar', undefined]);
 const filteredConstItems = arrayFilter(['foo' as const, null, enabled && 'bar', undefined]);
@@ -333,6 +334,11 @@ const arrayFromArray = arrayFrom([new Date()]);
 const arrayFromConditional = arrayFrom(Date.now() ? 42 : [42]);
 const groupedByKey = arrayGroupBy([{ id: 'Foo Bar' }], 'id');
 const groupedByFunction = arrayGroupBy([{ id: 'Foo Bar' }], (item) => (item.id ? 'one' : 'two'));
+const sortedItems = arraySorted([{ id: 'Foo Bar' }], [['id', 'asc']]);
+const sortedItemsReadonly = arraySorted(
+    [{ id: 'Foo Bar' }],
+    sorting.map(({ field, direction }) => [field, direction] as const),
+);
 
 describe('Array helpers types', () => {
 
@@ -348,6 +354,8 @@ describe('Array helpers types', () => {
             | Expect<Equals<typeof arrayFromConditional, number[]>>
             | Expect<Equals<keyof typeof groupedByKey, string>>
             | Expect<Equals<keyof typeof groupedByFunction, 'one' | 'two'>>
+            | Expect<Equals<typeof sortedItems, { id: string }[]>>
+            | Expect<Equals<typeof sortedItemsReadonly, { id: string }[]>>
             | true
         >(),
     );
