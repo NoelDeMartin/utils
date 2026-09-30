@@ -1,13 +1,11 @@
-import { describe, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import type { Equals } from '@noeldemartin/utils/types';
+import { describe, it } from 'vite-plus/test';
 
 import type { ArrayItem, Tuple } from './arrays';
 
 describe('Array types', () => {
-
     it(
         'Has correct types',
         tt<
@@ -17,5 +15,4 @@ describe('Array types', () => {
             | true
         >(),
     );
-
 });

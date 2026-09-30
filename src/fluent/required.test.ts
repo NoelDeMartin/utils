@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 import { required } from './required';
 
 describe('required', () => {
-
     it('works with instanceof', () => {
         class Foo {}
 
@@ -15,11 +14,9 @@ describe('required', () => {
         const data: { instance?: Foo } = {};
 
         class Foo {
-
             public isDataInstance(): boolean {
                 return this === data.instance;
             }
-        
         }
 
         data.instance = new Foo();
@@ -30,5 +27,4 @@ describe('required', () => {
         // Assert
         expect(foo.isDataInstance()).toBe(true);
     });
-
 });

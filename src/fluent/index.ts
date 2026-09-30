@@ -2,8 +2,8 @@ import { ObjectsMap, arrayFrom, arrayPull, objectPull } from '@noeldemartin/util
 import type { Obj } from '@noeldemartin/utils/helpers/index';
 
 import FluentArray from './FluentArray';
-import FluentString from './FluentString';
 import type { FluentArrayInstance } from './FluentArray';
+import FluentString from './FluentString';
 import type { FluentStringInstance } from './FluentString';
 
 const fluentClasses = [FluentArray, FluentString];
@@ -19,7 +19,6 @@ export function arr<T>(value: unknown = []): FluentArrayInstance<FluentArray<T>,
     return FluentArray.create(arrayFrom(value) as T[]);
 }
 
-/* eslint-disable max-len */
 export function map<T>(items: string[], getKey?: (item: string) => T): Record<string, T>;
 export function map<T extends object>(items: []): ObjectsMap<T>;
 export function map<T extends object>(items: Iterable<T>, getKey?: (item: T) => string): ObjectsMap<T>;
@@ -41,7 +40,6 @@ export function map<T extends object, S extends keyof T>(
         {} as Record<string, unknown>,
     );
 }
-/* eslint-enable max-len */
 
 export function pull<T>(items: T[], index: number): T;
 export function pull<T extends Obj, K extends keyof T>(obj: T, key: K): T[K];

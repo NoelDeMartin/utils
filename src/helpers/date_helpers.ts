@@ -6,7 +6,7 @@ export function parseDate(value?: unknown): Date | null {
         const time = date.getTime();
 
         return isNaN(time) || time === 0 ? null : date;
-    } catch (error) {
+    } catch {
         return null;
     }
 }

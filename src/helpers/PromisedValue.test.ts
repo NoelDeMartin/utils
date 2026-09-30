@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 import PromisedValue from './PromisedValue';
 
 describe('PromisedValue', () => {
-
     it('works like a promise', async () => {
         const promisedString = new PromisedValue<string>();
         expect(promisedString.value).toBe(null);
@@ -28,5 +27,4 @@ describe('PromisedValue', () => {
         const resolvedValue = await promisedString;
         expect(resolvedValue).toBe('bar');
     });
-
 });

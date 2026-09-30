@@ -7,7 +7,7 @@ export function md5(message: string): string {
  * @see http://www.myersdaily.org/joseph/javascript/md5-text.html
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable typescript/no-explicit-any */
 
 function md5cycle(x: any, k: any) {
     let a = x[0],

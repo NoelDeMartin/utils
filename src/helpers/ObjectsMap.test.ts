@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 import ObjectsMap from './ObjectsMap';
 
 describe('ObjectsMap', () => {
-
     it('gets items', () => {
         const map = ObjectsMap.createFromArray([{ name: 'John' }, { name: 'Amy' }], 'name');
 
@@ -73,7 +72,6 @@ describe('ObjectsMap', () => {
         expect(original.hasItem(clone.require('Alice'))).toBe(true);
         expect(original.hasItem(clone.require('Bob'))).toBe(false);
     });
-
 });
 
 function expectUsersFilter<T extends { name: string }>(

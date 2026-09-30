@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
-
 import { catchError, fail } from '@noeldemartin/utils/helpers/error_helpers';
+import { describe, expect, it } from 'vite-plus/test';
 
 import JSError from './JSError';
 
 describe('JSError', () => {
-
     it('behaves like an error', () => {
         // Act
         const error = catchError(() => fail(JSError, 'foobar'));
@@ -38,13 +36,10 @@ describe('JSError', () => {
         expect(stubError.stack).not.toBeNull();
         expect(stubError.stack).toContain('Error.test');
     });
-
 });
 
 class StubError extends JSError {
-
     constructor(m: string) {
         super(`Custom message: ${m}`);
     }
-
 }

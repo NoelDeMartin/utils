@@ -5,15 +5,12 @@ import { toString } from './object_helpers';
 export type ObjectKeyExtractor<T> = (item: T) => string;
 
 export default class ObjectsMap<Item extends object> {
-
-    /* eslint-disable max-len */
     public static createFromArray<T extends object>(
         items: Iterable<T>,
-        keyExtractor?: ObjectKeyExtractor<T>
+        keyExtractor?: ObjectKeyExtractor<T>,
     ): ObjectsMap<T>;
 
     public static createFromArray<T extends object, S extends keyof T>(items: Iterable<T>, key: S): ObjectsMap<T>;
-    /* eslint-enable max-len */
 
     public static createFromArray<T extends object, S extends keyof T>(
         items: Iterable<T>,
@@ -132,5 +129,4 @@ export default class ObjectsMap<Item extends object> {
 
         return copy;
     }
-
 }

@@ -1,12 +1,12 @@
 import { arrayRemove } from './array_helpers';
 
 export type ListenerEvents<TListener extends object> = Required<{
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     [K in keyof TListener]: NonNullable<TListener[K]> extends (...args: any[]) => any ? K : never;
 }>[keyof TListener];
 
 export type ListenerPayload<TListener extends object, TEvent extends keyof TListener> = Required<{
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     [K in keyof TListener]: NonNullable<TListener[K]> extends (...args: infer TPayload) => any ? TPayload : never;
 }>[TEvent];
 
@@ -16,7 +16,6 @@ export interface Listeners<Listener extends object> {
 }
 
 export default class ListenersManager<Listener extends object> implements Listeners<Listener> {
-
     private listeners: Listener[] = [];
 
     public add(listener: Listener): () => void {
@@ -43,5 +42,4 @@ export default class ListenersManager<Listener extends object> implements Listen
             await callback?.call(listener, ...payload);
         }
     }
-
 }

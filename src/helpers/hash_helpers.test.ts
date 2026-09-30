@@ -1,9 +1,7 @@
-import { describe, expect, it } from 'vitest';
-
 import { md5 } from '@noeldemartin/utils/helpers/hash_helpers';
+import { describe, expect, it } from 'vite-plus/test';
 
 describe('Hash helpers', () => {
-
     it('calculates md5 hashes', () => {
         expect(md5('foobar')).toEqual('3858f62230ac3c915f300c664312c63f');
         expect(
@@ -19,5 +17,4 @@ describe('Hash helpers', () => {
             ),
         ).toEqual('e789ad95b7fa0ee666a5c80df0bf1ba1');
     });
-
 });

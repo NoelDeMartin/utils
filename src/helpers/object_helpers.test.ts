@@ -1,8 +1,7 @@
-import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import type { Equals, GetOptionalKeys, GetRequiredKeys } from '@noeldemartin/utils/types/helpers';
+import { describe, expect, expectTypeOf, it, vi } from 'vite-plus/test';
 
 import {
     deepGet,
@@ -18,23 +17,18 @@ import {
 } from './object_helpers';
 
 describe('Object helpers', () => {
-
     it('gets class methods', () => {
         // Arrange
         class Foo {
-
             public hello(): void {
                 //
             }
-        
         }
 
         class Bar extends Foo {
-
             public goodbye(): void {
                 //
             }
-        
         }
 
         // Act
@@ -51,15 +45,11 @@ describe('Object helpers', () => {
     it('patches methods', () => {
         // Arrange
         class Computer {
-
             public foo: string = '';
 
-            public run(question: string): number {
-                question;
-
+            public run(_: string): number {
                 return 42;
             }
-        
         }
 
         const computer = new Computer();
@@ -68,11 +58,11 @@ describe('Object helpers', () => {
         monkeyPatch(computer, 'run', (question) => callback(`Question: ${question}`));
 
         // Act
-        const result = computer.run('What\'s the meaning of life?');
+        const result = computer.run("What's the meaning of life?");
 
         // Assert
         expect(result).toEqual(42);
-        expect(callback).toHaveBeenCalledWith('Question: What\'s the meaning of life?');
+        expect(callback).toHaveBeenCalledWith("Question: What's the meaning of life?");
     });
 
     it('removes keys', () => {
@@ -97,10 +87,8 @@ describe('Object helpers', () => {
 
     it('gets subset', () => {
         class Stub {
-
             public foo = true;
             public bar = false;
-        
         }
 
         expect(objectOnly({ foo: true, bar: false }, 'foo')).toEqual({ foo: true });
@@ -159,7 +147,6 @@ describe('Object helpers', () => {
             author: { id: 1, name: 'Jane Doe' },
         });
     });
-
 });
 
 type Original = {
@@ -177,7 +164,6 @@ const originalWithoutFoo = objectWithout(original, ['foo']);
 const originalWithoutEmpty = objectWithoutEmpty(original);
 
 describe('Object helpers types', () => {
-
     it('gets typed entries', () => {
         const partialObject = {} as Partial<Record<'a' | 'b', number>>;
         const objectWithUndefined = {} as Record<'a' | 'b', number | undefined>;
@@ -214,5 +200,4 @@ describe('Object helpers types', () => {
             | true
         >(),
     );
-
 });

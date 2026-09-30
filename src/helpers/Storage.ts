@@ -1,7 +1,6 @@
 const DEFAULT_INSTANCE = {};
 
 export class StorageSingleton {
-
     private static _instance: StorageSingleton;
 
     public static get instance(): StorageSingleton {
@@ -57,7 +56,6 @@ export class StorageSingleton {
 
         return value;
     }
-
 }
 
 export default StorageSingleton.instance;

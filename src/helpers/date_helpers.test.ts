@@ -1,9 +1,7 @@
-import { describe, expect, it } from 'vitest';
-
 import { parseDate } from '@noeldemartin/utils/helpers/date_helpers';
+import { describe, expect, it } from 'vite-plus/test';
 
 describe('Date helpers', () => {
-
     it('parses dates', () => {
         expect(parseDate()).toEqual(null);
         expect(parseDate('invalid value')).toEqual(null);
@@ -12,5 +10,4 @@ describe('Date helpers', () => {
         expect(parseDate('2021-09-03T16:09:12.000Z')).toEqual(new Date(1630685352000));
         expect(parseDate(new Date(1630685352000))).toEqual(new Date(1630685352000));
     });
-
 });

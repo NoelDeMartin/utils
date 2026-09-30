@@ -77,7 +77,7 @@ export function arrayWithItemAt<T>(items: T[], item: T, index: number): T[] {
 
 export function arrayGroupBy<TItem, TKey extends string>(
     items: TItem[],
-    groupBy: (item: TItem) => TKey
+    groupBy: (item: TItem) => TKey,
 ): Partial<Record<TKey, TItem[]>>;
 export function arrayGroupBy<TItem, TKey extends keyof TItem>(items: TItem[], groupBy: TKey): Record<string, TItem[]>;
 export function arrayGroupBy<TItem>(
@@ -257,17 +257,17 @@ export function arraySwap(items: unknown[], firstIndex: number, secondIndex: num
 export function arrayUnique<T>(items: T[], extractKey?: (item: T) => string): T[] {
     return extractKey
         ? Object.values(
-            items.reduce(
-                (unique, item) => {
-                    const key = extractKey(item);
+              items.reduce(
+                  (unique, item) => {
+                      const key = extractKey(item);
 
-                    unique[key] = unique[key] ?? item;
+                      unique[key] = unique[key] ?? item;
 
-                    return unique;
-                },
+                      return unique;
+                  },
                   {} as Record<string, T>,
-            ),
-        )
+              ),
+          )
         : [...new Set(items)];
 }
 
@@ -324,8 +324,8 @@ export function arrayFrom<TValue, TOptions extends { ignoreEmptyValues?: boolean
         Array.isArray(value) || (isIterable(value) && !isString(value))
             ? Array.from(value)
             : ignoreEmptyValues && (value === null || value === undefined)
-                ? []
-                : [value];
+              ? []
+              : [value];
 
     return items as TOptions extends { ignoreEmptyValues: true } ? ArrayFrom<NonNullable<TValue>> : ArrayFrom<TValue>;
 }
@@ -341,7 +341,7 @@ export function range(length: number): number[] {
 export function reduceBy<TItem, TKey extends keyof TItem, TProjection>(
     items: TItem[],
     key: TKey,
-    project: (item: TItem) => TProjection
+    project: (item: TItem) => TProjection,
 ): Record<string, TProjection>;
 export function reduceBy<TItem, TKey extends keyof TItem>(items: TItem[], key: TKey): Record<string, TItem>;
 export function reduceBy<TItem, TKey extends keyof TItem, TProjection>(

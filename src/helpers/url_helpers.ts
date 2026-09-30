@@ -126,7 +126,7 @@ export function urlRoute(url: string): string {
 export function validUrl(url: string): string | null {
     try {
         return new URL(url.trim()).toString();
-    } catch (error) {
+    } catch {
         return null;
     }
 }

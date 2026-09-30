@@ -1,19 +1,17 @@
-import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import { stringToCamelCase } from '@noeldemartin/utils/helpers/string_helpers';
 import type { Equals } from '@noeldemartin/utils/types';
+import { describe, expect, it } from 'vite-plus/test';
 
 import MagicObject from './MagicObject';
 
 type Attributes = Record<string, unknown>;
 
 class Stub extends MagicObject {
-
     public static globalName: string;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     [property: string]: any;
 
     public constructor(attributes: Attributes = {}) {
@@ -57,11 +55,9 @@ class Stub extends MagicObject {
     protected __delete(property: string): void {
         delete this.attributes[property];
     }
-
 }
 
 describe('MagicObject', () => {
-
     it('Intercepts getters and setters', () => {
         // Arrange
         const object = new Stub({ lorem: 'ipsum' });
@@ -98,7 +94,6 @@ describe('MagicObject', () => {
         expect(object['foo-bar']).toBeUndefined();
         expect(object.fooBar).toBe(true);
     });
-
 });
 
 const instance = new Stub();
@@ -106,10 +101,8 @@ const globalName = instance.static().globalName;
 const globalNameShortcut = instance.static('globalName');
 
 describe('MagicObject types', () => {
-
     it(
         'has correct types',
         tt<Expect<Equals<typeof globalName, string>> | Expect<Equals<typeof globalNameShortcut, string>> | true>(),
     );
-
 });

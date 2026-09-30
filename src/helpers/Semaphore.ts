@@ -1,7 +1,6 @@
 type Listener = () => void;
 
 export default class Semaphore {
-
     private count: number;
     private listeners: Set<Listener>;
 
@@ -59,5 +58,4 @@ export default class Semaphore {
     private notifyAvailable(): void {
         this.listeners.forEach((listener) => listener());
     }
-
 }

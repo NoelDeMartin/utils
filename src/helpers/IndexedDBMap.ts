@@ -12,7 +12,6 @@ interface DatabaseSchema<T> extends DBSchema {
 }
 
 export default class IndexedDBMap<TItem> {
-
     private db: IDBPDatabase<DatabaseSchema<TItem>> | null = null;
     private namespace: string;
 
@@ -88,5 +87,4 @@ export default class IndexedDBMap<TItem> {
 
         return db;
     }
-
 }

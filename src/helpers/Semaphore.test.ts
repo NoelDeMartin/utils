@@ -1,16 +1,13 @@
-import { describe, expect, it } from 'vitest';
-
+import { range } from '@noeldemartin/utils/helpers/array_helpers';
+import { fail } from '@noeldemartin/utils/helpers/error_helpers';
 import Semaphore from '@noeldemartin/utils/helpers/Semaphore';
 import { after } from '@noeldemartin/utils/helpers/time_helpers';
-import { fail } from '@noeldemartin/utils/helpers/error_helpers';
-import { range } from '@noeldemartin/utils/helpers/array_helpers';
+import { describe, expect, it } from 'vite-plus/test';
 
 describe('Semaphore', () => {
-
     it('Locks concurrent threads', async () => {
         // Arrange
         class Writer {
-
             private pen?: Promise<void>;
 
             public async write(item: string): Promise<void> {
@@ -28,7 +25,6 @@ describe('Semaphore', () => {
 
                 delete this.pen;
             }
-        
         }
 
         const items: string[] = [];
@@ -62,7 +58,8 @@ describe('Semaphore', () => {
                     await after({ ms: Math.floor(Math.random() * 10) });
 
                     items.push(`Item #${i}`);
-                })),
+                }),
+            ),
         );
 
         // Assert
@@ -77,7 +74,7 @@ describe('Semaphore', () => {
         // Act
         try {
             await lock.run(() => fail());
-        } catch (_) {
+        } catch {
             // Silence error.
             failed = true;
         }
@@ -86,5 +83,4 @@ describe('Semaphore', () => {
         expect(lock.isAvailable()).toBe(true);
         expect(failed).toBe(true);
     });
-
 });

@@ -1,19 +1,16 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 import { facade } from './facade';
 
 describe('Facades', () => {
-
     it('reset instances', () => {
         // Arrange
         class CounterService {
-
             public count: number = 0;
 
             public add(): void {
                 this.count++;
             }
-        
         }
 
         const counter = facade(CounterService);
@@ -26,5 +23,4 @@ describe('Facades', () => {
         // Assert
         expect(counter.count).toEqual(0);
     });
-
 });

@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
 import { arrayChunk } from '@noeldemartin/utils/helpers/array_helpers';
+import { describe, expect, it } from 'vite-plus/test';
+
 import {
     requireUrlDirectoryName,
     urlClean,
@@ -14,7 +14,6 @@ import {
 } from './url_helpers';
 
 describe('Url helper', () => {
-
     it('uses root when resolving absolute paths', () => {
         expect(urlResolve('http://example.com/something/else', '/foobar')).toEqual('http://example.com/foobar');
     });
@@ -125,5 +124,4 @@ describe('Url helper', () => {
         expect(urlFileName('https://example.com/foobar#it')).toEqual('foobar');
         expect(urlFileName('https://example.com/foobar?ignore')).toEqual('foobar');
     });
-
 });

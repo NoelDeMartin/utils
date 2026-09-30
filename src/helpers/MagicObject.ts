@@ -9,7 +9,6 @@ export interface MagicObjectProxy<T> {
 export type MagicObjectConstructor<T extends MagicObject = MagicObject> = Constructor<T> & typeof MagicObject;
 
 export default class MagicObject {
-
     private static __conjuring: boolean;
     private static __reservedProperties: WeakMap<typeof MagicObject, Set<string>> = new WeakMap();
 
@@ -65,7 +64,7 @@ export default class MagicObject {
         Object.assign(this, { [property]: null });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // oxlint-disable-next-line typescript/no-unused-vars
     protected initialize(...args: ClosureArgs): void {
         //
     }
@@ -116,5 +115,4 @@ export default class MagicObject {
             }),
         };
     }
-
 }

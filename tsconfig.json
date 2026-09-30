@@ -1,11 +1,10 @@
 {
-    "extends": "@tsconfig/node22/tsconfig.json",
-    "include": ["src/**/*.ts"],
+    "extends": "@tsconfig/node26/tsconfig.json",
+    "include": ["src/**/*.ts", "vite.config.ts"],
     "compilerOptions": {
-        "baseUrl": ".",
         "module": "ESNext",
         "moduleResolution": "Bundler",
-        "lib": ["DOM"],
+        "lib": ["ES2025", "DOM"],
         "types": ["node"],
         "paths": {
             "@noeldemartin/utils/*": ["./src/*"]

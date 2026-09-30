@@ -1,15 +1,13 @@
-import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import { toString } from '@noeldemartin/utils/helpers';
 import type { Equals } from '@noeldemartin/utils/types';
+import { describe, expect, it } from 'vite-plus/test';
 
 import FluentArrayDefinition from './FluentArray';
 import type { FluentArray, FluentArrayInstance } from './FluentArray';
 
 describe('FluentArray', () => {
-
     it('delegates to helper methods', () => {
         const fluentArray = FluentArrayDefinition.create(['foo', 'bar']);
 
@@ -54,10 +52,9 @@ describe('FluentArray', () => {
 
     it('can be subclassed', () => {
         class SuperFluentArray<T> extends FluentArrayDefinition<T> {
-
             // TODO avoid doing this
             declare public static create: <TItem>(
-                value?: TItem[]
+                value?: TItem[],
             ) => FluentArrayInstance<SuperFluentArray<TItem>, TItem>;
 
             public slice(): this {
@@ -67,7 +64,6 @@ describe('FluentArray', () => {
             public sortAlphabetically(): this {
                 return this.create(this.value.slice(0).sort((a, b) => (toString(a) > toString(b) ? 1 : -1)));
             }
-        
         }
         const superFluentArray = SuperFluentArray.create(['foo', 'bar']);
 
@@ -88,7 +84,6 @@ describe('FluentArray', () => {
 
     it.todo('can use index syntax');
     it.todo('overrides primitive methods (use arrayFilter helper instead of primitive)');
-
 });
 
 type User = { name: string; age: number };
@@ -101,7 +96,6 @@ const names = fluentUsersArray.project('name');
 const ages = fluentUsersArray.project('age');
 
 describe('FluentArray types', () => {
-
     it(
         'has correct types',
         tt<
@@ -116,5 +110,4 @@ describe('FluentArray types', () => {
             | true
         >(),
     );
-
 });

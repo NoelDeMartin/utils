@@ -1,10 +1,10 @@
 import type { Constructor } from '@noeldemartin/utils/types';
 
-import { evaluate } from './value_helpers';
 import type JSError from './JSError';
+import { evaluate } from './value_helpers';
 import type { EvaluatesTo } from './value_helpers';
 
-/* eslint-disable @typescript-eslint/no-explicit-any, max-len */
+/* oxlint-disable typescript/no-explicit-any */
 export function assert(assertion: EvaluatesTo<boolean>, message?: string): void;
 export function assert<E extends Error = Error>(
     assertion: EvaluatesTo<boolean>,
@@ -18,7 +18,7 @@ export function assert(
 ): void {
     evaluate(assertion) || fail(messageOrClass as any, ...params);
 }
-/* eslint-enable @typescript-eslint/no-explicit-any, max-len */
+/* oxlint-enable typescript/no-explicit-any */
 
 export function catchError(callback: () => unknown): Error | null {
     try {
@@ -30,7 +30,7 @@ export function catchError(callback: () => unknown): Error | null {
     }
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any, max-len */
+/* oxlint-disable typescript/no-explicit-any */
 export function fail<T = any>(message?: string): T;
 export function fail<T = any, E extends Constructor<Error> = Constructor<Error>>(
     errorClass?: E,
@@ -45,4 +45,4 @@ export function fail(messageOrClass: string | Constructor<Error> = 'Something we
 
     throw new errorClass(...(typeof messageOrClass === 'string' ? [messageOrClass] : params));
 }
-/* eslint-enable @typescript-eslint/no-explicit-any, max-len */
+/* oxlint-enable typescript/no-explicit-any */

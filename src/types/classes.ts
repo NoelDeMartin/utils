@@ -1,5 +1,6 @@
 import type { ClosureArgs } from './helpers';
 
+// oxlint-disable-next-line typescript/no-wrapper-object-types
 export interface Constructor<T = Object> {
     new (...args: any[]): T;
 }

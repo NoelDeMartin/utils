@@ -1,14 +1,12 @@
-import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import type { Equals } from '@noeldemartin/utils/types';
+import { describe, expect, it } from 'vite-plus/test';
 
-import TargetClass, { BaseClass, MixinAA } from './mixin_helpers.stubs';
 import { usesMixin } from './mixin_helpers';
+import TargetClass, { BaseClass, MixinAA } from './mixin_helpers.stubs';
 
 describe('Inheritance helpers', () => {
-
     it('mixes methods', () => {
         const instance = new TargetClass<string, number>();
 
@@ -70,11 +68,9 @@ describe('Inheritance helpers', () => {
     });
 
     it.todo('disallows using mixins for unsupported classes');
-
 });
 
 describe('Inheritance helpers types', () => {
-
     let instance: TargetClass<string, number>;
 
     it(
@@ -88,5 +84,4 @@ describe('Inheritance helpers types', () => {
             | true
         >(),
     );
-
 });

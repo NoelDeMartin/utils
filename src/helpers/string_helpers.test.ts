@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 import {
     stringExcerpt,
@@ -10,7 +10,6 @@ import {
 } from './string_helpers';
 
 describe('String helpers', () => {
-
     it('reverses string characters', () => {
         expect(stringReverse('foobar')).toEqual('raboof');
     });
@@ -24,8 +23,8 @@ describe('String helpers', () => {
     it('converts strings to slug', () => {
         expect(stringToSlug('Sin perdón')).toEqual('sin-perdon');
         expect(stringToSlug('Mañana')).toEqual('manana');
-        expect(stringToSlug('It\'s always sunny in philadelphia')).toEqual('its-always-sunny-in-philadelphia');
-        expect(stringToSlug('It\'s always sunny in philadelphia   ')).toEqual('its-always-sunny-in-philadelphia');
+        expect(stringToSlug("It's always sunny in philadelphia")).toEqual('its-always-sunny-in-philadelphia');
+        expect(stringToSlug("It's always sunny in philadelphia   ")).toEqual('its-always-sunny-in-philadelphia');
         expect(stringToSlug('already-a-slug')).toEqual('already-a-slug');
         expect(stringToSlug('Not clean: [/\\?!] end')).toEqual('not-clean-end');
         expect(stringToSlug('土豆')).toEqual('土豆');
@@ -55,5 +54,4 @@ describe('String helpers', () => {
             'Your external self will seldom surpa [...]',
         );
     });
-
 });

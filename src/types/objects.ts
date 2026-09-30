@@ -12,7 +12,6 @@ export type DeepRequired<T> = T extends object
       }
     : T;
 
-/* eslint-disable max-len */
 export type DeepKeyOf<T, TDepth extends number = 5, TRequired extends DeepRequired<T> = DeepRequired<T>> = NonNullable<
     TRequired extends object
         ? {
@@ -35,7 +34,9 @@ export type DeepKeyOf<T, TDepth extends number = 5, TRequired extends DeepRequir
                                         : TRequired[K][KK] extends object
                                           ?
                                                 | {
-                                                      [KKK in keyof TRequired[K][KK]]: TRequired[K][KK][KKK] extends Function
+                                                      [
+                                                          KKK in keyof TRequired[K][KK]
+                                                      ]: TRequired[K][KK][KKK] extends Function
                                                           ? never
                                                           : `${Exclude<K, symbol>}.${Exclude<KK, symbol>}.${Exclude<KKK, symbol>}`;
                                                   }[keyof TRequired[K][KK]]
@@ -47,7 +48,6 @@ export type DeepKeyOf<T, TDepth extends number = 5, TRequired extends DeepRequir
           }[keyof TRequired]
         : never
 >;
-/* eslint-enable max-len */
 
 export type DeepValue<T extends object, K> = K extends `${infer Key}.${infer Rest}`
     ? Key extends keyof T

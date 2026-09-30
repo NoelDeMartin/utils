@@ -6,7 +6,6 @@ const OBJECT_PROTOTYPE = Object.getPrototypeOf(Object);
 
 function createMixedClass(baseClass: Constructor, mixinClasses: Constructor[]): Constructor {
     class MixedClass extends baseClass {
-
         public static __mixins = mixinClasses;
 
         constructor(...args: any[]) {
@@ -20,7 +19,6 @@ function createMixedClass(baseClass: Constructor, mixinClasses: Constructor[]): 
 
             return this;
         }
-    
     }
 
     applyMixins(MixedClass, mixinClasses);
@@ -52,7 +50,6 @@ export function applyMixins<Base extends Constructor>(baseClass: Base, mixinClas
     }
 }
 
-/* eslint-disable max-len */
 export type Cr<T> = Constructor<T>;
 
 export function mixed<A>(mixins: [Cr<A>]): Cr<A>;
@@ -64,21 +61,20 @@ export function mixed<Base, A, B>(baseClass: Base, mixins: [Cr<A>, Cr<B>]): Base
 export function mixed<Base, A, B, C>(baseClass: Base, mixins: [Cr<A>, Cr<B>, Cr<C>]): Base & Cr<A & B & C>;
 export function mixed<Base, A, B, C, D>(
     baseClass: Base,
-    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>]
+    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>],
 ): Base & Cr<A & B & C & D>;
 export function mixed<Base, A, B, C, D, E>(
     baseClass: Base,
-    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>]
+    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>],
 ): Base & Cr<A & B & C & D & E>;
 export function mixed<Base, A, B, C, D, E, F>(
     baseClass: Base,
-    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>, Cr<F>]
+    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>, Cr<F>],
 ): Base & Cr<A & B & C & D & E & F>;
 export function mixed<Base, A, B, C, D, E, F, G>(
     baseClass: Base,
-    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>, Cr<F>, Cr<G>]
+    mixins: [Cr<A>, Cr<B>, Cr<C>, Cr<D>, Cr<E>, Cr<F>, Cr<G>],
 ): Base & Cr<A & B & C & D & E & F & G>;
-/* eslint-enable max-len */
 
 export function mixed(
     baseClassOrMixinClasses: Constructor | Constructor[],
@@ -90,13 +86,14 @@ export function mixed(
     return createMixedClass(baseClass, mixinClasses);
 }
 
+// oxlint-disable-next-line typescript/no-wrapper-object-types
 export function mixedWithoutTypes(mixins: Constructor[]): Object;
 export function mixedWithoutTypes<Base>(baseClass: Base, mixins: Constructor[]): Base;
 export function mixedWithoutTypes(...args: any[]): unknown {
     return (mixed as Function)(...args);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+// oxlint-disable-next-line typescript/no-explicit-any, typescript/explicit-module-boundary-types
 export function usesMixin(target: any, mixin: Constructor): boolean {
     return (target?.__mixins ?? target?.__proto__?.constructor?.__mixins ?? []).includes(mixin);
 }

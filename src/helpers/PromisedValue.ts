@@ -5,7 +5,6 @@ export type PromisedValueRejectListener = (reason?: Error) => unknown;
 export type PromisedValueResetListener = () => unknown;
 
 export default class PromisedValue<T = unknown> implements Promise<T> {
-
     public static from<T>(promise: Promise<T>): PromisedValue<T> {
         const promisedValue = new PromisedValue<T>();
 
@@ -37,15 +36,16 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
         return '_value' in this;
     }
 
+    // oxlint-disable-next-line unicorn/no-thenable
     public then<TResult1 = T, TResult2 = never>(
-        onFulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
-        onRejected?: ((reason: Error) => TResult2 | PromiseLike<TResult2>) | undefined | null,
+        onFulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null,
+        onRejected?: ((reason: Error) => TResult2 | PromiseLike<TResult2>) | null,
     ): Promise<TResult1 | TResult2> {
         return this.promise.then(onFulfilled, onRejected);
     }
 
     public catch<TResult = never>(
-        onRejected?: ((reason: Error) => TResult | PromiseLike<TResult>) | undefined | null,
+        onRejected?: ((reason: Error) => TResult | PromiseLike<TResult>) | null,
     ): Promise<T | TResult> {
         return this.promise.catch(onRejected);
     }
@@ -106,5 +106,4 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
             this._reject = reject;
         });
     }
-
 }

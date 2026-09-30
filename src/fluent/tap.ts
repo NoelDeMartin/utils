@@ -28,12 +28,12 @@ function proxyTap<Target extends object>(target: Target): Tapped<Target> {
     return proxy;
 }
 
-/* eslint-disable max-len */
 export function tap<Target extends object>(target: Target): Tapped<Target>;
 export function tap<Target>(target: Target, callback: (target: Target) => Promise<unknown>): Promise<Target>;
 export function tap<Target>(target: Target, callback: (target: Target) => unknown): Target;
 export function tap<Target extends object>(
     target: Target,
+    // oxlint-disable-next-line typescript/no-redundant-type-constituents
     callback?: (target: Target) => unknown | Promise<unknown>,
 ): Target | Tapped<Target> | Promise<Target> {
     if (!callback) return proxyTap(target);
@@ -42,4 +42,3 @@ export function tap<Target extends object>(
 
     return isPromiseLike(result) ? (result.then(() => target) as unknown as Promise<Target>) : target;
 }
-/* eslint-enable max-len */

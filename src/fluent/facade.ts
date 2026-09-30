@@ -21,7 +21,7 @@ export function facade<TInstance extends object>(
     function newInstance(): TInstance {
         try {
             return (defaultClassOrFactory as () => TInstance)();
-        } catch (error) {
+        } catch {
             return new (defaultClassOrFactory as Constructor<TInstance>)();
         }
     }

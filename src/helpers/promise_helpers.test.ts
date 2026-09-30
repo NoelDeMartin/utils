@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
-
 import { range } from '@noeldemartin/utils/helpers/array_helpers';
+import { describe, expect, it } from 'vite-plus/test';
 
 import { asyncFirst } from './promise_helpers';
 
 describe('Promise helpers', () => {
-
     it('gets first async result', async () => {
         // Arrange
         let calls = 0;
@@ -18,5 +16,4 @@ describe('Promise helpers', () => {
         expect(calls).toEqual(4);
         expect(result).toEqual(3);
     });
-
 });

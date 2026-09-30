@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 import { compare } from './logical_helpers';
 
 describe('Logical helpers', () => {
-
     it('compares numbers', () => {
         expect(compare(5, 1)).toBe(1);
         expect(compare(1, 5)).toBe(-1);
@@ -35,5 +34,4 @@ describe('Logical helpers', () => {
         expect(compare(null, null)).toBe(0);
         expect(compare(undefined, undefined)).toBe(0);
     });
-
 });

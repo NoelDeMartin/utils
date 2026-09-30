@@ -8,7 +8,6 @@ export interface JSErrorOptions {
 }
 
 export default class JSError extends RuntimeErrorClass {
-
     declare public name: string;
     declare public message: string;
     declare public stack?: string;
@@ -21,5 +20,4 @@ export default class JSError extends RuntimeErrorClass {
         this.name = new.target.name === 'JSError' ? 'Error' : new.target.name;
         Object.setPrototypeOf(this, new.target.prototype);
     }
-
 }

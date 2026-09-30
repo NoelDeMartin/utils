@@ -76,7 +76,6 @@ export type FluentArrayInstance<FluentClass, Item> = FluentInstance<
 export type FluentArray<T> = FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
 class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
-
     public static create<T>(value: T[] = []): FluentArrayInstance<FluentArrayDefinition<T>, T> {
         const { prototype } = this as unknown as {
             prototype: { create(value: T[]): FluentArrayInstance<FluentArrayDefinition<T>, T> };
@@ -90,18 +89,18 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
     }
 
     declare public flatMap: <T>(
-        callback: (item: Item, index: number) => T[]
+        callback: (item: Item, index: number) => T[],
     ) => FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
     declare public map: <T>(
-        callback: (item: Item, index: number) => T
+        callback: (item: Item, index: number) => T,
     ) => FluentArrayInstance<FluentArrayDefinition<T>, T>;
 
     declare public project: <K extends keyof Item>(key: K) => Item[K][];
 
     declare public where: <K extends keyof Item>(
         key: K,
-        value?: Item[K]
+        value?: Item[K],
     ) => FluentArrayInstance<FluentArrayDefinition<Item>, Item>;
 
     public get(index: number): Item | undefined {
@@ -115,7 +114,6 @@ class FluentArrayDefinition<Item> extends FluentObjectDefinition<Item[]> {
     protected isPrimitive(value: unknown): value is Item[] {
         return Array.isArray(value);
     }
-
 }
 
 interface FluentArrayDefinition<Item> {

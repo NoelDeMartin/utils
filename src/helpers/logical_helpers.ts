@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 function normalizeCompareValues<T>(a: T, b: T): [any, any] {
     if ((a === undefined || a === null) && (b === null || b === undefined)) {
         return [a === null ? 1 : 0, b === null ? 1 : 0];

@@ -1,15 +1,13 @@
-import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
-import { after } from '@noeldemartin/utils/helpers/time_helpers';
 import { noop } from '@noeldemartin/utils/fluent/noop';
+import { after } from '@noeldemartin/utils/helpers/time_helpers';
 import type { Equals } from '@noeldemartin/utils/types';
+import { describe, expect, it } from 'vite-plus/test';
 
 import { tap } from './tap';
 
 describe('tap helper', () => {
-
     it('taps using callbacks', () => {
         expect(tap({ foo: 'foo' }, (o) => (o.foo += 'bar')).foo).toBe('foobar');
     });
@@ -31,13 +29,11 @@ describe('tap helper', () => {
     it('taps using proxy', () => {
         // Arrange
         class Computer {
-
             public theMeaningOfLife = 42;
 
             public getTheMeaningOfLife(): number {
                 return this.theMeaningOfLife;
             }
-        
         }
 
         const computer = new Computer();
@@ -49,7 +45,6 @@ describe('tap helper', () => {
         expect(tappedComputer.theMeaningOfLife).toBe(42);
         expect(tappedComputer.getTheMeaningOfLife()).toBe(tappedComputer);
     });
-
 });
 
 const numberResult = tap(42, noop);
@@ -57,7 +52,6 @@ const stringResult = tap('42', noop);
 const promisedNumberResult = tap(42, () => Promise.resolve());
 
 describe('tap helper types', () => {
-
     it(
         'has correct types',
         tt<
@@ -67,5 +61,4 @@ describe('tap helper types', () => {
             | true
         >(),
     );
-
 });

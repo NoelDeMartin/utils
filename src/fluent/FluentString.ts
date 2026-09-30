@@ -28,7 +28,6 @@ export type FluentStringInstance<FluentClass> = FluentInstance<
 export type FluentString = FluentStringInstance<FluentStringDefinition>;
 
 class FluentStringDefinition extends FluentObjectDefinition<string> {
-
     public static create<T>(this: T, value: string = ''): FluentStringInstance<ClassInstance<T>> {
         const { prototype } = this as unknown as {
             prototype: { create(value: string): FluentStringInstance<ClassInstance<T>> };
@@ -44,7 +43,6 @@ class FluentStringDefinition extends FluentObjectDefinition<string> {
     protected isPrimitive(value: unknown): value is string {
         return typeof value === 'string';
     }
-
 }
 
 addHelperMethodsToPrototype(FluentStringDefinition, fluentStringHelpers);

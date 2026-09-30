@@ -1,26 +1,22 @@
-import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import type { Equals } from '@noeldemartin/utils/types';
+import { describe, expect, it } from 'vite-plus/test';
 
-import { arr, fluent, pull, str } from './index';
 import FluentArrayDefinition from './FluentArray';
-import FluentStringDefinition from './FluentString';
 import type { FluentArray } from './FluentArray';
+import FluentStringDefinition from './FluentString';
 import type { FluentString } from './FluentString';
+import { arr, fluent, pull, str } from './index';
 
 describe('Fluency', () => {
-
     it('creates fluent objects', () => {
         expect(fluent([42])).toBeInstanceOf(FluentArrayDefinition);
         expect(fluent('foobar')).toBeInstanceOf(FluentStringDefinition);
     });
-
 });
 
 describe('Fluency types', () => {
-
     it('has correct types', () => {
         const fluentStringArray = arr(['foo', 'bar']);
         const fluentNumbersArray = arr([42]);
@@ -35,5 +31,4 @@ describe('Fluency types', () => {
             | true
         >();
     });
-
 });

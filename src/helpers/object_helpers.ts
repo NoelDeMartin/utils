@@ -1,3 +1,5 @@
+import type { DeepKeyOf, DeepValue } from '@noeldemartin/utils/types';
+import type { Constructor } from '@noeldemartin/utils/types/classes';
 import type {
     Closure,
     ClosureArgs,
@@ -8,15 +10,13 @@ import type {
     TypeGuard,
     VoidClosure,
 } from '@noeldemartin/utils/types/helpers';
-import type { Constructor } from '@noeldemartin/utils/types/classes';
-import type { DeepKeyOf, DeepValue } from '@noeldemartin/utils/types';
 
 export type Obj = Record<string, unknown>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 export type GetObjectKeys<T> = T extends Record<infer Key, any> ? Key : keyof T;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 export type GetObjectValues<T> = T extends Record<any, infer Value> ? Value : never;
 
 export type ValueWithout<TValue, TExclude> = TValue extends TExclude ? never : TValue;
@@ -99,7 +99,7 @@ export function deepAssign<T extends object>(target: T, ...sources: T[]): T {
 }
 
 export function deepGet<T extends object, K extends DeepKeyOf<T>>(object: T, key: K): DeepValue<T, K> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+    // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-assignment
     let value = object as any;
     const objectKeys = key.split('.');
 
@@ -121,7 +121,7 @@ export function deepGet<T extends object, K extends DeepKeyOf<T>>(object: T, key
 }
 
 export function deepSet<T extends object, K extends DeepKeyOf<T>>(object: T, key: K, value: DeepValue<T, K>): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+    // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-assignment
     let wrapper = object as any;
     const objectKeys = key.split('.');
     const lastKey = objectKeys.pop();
@@ -138,7 +138,7 @@ export function deepSet<T extends object, K extends DeepKeyOf<T>>(object: T, key
         wrapper = wrapper[deepKey];
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    // oxlint-disable-next-line typescript/no-unsafe-member-access
     wrapper[lastKey] = value;
 }
 
@@ -201,6 +201,7 @@ export function isPlainObject(value: unknown): value is object {
     return isObject(value) && Object.getPrototypeOf(value) === Object.prototype;
 }
 
+// oxlint-disable-next-line typescript/no-wrapper-object-types
 export function isString(value: unknown): value is string | String {
     return typeof value === 'string' || value instanceof String;
 }
@@ -210,7 +211,7 @@ export function isNullable(value: unknown): value is undefined | null {
 }
 
 export function isPromiseLike(value: unknown): value is PromiseLike<unknown> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     return (isObject(value) || typeof value === 'function') && typeof (value as any)?.then === 'function';
 }
 
@@ -251,21 +252,21 @@ export function objectDeepClone<T extends Obj>(object: T): T {
 }
 
 export const objectEntries = Object.entries.bind(Object) as <T extends Parameters<typeof Object.entries>[0]>(
-    obj: T
+    obj: T,
 ) => [GetObjectKeys<T>, GetObjectValues<T>][];
 
 export const objectFromEntries = Object.fromEntries.bind(Object) as <K extends string | number | symbol, V>(
-    value: Iterable<readonly [K, V]>
+    value: Iterable<readonly [K, V]>,
 ) => Record<K, V>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 export const objectValues = Object.values.bind(Object) as <T extends { [k: string]: any } | ArrayLike<any>>(
-    object: T
+    object: T,
 ) => GetObjectValues<T>[];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 export const objectKeys = Object.keys.bind(Object) as <T extends { [k: string]: any } | ArrayLike<any>>(
-    object: T
+    object: T,
 ) => GetObjectKeys<T>[];
 
 export function objectHasOwnProperty(object: Obj, property: string): boolean {
@@ -312,20 +313,18 @@ export function objectPull<T extends Obj, K extends keyof T>(obj: T, key: K): T[
     return value;
 }
 
-/* eslint-disable max-len */
 export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, key: TKey): Omit<TObj, TKey>;
 export function objectWithout<TObj extends object, TKey extends keyof TObj>(obj: TObj, key: TKey): Omit<TObj, TKey>;
 export function objectWithout<TObj extends Obj, TKey extends keyof TObj>(obj: TObj, keys: TKey[]): Omit<TObj, TKey>;
 export function objectWithout<TObj extends object, TKey extends keyof TObj>(obj: TObj, keys: TKey[]): Omit<TObj, TKey>;
 export function objectWithout<TObj extends Obj, TExclude>(
     obj: TObj,
-    exclude: TypeGuard<TExclude>
+    exclude: TypeGuard<TExclude>,
 ): ObjectWithout<TObj, TExclude>;
 export function objectWithout<TObj extends object, TExclude>(
     obj: TObj,
-    exclude: TypeGuard<TExclude>
+    exclude: TypeGuard<TExclude>,
 ): ObjectWithout<TObj, TExclude>;
-/* eslint-enable max-len */
 
 export function objectWithout(obj: Obj, keysOrExclude: string | string[] | TypeGuard): unknown {
     if (typeof keysOrExclude === 'function') {

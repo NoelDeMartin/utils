@@ -1,8 +1,8 @@
 export const __brand = Symbol('__brand');
 export type ClassInstance<Class> = Class extends { new (...args: any[]): infer T } ? T : never;
 export type Closure<Args extends ClosureArgs = ClosureArgs, Result = unknown> = (...args: Args) => Result;
-export type ClosureArgs = any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
-export type ClosureResult = any; // eslint-disable-line @typescript-eslint/no-explicit-any
+export type ClosureArgs = any[]; // oxlint-disable-line typescript/no-explicit-any
+export type ClosureResult = any; // oxlint-disable-line typescript/no-explicit-any
 export type Branded<T, Brand> = T & { [__brand]: Brand };
 export type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? true : false;
 export type Falsy = '' | null | undefined | false | 0;
@@ -32,7 +32,7 @@ export type IsAny<T> = { __: 'never' } extends T ? true : false;
 export type IsPlainObject<T> = T extends object
     ? T extends Function
         ? false
-        : T extends any[] // eslint-disable-line @typescript-eslint/no-explicit-any
+        : T extends any[] // oxlint-disable-line typescript/no-explicit-any
           ? false
           : T extends Date
             ? false
@@ -42,4 +42,4 @@ export type IsPlainObject<T> = T extends object
     : false;
 
 // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/3573
-export type Use<T> = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
+export type Use<T> = {}; // oxlint-disable-line typescript/no-unused-vars

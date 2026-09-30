@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 import { asyncMemo, memo, once, setAsyncMemo } from './caching_helpers';
 
 describe('Cache helpers', () => {
-
     it('caches results', () => {
         // Arrange
         let calls = 0;
@@ -80,5 +79,4 @@ describe('Cache helpers', () => {
         // Assert.
         expect(count).toEqual(1);
     });
-
 });

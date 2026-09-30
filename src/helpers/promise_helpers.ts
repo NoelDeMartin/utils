@@ -22,16 +22,16 @@ export function isPromise(p: unknown): p is Promise<unknown> {
 }
 
 export function silenced<Args extends ClosureArgs, Result>(
-    operation: Closure<Args, Promise<Result>>
+    operation: Closure<Args, Promise<Result>>,
 ): Closure<Args, Promise<Result | null>>;
 export function silenced<Args extends ClosureArgs, Result, Default>(
     operation: Closure<Args, Promise<Result>>,
-    defaultValue: Default
+    defaultValue: Default,
 ): Closure<Args, Promise<Result | Default>>;
 export function silenced<Result>(promise: Promise<Result>): Promise<Result | null>;
 export function silenced<Args extends ClosureArgs, Result, Default>(
     operation: Closure<Args, Promise<Result>>,
-    defaultValue: Default
+    defaultValue: Default,
 ): Closure<Args, Promise<Result | Default>>;
 export function silenced<Args extends ClosureArgs, Result, Default>(
     operationOrPromise: Closure<Args, Promise<Result>> | Promise<Result>,
@@ -40,10 +40,10 @@ export function silenced<Args extends ClosureArgs, Result, Default>(
     return typeof operationOrPromise !== 'function'
         ? operationOrPromise.catch(() => defaultValue)
         : async (...args: Args) => {
-            try {
-                return await operationOrPromise(...args);
-            } catch (error) {
-                return defaultValue ?? null;
-            }
-        };
+              try {
+                  return await operationOrPromise(...args);
+              } catch {
+                  return defaultValue ?? null;
+              }
+          };
 }

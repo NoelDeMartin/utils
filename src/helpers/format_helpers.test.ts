@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 import { formatCodeBlock } from './format_helpers';
 
 describe('Format helpers', () => {
-
     it('Formats code blocks', () => {
         // Arrange
         const raw = `
@@ -16,7 +15,7 @@ describe('Format helpers', () => {
 
         `;
         const formatted = [
-            'const foo = \'bar\';', //
+            "const foo = 'bar';", //
             '', //
             'if (foo) {', //
             '    doSomething();', //
@@ -29,5 +28,4 @@ describe('Format helpers', () => {
         // Assert
         expect(actual).toEqual(formatted);
     });
-
 });

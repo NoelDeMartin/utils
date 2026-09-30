@@ -1,9 +1,8 @@
-import { describe, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import { arraySorted } from '@noeldemartin/utils/helpers';
 import type { Equals } from '@noeldemartin/utils/types';
+import { describe, it } from 'vite-plus/test';
 
 import type { DeepKeyOf, DeepValue } from './objects';
 
@@ -33,7 +32,6 @@ const key = 'author' as DeepKeyOf<Post>;
 const sortedFields = arraySorted(posts, key);
 
 describe('Object types', () => {
-
     it(
         'Has correct types',
         tt<
@@ -77,5 +75,4 @@ describe('Object types', () => {
             | true
         >(),
     );
-
 });

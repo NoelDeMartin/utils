@@ -1,53 +1,39 @@
 {
     "name": "@noeldemartin/utils",
     "version": "0.7.3",
+    "license": "MIT",
+    "author": "Noel De Martin",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NoelDeMartin/utils.git"
+    },
+    "files": [
+        "src",
+        "dist"
+    ],
     "type": "module",
     "sideEffects": false,
     "exports": {
         "types": "./dist/noeldemartin-utils.d.ts",
         "default": "./dist/noeldemartin-utils.js"
     },
-    "files": [
-        "src",
-        "dist"
-    ],
-    "license": "MIT",
-    "author": "Noel De Martin",
-    "repository": "github:NoelDeMartin/utils",
     "scripts": {
-        "build": "vite build",
-        "lint": "noeldemartin-lint src",
-        "test": "vitest --run",
-        "test:ci": "vitest --run --reporter verbose",
-        "verify": "noeldemartin-verify"
+        "build": "vp pack",
+        "test": "vp test"
     },
-    "packageManager": "pnpm@10.20.0",
     "dependencies": {
         "idb": "^8.0.2"
     },
     "devDependencies": {
-        "@arethetypeswrong/cli": "^0.17.4",
-        "@noeldemartin/eslint-config-typescript": "^0.1.2",
-        "@noeldemartin/eslint-plugin": "^0.1.0",
+        "@arethetypeswrong/core": "^0.18.5",
         "@noeldemartin/scripts": "next",
         "@noeldemartin/testing": "next",
-        "@tsconfig/node22": "^22.0.0",
-        "@types/node": "^22.13.10",
-        "@typescript-eslint/eslint-plugin": "^5.6.0",
-        "eslint": "^8.57.1",
-        "prettier-eslint-cli": "^8.0.1",
-        "publint": "^0.3.12",
-        "typescript": "^5.8.2",
-        "vite": "^6.2.2",
-        "vite-plugin-dts": "^4.5.3",
-        "vitest": "^3.0.9"
+        "@tsconfig/node26": "^26.0.1",
+        "@types/node": "^26.6.3",
+        "publint": "^0.3.24",
+        "typescript": "~6.0.2",
+        "vite": "catalog:",
+        "vite-plus": "catalog:"
     },
-    "eslintConfig": {
-        "extends": [
-            "@noeldemartin/eslint-config-typescript"
-        ]
-    },
-    "prettier": {
-        "printWidth": 120
-    }
+    "packageManager": "pnpm@11.5.2"
 }

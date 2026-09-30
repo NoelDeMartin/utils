@@ -1,6 +1,6 @@
-import PromisedValue from '@noeldemartin/utils/helpers/PromisedValue';
 import { arrayFrom } from '@noeldemartin/utils/helpers/array_helpers';
 import { fail } from '@noeldemartin/utils/helpers/error_helpers';
+import PromisedValue from '@noeldemartin/utils/helpers/PromisedValue';
 import type { Closure, ClosureArgs } from '@noeldemartin/utils/types';
 
 const cache: Record<string, unknown> = {};
@@ -22,7 +22,7 @@ export function memo<T>(key: string, operation: () => T): T {
 export function once<P extends ClosureArgs, R>(operation: Closure<P, R>): Closure<P, R> {
     const memory: { result?: R } = {};
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     return (...params) => ('result' in memory ? memory.result : ((memory.result = operation(...params)) as any));
 }
 

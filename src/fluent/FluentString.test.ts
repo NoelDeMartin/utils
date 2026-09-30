@@ -1,14 +1,12 @@
-import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import type { Equals } from '@noeldemartin/utils/types';
+import { describe, expect, it } from 'vite-plus/test';
 
 import FluentStringDefinition from './FluentString';
 import type { FluentString, FluentStringInstance } from './FluentString';
 
 describe('FluentString', () => {
-
     it('delegates to helper methods', () => {
         const fluentString = FluentStringDefinition.create('foo bar');
 
@@ -42,12 +40,10 @@ describe('FluentString', () => {
         expect(superFluentString.toUpperCase().toString()).toBe('nope');
         expect(superFluentString.powerUp().toString()).toBe('super-foobar');
     });
-
 });
 
 // TODO rewrite type assertions just with type declarations
 class SuperFluentString extends FluentStringDefinition {
-
     public toUpperCase(): this {
         // TODO this should be able to call super.toUpperCase()
 
@@ -57,14 +53,12 @@ class SuperFluentString extends FluentStringDefinition {
     public powerUp(): this {
         return this.create('super-' + this.value);
     }
-
 }
 
 const fluentString = FluentStringDefinition.create();
 const superFluentString = SuperFluentString.create();
 
 describe('FluentString types', () => {
-
     it(
         'has correct types',
         tt<
@@ -74,5 +68,4 @@ describe('FluentString types', () => {
             | true
         >(),
     );
-
 });

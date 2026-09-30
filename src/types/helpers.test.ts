@@ -1,8 +1,7 @@
-import { describe, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import type { Equals } from '@noeldemartin/utils/types';
+import { describe, it } from 'vite-plus/test';
 
 import type { KeyOf, NullableOptional, NullablePartial } from './helpers';
 
@@ -13,14 +12,11 @@ interface User {
 }
 
 describe('Type helpers', () => {
-
     it(
         'has correct types',
         tt<
             | Expect<Equals<KeyOf<User, string | number>, 'id' | 'name'>>
             | Expect<Equals<NullablePartial<{ foo: string }>, { foo?: string | null | undefined }>>
-
-            // eslint-disable-next-line max-len
             | Expect<
                   Equals<
                       NullableOptional<{ foo: string; bar?: string }>,
@@ -30,5 +26,4 @@ describe('Type helpers', () => {
             | true
         >(),
     );
-
 });

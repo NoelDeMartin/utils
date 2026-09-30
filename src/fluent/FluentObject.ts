@@ -45,7 +45,7 @@ export function addHelperMethodsToPrototype(
     const prototype = fluentClass.prototype as Record<string, Closure>;
 
     for (const [name, method] of Object.entries(helpers)) {
-        prototype[name] = function(...args: any[]) {
+        prototype[name] = function (...args: any[]) {
             const value = method(this.value, ...args);
 
             return this.chain?.(value);
@@ -73,7 +73,7 @@ export function addPrimitiveMethodsToPrototype(
             continue;
         }
 
-        prototype[name] = function(...args: any[]) {
+        prototype[name] = function (...args: any[]) {
             const value = descriptor.value.call(this.value, ...args);
 
             return this.chain?.(value);
@@ -82,7 +82,6 @@ export function addPrimitiveMethodsToPrototype(
 }
 
 export default abstract class FluentObjectDefinition<Primitive> {
-
     public static isPrimitive(value: unknown): boolean {
         return this.prototype.isPrimitive(value);
     }
@@ -100,5 +99,4 @@ export default abstract class FluentObjectDefinition<Primitive> {
     protected chain(value: unknown): unknown {
         return this.isPrimitive(value) ? this.create(value) : value;
     }
-
 }

@@ -1,15 +1,12 @@
-import { describe, expect, it } from 'vitest';
-
 import { when } from '@noeldemartin/utils/fluent/when';
+import { describe, expect, it } from 'vite-plus/test';
 
 class NumberStore {
-
     public value: null | number = null;
 
     public setValue(value: number) {
         this.value = value;
     }
-
 }
 
 function isNumberStore(store: unknown): store is NumberStore {
@@ -17,7 +14,6 @@ function isNumberStore(store: unknown): store is NumberStore {
 }
 
 describe('When helper', () => {
-
     it('works with truthy boolean', () => {
         const store = new NumberStore();
 
@@ -60,5 +56,4 @@ describe('When helper', () => {
 
         expect(store).toEqual({});
     });
-
 });

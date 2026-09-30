@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest';
 import { tt } from '@noeldemartin/testing';
 import type { Expect } from '@noeldemartin/testing';
-
 import { toString } from '@noeldemartin/utils/helpers/object_helpers';
 import type { DeepKeyOf, Equals } from '@noeldemartin/utils/types';
+import { describe, expect, it } from 'vite-plus/test';
 
 import type { ArraySortDirection, ArraySortFieldDirection } from './array_helpers';
 import {
@@ -27,7 +26,6 @@ import {
 } from './array_helpers';
 
 describe('Array helpers', () => {
-
     it('compares arrays', () => {
         expect(arrayEquals(['one'], ['one'])).toBe(true);
         expect(arrayEquals(['one'], ['one', 'two'])).toBe(false);
@@ -237,13 +235,11 @@ describe('Array helpers', () => {
     it('projects properties', () => {
         // Arrange.
         class User {
-
             constructor(public role: string) {}
 
             public isAdmin(): boolean {
                 return this.role === 'admin';
             }
-        
         }
 
         const admin = new User('admin');
@@ -256,13 +252,11 @@ describe('Array helpers', () => {
     it('filters by methods and values', () => {
         // Arrange.
         class User {
-
             constructor(public role: string) {}
 
             public isAdmin(): boolean {
                 return this.role === 'admin';
             }
-        
         }
 
         const admin = new User('admin');
@@ -320,9 +314,9 @@ describe('Array helpers', () => {
             2: 'Bob',
         });
     });
-
 });
 
+// oxlint-disable-next-line no-unassigned-vars
 let enabled: boolean | undefined;
 const sorting: { field: 'id'; direction: ArraySortDirection }[] = [];
 const filteredItems = arrayFilter(['foo' as string, null, 'bar', undefined]);
@@ -341,7 +335,6 @@ const sortedItemsReadonly = arraySorted(
 );
 
 describe('Array helpers types', () => {
-
     it(
         'has correct types',
         tt<
@@ -359,5 +352,4 @@ describe('Array helpers types', () => {
             | true
         >(),
     );
-
 });

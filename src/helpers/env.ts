@@ -41,7 +41,7 @@ export function getEnv(): string | null {
 
     try {
         return __AEROGEL_ENV__ ?? null;
-    } catch (error) {
+    } catch {
         return null;
     }
 }

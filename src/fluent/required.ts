@@ -1,13 +1,12 @@
 import { fail } from '@noeldemartin/utils/helpers/error_helpers';
 
 class RequiredHandler<Target extends object> implements ProxyHandler<Target> {
-
     constructor(
         private errorMessage: string,
         private getValue: () => Target,
     ) {}
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     public get(_: Target, property: string | symbol, receiver: any): any {
         const obj = this.getValue() ?? fail<Target>(this.errorMessage);
         const value = Reflect.get(obj, property, receiver);
@@ -15,7 +14,7 @@ class RequiredHandler<Target extends object> implements ProxyHandler<Target> {
         return typeof value === 'function' ? value.bind(obj) : value;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     public set?(_: Target, property: string | symbol, value: any, receiver: any): boolean {
         const obj = this.getValue() ?? fail<Target>(this.errorMessage);
 
@@ -27,7 +26,6 @@ class RequiredHandler<Target extends object> implements ProxyHandler<Target> {
 
         return Object.getPrototypeOf(obj);
     }
-
 }
 
 export function required<T extends object | null | undefined>(getValue: () => T, errorMessage?: string): NonNullable<T>;
