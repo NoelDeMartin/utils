@@ -81,6 +81,10 @@ export default class MagicObject {
         Reflect.deleteProperty(this._proxy.target, property);
     }
 
+    protected __has(property: string): boolean {
+        return Reflect.has(this._proxy.target, property);
+    }
+
     protected createProxy(): MagicObjectProxy<this> {
         const Static = this.static();
 
@@ -102,6 +106,13 @@ export default class MagicObject {
                     target.__set(property, value);
 
                     return true;
+                },
+                has(target, property) {
+                    if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {
+                        return Reflect.has(target, property);
+                    }
+
+                    return target.__has(property);
                 },
                 deleteProperty(target, property) {
                     if (typeof property !== 'string' || property in target || Static.isReservedProperty(property)) {

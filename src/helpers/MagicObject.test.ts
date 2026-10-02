@@ -55,6 +55,10 @@ class Stub extends MagicObject {
     protected __delete(property: string): void {
         delete this.attributes[property];
     }
+
+    protected __has(property: string): boolean {
+        return property in this.attributes;
+    }
 }
 
 describe('MagicObject', () => {
@@ -84,6 +88,15 @@ describe('MagicObject', () => {
         // Assert
         expect(object.lorem).toBeUndefined();
         expect(object.getAttributes()).toEqual({});
+    });
+
+    it('Intercepts has', () => {
+        // Arrange
+        const object = new Stub({ lorem: 'ipsum' });
+
+        // Assert
+        expect('lorem' in object).toBe(true);
+        expect('foo' in object).toBe(false);
     });
 
     it('Runs methods in constructor', () => {
