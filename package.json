@@ -28,6 +28,7 @@
         "@arethetypeswrong/core": "^0.18.5",
         "@noeldemartin/scripts": "next",
         "@noeldemartin/testing": "next",
+        "@noeldemartin/vite-plus-config": "next",
         "@tsconfig/node26": "^26.0.1",
         "@types/node": "^26.6.3",
         "publint": "^0.3.24",
@@ -35,5 +36,5 @@
         "vite": "catalog:",
         "vite-plus": "catalog:"
     },
-    "packageManager": "pnpm@11.5.2"
+    "packageManager": "pnpm@12.8.1"
 }
