@@ -14,8 +14,8 @@
     "type": "module",
     "sideEffects": false,
     "exports": {
-        "types": "./dist/noeldemartin-utils.d.ts",
-        "default": "./dist/noeldemartin-utils.js"
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
     },
     "scripts": {
         "build": "vp pack",
