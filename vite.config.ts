@@ -1,16 +1,12 @@
 import { URL, fileURLToPath } from 'node:url';
 
-import { fmt, lint } from '@noeldemartin/vite-plus-config';
+import { fmt, lint, pack } from '@noeldemartin/vite-plus-config';
 import { defineConfig } from 'vite-plus';
 
 export default defineConfig({
     pack: {
+        ...pack,
         entry: { 'noeldemartin-utils': 'src/index.ts' },
-        sourcemap: true,
-        dts: true,
-        fixedExtension: false,
-        publint: true,
-        attw: { profile: 'esm-only' },
     },
     resolve: {
         alias: {
