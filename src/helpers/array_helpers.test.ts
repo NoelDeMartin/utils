@@ -92,6 +92,8 @@ describe('Array helpers', () => {
         expect(arraySorted([1, 3, 2])).toEqual([1, 2, 3]);
         expect(arraySorted([1, 3, 2], 'asc')).toEqual([1, 2, 3]);
         expect(arraySorted([1, 3, 2], 'desc')).toEqual([3, 2, 1]);
+        expect(arraySorted([10, 2, 1])).toEqual([1, 2, 10]);
+        expect(arraySorted([10, 2, 1], 'asc')).toEqual([1, 2, 10]);
     });
 
     it('sorts items by field', () => {
@@ -133,6 +135,28 @@ describe('Array helpers', () => {
         expect(arraySorted(items, 'completed').map((item) => item.completed)).toEqual([undefined, true, true]);
         expect(arraySorted(items, 'completed', 'asc').map((item) => item.completed)).toEqual([undefined, true, true]);
         expect(arraySorted(items, 'completed', 'desc').map((item) => item.completed)).toEqual([true, true, undefined]);
+    });
+
+    it('sorts items by date field', () => {
+        const items = [
+            { name: 'Second', createdAt: new Date('2024-02-01') },
+            { name: 'Unknown', createdAt: undefined },
+            { name: 'Third', createdAt: new Date('2024-03-01') },
+            { name: 'First', createdAt: new Date('2024-01-01') },
+        ];
+
+        expect(arraySorted(items, 'createdAt').map(({ name }) => name)).toEqual([
+            'Unknown',
+            'First',
+            'Second',
+            'Third',
+        ]);
+        expect(arraySorted(items, 'createdAt', 'desc').map(({ name }) => name)).toEqual([
+            'Third',
+            'Second',
+            'First',
+            'Unknown',
+        ]);
     });
 
     it('sorts items by multiple fields', () => {

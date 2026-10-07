@@ -1,4 +1,4 @@
-import type { Closure, Falsy } from '@noeldemartin/utils/types/helpers';
+import type { Falsy } from '@noeldemartin/utils/types/helpers';
 import type { DeepKeyOf } from '@noeldemartin/utils/types/objects';
 
 import { compare } from './logical_helpers';
@@ -179,75 +179,70 @@ export function arraySorted<T>(
         | ArraySortFieldDirection<T>[],
     direction?: ArraySortDirection,
 ): T[] {
-    direction =
-        compareOrFieldOrDirection === 'asc' || compareOrFieldOrDirection === 'desc'
-            ? (compareOrFieldOrDirection as ArraySortDirection)
-            : direction;
+    switch (compareOrFieldOrDirection) {
+        case undefined:
+        case 'asc':
+            return items.slice(0).sort(compare);
+        case 'desc':
+            return items.slice(0).sort((a, b) => compare(b, a));
+    }
 
-    const fieldDefaults: Partial<Record<DeepKeyOf<T>, unknown>> = {};
-    const getDefaultValue = (sample: unknown): unknown => {
-        switch (typeof sample) {
-            case 'string':
-                return '';
-            case 'number':
+    if (typeof compareOrFieldOrDirection === 'function') {
+        return items.slice(0).sort(compareOrFieldOrDirection);
+    }
+
+    const fields =
+        typeof compareOrFieldOrDirection === 'string'
+            ? [[compareOrFieldOrDirection, direction ?? 'asc'] as const]
+            : compareOrFieldOrDirection.map((field) =>
+                  typeof field === 'string' ? ([field, direction ?? 'asc'] as const) : field,
+              );
+
+    return arraySortedByFields(items, fields);
+}
+
+function getSortDefaultValue(values: unknown[]): unknown {
+    const sample = values.find((value) => value !== undefined && value !== null);
+
+    switch (typeof sample) {
+        case 'string':
+            return '';
+        case 'number':
+            return Number.MIN_SAFE_INTEGER;
+        case 'boolean':
+            return false;
+        default:
+            if (sample instanceof Date) {
                 return Number.MIN_SAFE_INTEGER;
-            case 'boolean':
-                return false;
-            default:
-                return null;
-        }
-    };
-    const getFieldValue = (object: T, field: DeepKeyOf<T>): unknown => {
-        if (!(field in fieldDefaults)) {
-            const sampleValue = deepGet(
-                items.find(
-                    (item) =>
-                        deepGet(item as object, field as never) !== undefined &&
-                        deepGet(item as object, field as never) !== null,
-                ) as object,
-                field as never,
-            );
-
-            fieldDefaults[field] = getDefaultValue(sampleValue);
-        }
-
-        return deepGet(object as object, field as never) ?? fieldDefaults[field];
-    };
-    const compareByField = (field: DeepKeyOf<T>, fieldDirection: ArraySortDirection = 'asc') =>
-        fieldDirection === 'desc'
-            ? (a: T, b: T) => compare(getFieldValue(b, field), getFieldValue(a, field))
-            : (a: T, b: T) => compare(getFieldValue(a, field), getFieldValue(b, field));
-    const getComparisonFunction = (): Closure<[T, T], number> | undefined => {
-        switch (typeof compareOrFieldOrDirection) {
-            case 'function':
-                return compareOrFieldOrDirection;
-            case 'string':
-                if (compareOrFieldOrDirection === 'asc') return;
-
-                if (compareOrFieldOrDirection === 'desc') return (a, b) => compare(b, a);
-
-                return compareByField(compareOrFieldOrDirection, direction ?? 'asc');
-            case 'object': {
-                const comparisonFunctions = compareOrFieldOrDirection.map((field) => {
-                    return typeof field === 'string'
-                        ? compareByField(field, direction ?? 'asc')
-                        : compareByField(field[0], field[1]);
-                });
-
-                return (a: T, b: T) => {
-                    for (const comparisonFunction of comparisonFunctions) {
-                        const result = comparisonFunction(a, b);
-
-                        if (result !== 0) return result;
-                    }
-
-                    return 0;
-                };
             }
-        }
-    };
 
-    return items.slice(0).sort(getComparisonFunction());
+            return null;
+    }
+}
+
+function arraySortedByFields<T>(items: T[], fields: readonly ArraySortFieldDirection<T>[]): T[] {
+    const sortKeys = fields.map(([field, fieldDirection]) => {
+        const values = items.map((item) => deepGet(item as object, field as never) as unknown);
+        const defaultValue = getSortDefaultValue(values);
+
+        return {
+            values: values.map((value) => (value instanceof Date ? value.getTime() : (value ?? defaultValue))),
+            directionSign: fieldDirection === 'desc' ? -1 : 1,
+        };
+    });
+    const indexes = items.map((_, index) => index);
+
+    indexes.sort((a, b) => {
+        for (const { values, directionSign } of sortKeys) {
+            const result = compare(values[a], values[b]);
+
+            if (result !== 0) return result * directionSign;
+        }
+
+        return 0;
+    });
+
+    return indexes.map((index) => items[index] as T);
 }
 
 export function arraySwap(items: unknown[], firstIndex: number, secondIndex: number): void {
