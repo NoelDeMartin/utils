@@ -49,6 +49,35 @@ export function debounce<Args extends ClosureArgs>(
     return debouncedCallback;
 }
 
+export function throttle<Args extends ClosureArgs>(
+    callback: (...args: Args) => unknown,
+    delay: number = 100,
+): (...args: Args) => void {
+    let trailingArgs: Args | null = null;
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+
+    const throttledCallback = (...args: Args) => {
+        if (timeout) {
+            trailingArgs = args;
+
+            return;
+        }
+
+        callback(...args);
+
+        timeout = setTimeout(() => {
+            const nextArgs = trailingArgs;
+
+            trailingArgs = null;
+            timeout = null;
+
+            nextArgs && throttledCallback(...nextArgs);
+        }, delay);
+    };
+
+    return throttledCallback;
+}
+
 export async function forever(): Promise<void> {
     await new Promise(() => {
         // Nothing to do here.
