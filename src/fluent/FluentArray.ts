@@ -12,6 +12,7 @@ import {
     arrayRemove,
     arrayRemoveIndex,
     arrayReplace,
+    arrayShuffled,
     arraySorted,
     arrayUnique,
     arrayWhere,
@@ -37,6 +38,7 @@ const fluentArrayHelpers: FluentArrayHelpers<unknown> = {
     remove: arrayRemove,
     removeIndex: arrayRemoveIndex,
     replace: arrayReplace,
+    shuffled: arrayShuffled,
     sorted: arraySorted,
     unique: arrayUnique,
     where: arrayWhere,
@@ -59,6 +61,7 @@ export type FluentArrayHelpers<T> = {
     remove(items: T[], item: T): boolean;
     removeIndex(items: T[], index: number | string): boolean;
     replace(items: T[], original: T, replacement: T): boolean;
+    shuffled(items: T[]): T[];
     sorted(items: T[]): T[];
     unique(items: T[], extractKey?: (item: T) => string): T[];
     where(items: T[], filter: string, value?: unknown): T[];

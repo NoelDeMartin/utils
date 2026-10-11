@@ -163,6 +163,14 @@ export function arrayReversed<T>(items: T[]): T[] {
     return reversed;
 }
 
+export function arrayShuffled<T>(items: T[]): T[] {
+    const shuffled = items.slice(0);
+
+    shuffle(shuffled);
+
+    return shuffled;
+}
+
 export function arraySorted<T>(items: T[]): T[];
 export function arraySorted<T>(items: T[], direction: ArraySortDirection): T[];
 export function arraySorted<T>(items: T[], compareValues: ArraySortCompare<T>): T[];
@@ -352,4 +360,12 @@ export function reduceBy<TItem, TKey extends keyof TItem, TProjection>(
         },
         {} as Record<string, TProjection>,
     );
+}
+
+export function shuffle(items: unknown[]): void {
+    for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [items[i], items[j]] = [items[j], items[i]];
+    }
 }
