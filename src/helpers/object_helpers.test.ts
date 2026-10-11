@@ -7,6 +7,7 @@ import {
     deepGet,
     deepSet,
     getClassMethods,
+    invert,
     isSubclassOf,
     monkeyPatch,
     objectDeepClone,
@@ -174,6 +175,19 @@ describe('Object helpers types', () => {
         expectTypeOf(objectEntries(objectWithUndefined)).toEqualTypeOf<['a' | 'b', number | undefined][]>();
         expectTypeOf(objectEntries(objectWithOptional)).toEqualTypeOf<['a' | 'b', number][]>();
         expectTypeOf(objectEntries(objectWithOptionalAndRequired)).toEqualTypeOf<['a' | 'b', number | undefined][]>();
+    });
+
+    it('inverts objects', () => {
+        const genres = { 'Science Fiction': 878, Animation: 16 } as const;
+        const duplicates = { a: 'x', b: 'x', c: 'y' } as const;
+        const record = {} as Record<string, string>;
+
+        expect(invert(genres)).toEqual({ 878: 'Science Fiction', 16: 'Animation' });
+        expect(invert(duplicates)).toEqual({ x: 'b', y: 'c' });
+
+        expectTypeOf(invert(genres)).toEqualTypeOf<{ readonly 878: 'Science Fiction'; readonly 16: 'Animation' }>();
+        expectTypeOf(invert(duplicates)).toEqualTypeOf<{ readonly x: 'a' | 'b'; readonly y: 'c' }>();
+        expectTypeOf(invert(record)).toEqualTypeOf<Record<string, string>>();
     });
 
     it('checks subclasses', () => {

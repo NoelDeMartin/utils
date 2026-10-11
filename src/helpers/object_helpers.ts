@@ -58,6 +58,10 @@ export type ObjectWithout<TObj, TExclude> = Pretty<
     }
 >;
 
+export type Inverted<T extends { [K in keyof T]: PropertyKey }> = {
+    [K in keyof T as T[K]]: `${K & (string | number)}`;
+};
+
 export function deepEquals(a: unknown, b: unknown): boolean {
     if (a === b) return true;
 
@@ -158,15 +162,15 @@ export function getClassMethods(target: object): string[] {
     return Array.from(properties);
 }
 
-export function invert(map: Record<string, string>): Record<string, string> {
-    return Object.entries(map).reduce(
+export function invert<T extends { [K in keyof T]: PropertyKey }>(map: T): Inverted<T> {
+    return Object.entries(map as Record<string, PropertyKey>).reduce(
         (invertedMap, [key, value]) => {
             invertedMap[value] = key;
 
             return invertedMap;
         },
-        {} as Record<string, string>,
-    );
+        {} as Record<PropertyKey, string>,
+    ) as Inverted<T>;
 }
 
 export const isArray = Array.isArray.bind(Array);
