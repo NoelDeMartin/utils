@@ -1,6 +1,7 @@
 import type { Constructor } from '@noeldemartin/utils/types/classes';
 
 const extensions: FacadeExtension[] = [];
+const facadeMarker = Symbol('facade');
 
 export type FacadeExtension = (facadeInstance: FacadeMethods) => void;
 
@@ -32,7 +33,8 @@ export function facade<TInstance extends object>(
         return _instance;
     }
 
-    const facadeInstance: FacadeMethods<TInstance> = {
+    const facadeInstance: FacadeMethods<TInstance> & { [facadeMarker]: true } = {
+        [facadeMarker]: true,
         setInstance,
         newInstance,
         requireInstance: () => instance ?? setInstance(newInstance()),
@@ -50,7 +52,7 @@ export function facade<TInstance extends object>(
 
             return Reflect.get(t, property, receiver);
         },
-        set: (_, property, receiver) => Reflect.set(facadeInstance.requireInstance(), property, receiver),
+        set: (_, property, value) => Reflect.set(facadeInstance.requireInstance(), property, value),
     }) as unknown as Facade<TInstance>;
 }
 
@@ -59,7 +61,7 @@ export function extendFacadeMethods(extension: FacadeExtension): void {
 }
 
 export function isFacade(value: unknown): value is Facade {
-    return typeof value === 'object' && value !== null && 'requireInstance' in value;
+    return typeof value === 'object' && value !== null && facadeMarker in value;
 }
 
 export function getFacadeInstance<T extends object>(value: Facade<T>): T;

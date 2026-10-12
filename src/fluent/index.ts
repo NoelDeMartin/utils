@@ -56,7 +56,9 @@ export function fluent(value: unknown): unknown {
 }
 
 export * from './facade';
+export * from './lazyFacade';
 export type { Facade, FacadeMethods } from './facade';
+export type { LazyFacade, LazyFacadeMethods } from './lazyFacade';
 
 export { tap } from './tap';
 export type { Tapped } from './tap';
