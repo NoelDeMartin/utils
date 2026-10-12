@@ -1,26 +1,16 @@
+import { facade } from '@noeldemartin/utils/fluent/facade';
+
 const DEFAULT_INSTANCE = {};
 
-export class StorageSingleton {
-    private static _instance: StorageSingleton;
-
-    public static get instance(): StorageSingleton {
-        return (this._instance = this._instance ?? new StorageSingleton());
-    }
-
-    private constructor() {
-        // Hide instantiation
-    }
-
+export class StorageService {
     public set<T = unknown>(key: string, value: T): void {
-        if (typeof value === 'undefined') value = '__undefined__' as unknown as T;
-
-        localStorage.setItem(key, JSON.stringify(value));
+        this.storage.setItem(key, typeof value === 'undefined' ? '__undefined__' : JSON.stringify(value));
     }
 
     public get<T>(key: string): T | null;
     public get<T>(key: string, defaultValue: T): T;
     public get<T>(key: string, defaultValue: T | null = null): T | null {
-        const value = localStorage.getItem(key);
+        const value = this.storage.getItem(key);
 
         if (value === null) return defaultValue;
 
@@ -38,11 +28,11 @@ export class StorageSingleton {
     }
 
     public has(key: string): boolean {
-        return localStorage.getItem(key) !== null;
+        return this.storage.getItem(key) !== null;
     }
 
     public remove(key: string): void {
-        localStorage.removeItem(key);
+        this.storage.removeItem(key);
     }
 
     public pull<T>(key: string): T | null;
@@ -56,6 +46,10 @@ export class StorageSingleton {
 
         return value;
     }
+
+    protected get storage(): Pick<Storage, 'getItem' | 'setItem' | 'removeItem'> {
+        return localStorage;
+    }
 }
 
-export default StorageSingleton.instance;
+export default facade(StorageService);

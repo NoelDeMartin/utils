@@ -1,4 +1,5 @@
 export { default as IndexedDBMap } from './IndexedDBMap';
+export { default as InMemoryStorageService } from './InMemoryStorageService';
 export { default as JSError } from './JSError';
 export { default as ListenersManager } from './ListenersManager';
 export { default as MagicObject } from './MagicObject';
