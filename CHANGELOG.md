@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.8.0](https://github.com/NoelDeMartin/utils/releases/tag/v0.8.0)
+
+### Added
+
+- New helpers: `arrayReversed`, `arrayShuffled`, `applyReplacements`, `hasItems`, `isPromiseLike`, `isSubclassOf`, `isTruthy`, `lazyFacade`, `reduceBy`, `shuffle`, `sleep` (alias for `after`), and `throttle`.
+- New types: `Inverted` and `Truthy`.
+- Time constants (`MINUTE_MILLISECONDS`, `DAY_SECONDS`, etc.).
+- `InMemoryStorageService` to use `Storage` outside of the browser (or in tests).
+- `arraySorted` helper now supports sorting by multiple fields with different directions (eg. `arraySorted(users, [['age', 'desc'], ['name', 'asc']])`).
+- `shuffled` method in `FluentArray`.
+- Magic Objects now implement the `has` trap (making the `in` operator work with magic properties).
+- `'e2e'` environment is detected when running Aerogel E2E tests.
+
+### Changed
+
+- `arrayFrom` now takes an options object instead of a boolean (`arrayFrom(value, true)` becomes `arrayFrom(value, { ignoreEmptyValues: true })`), and its return type excludes empty values when they are ignored.
+- `urlResolve` now resolves relative paths using standard URL semantics. For example, `urlResolve('https://example.com/foo/bar', 'baz')` used to return `https://example.com/foo/bar/baz`, and now returns `https://example.com/foo/baz`.
+- `Storage` is now a facade backed by the `StorageService` class, which replaces `StorageSingleton`.
+- `Falsy` type now includes empty strings.
+- `fail` generic types now take the error class rather than the error instance.
+- `isFacade` now uses an internal marker, so objects that only happen to have a `requireInstance` method are no longer considered facades.
+- Improved `arraySorted` performance and types (Dates are now compared by timestamp).
+- Improved `invert` types.
+- Migrated tooling to Vite+.
+
+### Fixed
+
+- `PromisedValue` reset listeners (reject listeners were being called instead).
+- `tap` helper with promise-like objects.
+
 ## [v0.7.3](https://github.com/NoelDeMartin/utils/releases/tag/v0.7.3) - 2025-12-14
 
 ### Added
