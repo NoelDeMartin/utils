@@ -97,7 +97,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     public reset(): void {
         this.setPromiseValues();
 
-        this.rejectListeners.forEach((listener) => listener());
+        this.resetListeners.forEach((listener) => listener());
     }
 
     private setPromiseValues(): void {
