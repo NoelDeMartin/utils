@@ -24,6 +24,14 @@ class Stub extends MagicObject {
         return this.attributes;
     }
 
+    public getInstance(): this {
+        return this.__instance();
+    }
+
+    public isCanonical(): boolean {
+        return this.__isCanonical();
+    }
+
     public static<T extends typeof Stub>(): T;
     public static<T extends typeof Stub, K extends keyof T>(property: K): T[K];
     public static<T extends typeof Stub, K extends keyof T>(property?: K): T | T[K] {
@@ -45,6 +53,14 @@ class Stub extends MagicObject {
     }
 
     protected __get(property: string): unknown {
+        if (property === 'magicInstance') {
+            return this.__instance();
+        }
+
+        if (property === 'magicIsCanonical') {
+            return this.__isCanonical();
+        }
+
         return this.attributes[property];
     }
 
@@ -106,6 +122,27 @@ describe('MagicObject', () => {
         // Assert
         expect(object['foo-bar']).toBeUndefined();
         expect(object.fooBar).toBe(true);
+    });
+
+    it('Resolves canonical instance', () => {
+        // Arrange
+        const object = new Stub();
+        const proxy = new Proxy(object, {});
+
+        // Assert
+        expect(object.getInstance()).toBe(object);
+        expect(object.isCanonical()).toBe(true);
+        expect(proxy.getInstance()).toBe(object);
+        expect(proxy.isCanonical()).toBe(false);
+    });
+
+    it('Resolves canonical instance within magic accessors', () => {
+        // Arrange
+        const object = new Stub();
+
+        // Assert
+        expect(object.magicInstance).toBe(object);
+        expect(object.magicIsCanonical).toBe(false);
     });
 });
 

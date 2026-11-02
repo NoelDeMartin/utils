@@ -64,6 +64,14 @@ export default class MagicObject {
         Object.assign(this, { [property]: null });
     }
 
+    protected __instance(): this {
+        return this._proxy.instance;
+    }
+
+    protected __isCanonical(): boolean {
+        return this === this._proxy.instance;
+    }
+
     // oxlint-disable-next-line typescript/no-unused-vars
     protected initialize(...args: ClosureArgs): void {
         //
