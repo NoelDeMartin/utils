@@ -82,8 +82,39 @@ describe('Object helpers', () => {
 
     it('clones Dates properly', () => {
         const date = new Date(Date.now() - 42);
+        const clone = objectDeepClone({ date });
 
-        expect(date.toISOString()).toEqual(objectDeepClone({ date }).date.toISOString());
+        expect(clone.date).not.toBe(date);
+        expect(clone.date.toISOString()).toEqual(date.toISOString());
+    });
+
+    it('clones nested objects and arrays', () => {
+        // Arrange
+        class Stub {}
+
+        const stub = new Stub();
+        const original = {
+            tags: ['foo'],
+            nested: { items: [{ name: 'bar' }] },
+            matrix: [[1], [2]],
+            stub,
+        };
+
+        // Act
+        const clone = objectDeepClone(original);
+
+        clone.tags.push('baz');
+        clone.nested.items[0]!.name = 'qux';
+        clone.matrix[0]!.push(3);
+
+        // Assert
+        expect(original).toEqual({
+            tags: ['foo'],
+            nested: { items: [{ name: 'bar' }] },
+            matrix: [[1], [2]],
+            stub,
+        });
+        expect(clone.stub).toBe(stub);
     });
 
     it('gets subset', () => {

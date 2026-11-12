@@ -11,6 +11,22 @@ import type {
     VoidClosure,
 } from '@noeldemartin/utils/types/helpers';
 
+function deepCloneValue<T>(value: T): T {
+    if (Array.isArray(value)) {
+        return value.map(deepCloneValue) as T;
+    }
+
+    if (value instanceof Date) {
+        return new Date(value) as T;
+    }
+
+    if (isPlainObject(value)) {
+        return objectDeepClone(value as Obj) as T;
+    }
+
+    return value;
+}
+
 export type Obj = Record<string, unknown>;
 
 // oxlint-disable-next-line typescript/no-explicit-any
@@ -244,15 +260,13 @@ export function monkeyPatch<T, K extends GetObjectMethods<T>>(object: T, method:
 }
 
 export function objectDeepClone<T extends Obj>(object: T): T {
-    object = { ...object };
+    const clone = { ...object };
 
-    for (const property in object) {
-        if (!objectPropertyIsObject(object, property)) continue;
-
-        object[property] = objectDeepClone(object[property]);
+    for (const property in clone) {
+        clone[property] = deepCloneValue(clone[property]);
     }
 
-    return object;
+    return clone;
 }
 
 export const objectEntries = Object.entries.bind(Object) as <T extends Parameters<typeof Object.entries>[0]>(
