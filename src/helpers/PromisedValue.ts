@@ -3,6 +3,8 @@ import { arrayRemove } from './array_helpers';
 export type PromisedValueResolveListener<T> = (result: T) => unknown;
 export type PromisedValueRejectListener = (reason?: Error) => unknown;
 export type PromisedValueResetListener = () => unknown;
+export type PromisedValueStatus = 'pending' | 'resolved' | 'rejected';
+export type ResolvedPromisedValue<T> = PromisedValue<T> & { readonly value: T; readonly __resolved: true };
 
 export default class PromisedValue<T = unknown> implements Promise<T> {
     public static from<T>(promise: Promise<T>): PromisedValue<T> {
@@ -14,6 +16,7 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     }
 
     declare private _value?: T;
+    declare private _status: PromisedValueStatus;
     declare private promise: Promise<T>;
     declare private _resolve: (result: T) => void;
     declare private _reject: (reason?: Error) => void;
@@ -29,11 +32,19 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     declare public [Symbol.toStringTag]: string;
 
     public get value(): T | null {
-        return this._value || null;
+        return this._value ?? null;
     }
 
-    public isResolved(): this is { value: T } {
-        return '_value' in this;
+    public isResolved(): this is ResolvedPromisedValue<T> {
+        return this._status === 'resolved';
+    }
+
+    public isRejected(): boolean {
+        return this._status === 'rejected';
+    }
+
+    public isSettled(): boolean {
+        return this._status !== 'pending';
     }
 
     // oxlint-disable-next-line unicorn/no-thenable
@@ -55,22 +66,23 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     }
 
     public resolve(value: T): void {
-        if (this.isResolved()) {
+        if (this.isSettled()) {
             this.reset();
         }
 
         this._value = value;
+        this._status = 'resolved';
         this._resolve(value);
 
         this.resolveListeners.forEach((listener) => listener(value));
     }
 
     public reject(reason?: Error): void {
-        if (this.isResolved()) {
+        if (this.isSettled()) {
             this.reset();
         }
 
-        delete this._value;
+        this._status = 'rejected';
         this._reject(reason);
 
         this.rejectListeners.forEach((listener) => listener(reason));
@@ -101,6 +113,8 @@ export default class PromisedValue<T = unknown> implements Promise<T> {
     }
 
     private setPromiseValues(): void {
+        delete this._value;
+        this._status = 'pending';
         this.promise = new Promise((resolve, reject) => {
             this._resolve = resolve;
             this._reject = reject;
