@@ -2,7 +2,7 @@ import type { Closure, ClosureArgs, Constructor } from '@noeldemartin/utils/type
 
 export interface SilencedOptions<Default = null> {
     default?: Default;
-    only?: Constructor<Error> | Constructor<Error>[];
+    ignore?: Constructor<Error> | Constructor<Error>[];
 }
 
 export async function asyncFirst<TValue, TResult>(
@@ -43,7 +43,7 @@ export function silenced<Args extends ClosureArgs, Result, Default>(
     operationOrPromise: Closure<Args, Promise<Result>> | Promise<Result>,
     options: SilencedOptions<Default | null> = {},
 ): Closure<Args, Promise<Result | Default | null>> | Promise<Result | Default | null> {
-    const errorClasses = options.only && (Array.isArray(options.only) ? options.only : [options.only]);
+    const errorClasses = options.ignore && (Array.isArray(options.ignore) ? options.ignore : [options.ignore]);
     const silence = (error: unknown): Default | null => {
         if (errorClasses && !errorClasses.some((errorClass) => error instanceof errorClass)) {
             throw error;

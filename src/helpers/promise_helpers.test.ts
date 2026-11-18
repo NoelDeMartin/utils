@@ -48,11 +48,11 @@ describe('Promise helpers', () => {
 
     it('silences only the given errors', async () => {
         // Arrange
-        const operation = silenced(async (error: Error) => Promise.reject(error), { only: [StubError] });
+        const operation = silenced(async (error: Error) => Promise.reject(error), { ignore: [StubError] });
 
         // Act & Assert
         await expect(operation(new StubError())).resolves.toBeNull();
         await expect(operation(new Error('foobar'))).rejects.toThrow('foobar');
-        await expect(silenced(Promise.reject(new StubError()), { only: StubError })).resolves.toBeNull();
+        await expect(silenced(Promise.reject(new StubError()), { ignore: StubError })).resolves.toBeNull();
     });
 });
