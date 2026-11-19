@@ -29,6 +29,7 @@ function proxyTap<Target extends object>(target: Target): Tapped<Target> {
 }
 
 export function tap<Target extends object>(target: Target): Tapped<Target>;
+export function tap<Target>(target: PromiseLike<Target>, callback: (target: Target) => unknown): Promise<Target>;
 export function tap<Target>(target: Target, callback: (target: Target) => Promise<unknown>): Promise<Target>;
 export function tap<Target>(target: Target, callback: (target: Target) => unknown): Target;
 export function tap<Target extends object>(
@@ -37,6 +38,14 @@ export function tap<Target extends object>(
     callback?: (target: Target) => unknown | Promise<unknown>,
 ): Target | Tapped<Target> | Promise<Target> {
     if (!callback) return proxyTap(target);
+
+    if (isPromiseLike(target)) {
+        return Promise.resolve(target).then(async (resolvedTarget) => {
+            await callback(resolvedTarget as Target);
+
+            return resolvedTarget as Target;
+        });
+    }
 
     const result = callback(target);
 

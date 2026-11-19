@@ -26,6 +26,29 @@ describe('tap helper', () => {
         expect(calls).toEqual([1, 2]);
     });
 
+    it('taps promises', async () => {
+        // Arrange
+        const calls: string[] = [];
+        const promise = after().then(() => {
+            calls.push('resolved');
+
+            return 42;
+        });
+
+        // Act
+        const result = await tap(promise, async (value) => {
+            await after();
+
+            calls.push(`tapped ${value}`);
+        });
+
+        calls.push('returned');
+
+        // Assert
+        expect(result).toBe(42);
+        expect(calls).toEqual(['resolved', 'tapped 42', 'returned']);
+    });
+
     it('taps using proxy', () => {
         // Arrange
         class Computer {
@@ -50,6 +73,7 @@ describe('tap helper', () => {
 const numberResult = tap(42, noop);
 const stringResult = tap('42', noop);
 const promisedNumberResult = tap(42, () => Promise.resolve());
+const tappedPromiseResult = tap(Promise.resolve(42), (value) => value);
 
 describe('tap helper types', () => {
     it(
@@ -58,6 +82,7 @@ describe('tap helper types', () => {
             | Expect<Equals<typeof numberResult, 42>>
             | Expect<Equals<typeof stringResult, '42'>>
             | Expect<Equals<typeof promisedNumberResult, Promise<number>>>
+            | Expect<Equals<typeof tappedPromiseResult, Promise<number>>>
             | true
         >(),
     );
