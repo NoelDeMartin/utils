@@ -22,6 +22,28 @@ export async function asyncFirst<TValue, TResult>(
     return null;
 }
 
+export function coalesce<TResult>(operation: () => Promise<TResult>): () => Promise<TResult> {
+    let running: Promise<TResult> | null = null;
+    let queued: Promise<TResult> | null = null;
+
+    const run = (): Promise<TResult> =>
+        (running = new Promise<TResult>((resolve) => resolve(operation())).finally(() => (running = null)));
+
+    return () => {
+        if (!running && !queued) {
+            return run();
+        }
+
+        return (queued ??= (running ?? Promise.resolve())
+            .catch(() => null)
+            .then(() => {
+                queued = null;
+
+                return run();
+            }));
+    };
+}
+
 export function isPromise(p: unknown): p is Promise<unknown> {
     return 'then' in (p as Promise<unknown>);
 }
