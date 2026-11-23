@@ -14,8 +14,14 @@
     "type": "module",
     "sideEffects": false,
     "exports": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./vue": {
+            "types": "./dist/vue.d.ts",
+            "default": "./dist/vue.js"
+        }
     },
     "scripts": {
         "build": "vp pack",
@@ -34,7 +40,16 @@
         "publint": "^0.3.24",
         "typescript": "~6.0.2",
         "vite": "catalog:",
-        "vite-plus": "catalog:"
+        "vite-plus": "catalog:",
+        "vue": "^3.5.0"
+    },
+    "peerDependencies": {
+        "vue": ">=3.5.0"
+    },
+    "peerDependenciesMeta": {
+        "vue": {
+            "optional": true
+        }
     },
     "packageManager": "pnpm@12.8.1"
 }
